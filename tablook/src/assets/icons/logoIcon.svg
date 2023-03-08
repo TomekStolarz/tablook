@@ -1,0 +1,14 @@
+<svg width="60" height="36" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1">
+ <desc>Created with Fabric.js 3.5.0</desc>
+
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="rgba(255,255,255,0)" height="100%" width="100%" y="0" x="0"/>
+  <g id="66277" transform="matrix(-0.0475 0 0 0.0475 17.6115 17.6115)">
+   <path id="svg_2" fill-rule=" nonzero" fill=" rgb(255,255,255)" stroke-miterlimit="4" stroke-linejoin=" miter" stroke-dashoffset="0" stroke-dasharray=" none" stroke=" none" stroke-linecap=" butt" d="m316,360l-263,-263q-30,26 -69.959,40.5t-85.041,14.5q-108.162,0 -183.081,-75q-74.919,-75 -74.919,-181t75,-181q75,-75 181.5,-75t181,75q74.5,75 74.5,181.15q0,42.85 -14,82.85q-14,40 -42,75l264,262l-44,44zm-419,-268q81.25,0 138.125,-57.5t56.875,-138.5q0,-81 -56.875,-138.5t-138.125,-57.5q-82.083,0 -139.542,57.5q-57.458,57.5 -57.458,138.5t57.458,138.5q57.459,57.5 139.542,57.5z" vector-effect="non-scaling-stroke"/>
+  </g>
+  <g id="585010" transform="matrix(0.0279 0 0 0.0319 49.5513 24.5273)">
+   <path id="svg_3" fill-rule=" nonzero" fill=" rgb(255,255,255)" stroke-miterlimit="4" stroke-linejoin=" miter" stroke-dashoffset="0" stroke-dasharray=" none" stroke=" none" stroke-linecap=" butt" d="m-240,320l60,-150q9,-23 29,-36.5t45,-13.5l76,0l0,-161q-159,-5 -264.5,-45t-105.5,-94q0,-58 117,-99t283,-41q166,0 283,41t117,99q0,54 -105.5,94t-264.5,45l0,161l76,0q24,0 44.5,13.5t29.5,36.5l60,150l-60,0l-55,-140l-249,0l-56,140l-60,0zm240,-420q108,0 202,-22t143,-58q-49,-36 -143,-58t-202,-22q-108,0 -202,22t-143,58q49,36 143,58t202,22zm0,-80z" vector-effect="non-scaling-stroke"/>
+  </g>
+ </g>
+</svg>

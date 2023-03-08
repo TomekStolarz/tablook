@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+$primary-black: #000000;
+$primary-white: #f4f4f6;
+$primary-gray-1: #e6e6e9;
+$primary-gray-2: #9999a1;
+$priary-darkgray-1: #66666e;
+$priary-darkgray-2: rgba(96,96,104,0.6);
+
+* {
+    box-sizing: border-box;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 400;
+    margin: 0;
+    padding: 0
+}
+
+
+@import "app/components/header/header.component.scss";
+
+html, body { height: 100%; color: white;}
