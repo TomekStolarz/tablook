@@ -1,0 +1,10 @@
+app-fast-filters {
+	.circle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50%;
+		background: $primary-white;
+		color: $primary-black;
+	}
+}
