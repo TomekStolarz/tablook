@@ -2,8 +2,9 @@ $primary-black: #000000;
 $primary-white: #f4f4f6;
 $primary-gray-1: #e6e6e9;
 $primary-gray-2: #9999a1;
-$priary-darkgray-1: #66666e;
-$priary-darkgray-2: rgba(96,96,104,0.6);
+$primary-darkgray-1: #66666e;
+$primary-darkgray-2: rgba(96,96,104,0.6);
+$secondary-button: #0e8d7e70;
 
 * {
     box-sizing: border-box;
@@ -14,7 +15,9 @@ $priary-darkgray-2: rgba(96,96,104,0.6);
     padding: 0
 }
 
+html, body { height: 100%; color: $primary-black;}
 
-@import "app/components/header/header.component.scss";
+@import "app/app-module.styles.scss";
 
-html, body { height: 100%; color: white;}
+
+

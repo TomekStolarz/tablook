@@ -13,6 +13,8 @@ app-header {
 
         h1 {
             justify-self: center;
+            color: white;
+            font-size: 2rem;
         }
         
         .buttons {
@@ -33,7 +35,7 @@ app-header {
             }
 
             > :nth-child(2) {
-                background-color: $priary-darkgray-1;
+                background-color: $primary-darkgray-1;
                 color: white;
             }
 
