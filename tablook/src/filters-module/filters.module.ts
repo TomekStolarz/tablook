@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
+import { FastFilterComponent } from './components/fast-filter/fast-filter.component';
 import { FastFiltersComponent } from './components/fast-filters/fast-filters.component';
 
 @NgModule({
-	declarations: [
-    FastFiltersComponent
-  ],
+	declarations: [FastFilterComponent, FastFiltersComponent],
 	imports: [],
 	providers: [],
-	exports: [],
+	exports: [FastFiltersComponent],
 })
 export class FilterModule {}

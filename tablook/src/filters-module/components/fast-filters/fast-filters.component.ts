@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FastFilter } from 'src/filters-module/models/fast-filter.interface';
 import { FiltersService } from 'src/filters-module/services/filters.service';
 
@@ -7,13 +8,12 @@ import { FiltersService } from 'src/filters-module/services/filters.service';
 	templateUrl: './fast-filters.component.html',
 	styleUrls: ['./fast-filters.component.scss'],
 })
-export class FastFiltersComponent {
-	@Input()
-	filterData!: FastFilter;
+export class FastFiltersComponent implements OnInit {
+	filtersData$!: Observable<FastFilter[]>;
 
-	constructor(private filterService: FiltersService) {}
+	constructor(private filtersService: FiltersService) {}
 
-	showFilterResulst() {
-		this.filterService.filterResults(this.filterData?.filterKey);
+	ngOnInit(): void {
+		this.filtersData$ = this.filtersService.getFastFilters();
 	}
 }
