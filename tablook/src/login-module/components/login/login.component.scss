@@ -1,0 +1,29 @@
+app-login-component {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	align-items: center;
+	padding: 1.5rem;
+
+	.login > form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+
+		.form-title {
+			text-align: center;
+		}
+
+		button {
+			background-color: $primary-white;
+		}
+	}
+
+	.picutre {
+		img {
+			width: auto;
+			height: auto;
+			max-width: 55vw;
+			max-height: 70vh;
+		}
+	}
+}

@@ -4,12 +4,17 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+	{ path: 'home', component: HomeComponent },
+	{
+		path: 'login',
+		loadChildren: () =>
+			import('../login-module/login.module').then((m) => m.LoginModule),
+	},
+	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
