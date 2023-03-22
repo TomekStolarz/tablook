@@ -13,8 +13,14 @@ app-login-component {
 			text-align: center;
 		}
 
-		button {
-			background-color: $primary-white;
+		.buttons {
+			display: flex;
+			justify-content: flex-end;
+			gap: 1.5rem;
+			button {
+				border-radius: 1rem;
+				min-width: 100px;
+			}
 		}
 	}
 

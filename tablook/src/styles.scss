@@ -5,6 +5,29 @@ $primary-gray-2: #9999a1;
 $primary-darkgray-1: #66666e;
 $primary-darkgray-2: rgba(96, 96, 104, 0.6);
 $secondary-button: #0e8d7e70;
+$secondary-button-wo: #0e8d7e;
+
+[mat-raised-button].mat-button.mat-dark:not(:disabled),
+[mat-stroked-button].mat-dark:not(:disabled),
+[mat-button].mat-dark:not(:disabled) {
+	color: $secondary-button-wo;
+}
+[mat-raised-button].mat-button.mat-dark:hover:not(:disabled),
+[mat-stroked-button].mat-dark:hover:not(:disabled) {
+	background-color: #111111;
+}
+
+[mat-raised-button].mat-dark:not(:disabled),
+.mat-flat-button.mat-dark:not(:disabled),
+.mat-fab.mat-dark:not(:disabled),
+.mat-mini-fab.mat-dark:not(:disabled) {
+	color: $primary-white;
+	background-color: $secondary-button-wo;
+}
+
+.mat-icon-button.mat-dark:not(:disabled) {
+	color: $secondary-button-wo;
+}
 
 * {
 	box-sizing: border-box;
@@ -26,3 +49,5 @@ body {
 @import 'app/app-module.styles.scss';
 
 @import 'login-module/login-module.scss';
+
+@import 'register-module/register-module.scss';

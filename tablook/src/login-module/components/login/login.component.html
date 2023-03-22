@@ -28,7 +28,12 @@
 				Password is <strong>required</strong>
 			</mat-error>
 		</mat-form-field>
-		<button mat-raised-button (click)="login()">Login</button>
+		<div class="buttons">
+			<button mat-button color="dark">Restore password</button>
+			<button mat-raised-button color="dark" (click)="login()">
+				Login
+			</button>
+		</div>
 	</form>
 </section>
 <section class="picutre">
