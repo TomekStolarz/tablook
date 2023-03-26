@@ -18,6 +18,7 @@ export class TbCountryPhoneCodeService implements CountryPhoneCodeService {
 				concatMap((codes) => from(codes)),
 				distinct(({ phoneCode }) => phoneCode),
 				reduce((acc, curr) => {
+					curr.phoneCode = curr.phoneCode.split(',')[0];
 					acc.push(curr);
 					return acc;
 				}, new Array<CountryPhoneCode>()),
