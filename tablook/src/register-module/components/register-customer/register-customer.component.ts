@@ -48,14 +48,7 @@ export class RegisterCustomerComponent implements OnInit {
 	ngOnInit(): void {
 		this.cps
 			.getCountryCode()
-			.subscribe(
-				(codes) =>
-					(this.countryCodes = [...new Set(codes)].sort(
-						(a, b) =>
-							a.phoneCode.length - b.phoneCode.length ||
-							a.phoneCode.localeCompare(b.phoneCode)
-					))
-			);
+			.subscribe((codes) => (this.countryCodes = [...codes]));
 	}
 
 	get password() {
