@@ -7,9 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CountryPhoneCodeService } from './services/country-phone-code.service.interface';
+import { PhonePrefixPipe } from './pipes/phone-prefix.pipe';
 
 @NgModule({
-	declarations: [RegisterCustomerComponent],
+	declarations: [RegisterCustomerComponent, PhonePrefixPipe],
 	imports: [
 		RegisterRoutingModule,
 		CommonModule,

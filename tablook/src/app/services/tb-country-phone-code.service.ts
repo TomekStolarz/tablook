@@ -1,42 +1,33 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { concatMap, distinct, from, map, reduce, Observable } from 'rxjs';
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
 import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
-
-interface resp {
-	E164: string;
-	phone_code: string;
-	country_name: string;
-}
-
+import { environment } from 'src/environments/environment';
 @Injectable({
 	providedIn: 'root',
 })
 export class TbCountryPhoneCodeService implements CountryPhoneCodeService {
 	constructor(private http: HttpClient) {}
-
-	corsHeaders = new HttpHeaders({
-		'Content-Type': 'application/json',
-		Accept: 'application/json',
-		'Access-Control-Allow-Origin': '*',
-	});
+	private apiPath = environment.apiPath;
 
 	getCountryCode(): Observable<CountryPhoneCode[]> {
 		return this.http
-			.get<resp[]>('https://countrycode.dev/api/calls', {
-				headers: this.corsHeaders,
-			})
+			.get<CountryPhoneCode[]>(`${this.apiPath}/phonecode`)
 			.pipe(
-				map((phoneCodes) => {
-					const codes = phoneCodes.map((data) => {
-						return {
-							countryKey: data.country_name,
-							phoneCode: data.phone_code,
-						};
-					});
-					return codes;
-				})
+				concatMap((codes) => from(codes)),
+				distinct(({ phoneCode }) => phoneCode),
+				reduce((acc, curr) => {
+					acc.push(curr);
+					return acc;
+				}, new Array<CountryPhoneCode>()),
+				map((codes) =>
+					codes.sort(
+						(a, b) =>
+							a.phoneCode.length - b.phoneCode.length ||
+							a.phoneCode.localeCompare(b.phoneCode)
+					)
+				)
 			);
 	}
 }

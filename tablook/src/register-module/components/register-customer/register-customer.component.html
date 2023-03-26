@@ -36,8 +36,8 @@
 				<mat-select formControlName="phonePrefix">
 					<mat-option
 						*ngFor="let code of countryCodes"
-						[value]="code"
-						>{{ code }}</mat-option
+						[value]="code.phoneCode"
+						>{{ code.phoneCode | phonePrefix }}</mat-option
 					>
 				</mat-select>
 			</mat-form-field>
