@@ -131,8 +131,6 @@
 			>
 				Password not match
 			</mat-error>
-			{{(passwordRepeat?.invalid || registerForm.errors?.['notSame']) &&
-			(passwordRepeat?.dirty || passwordRepeat?.touched) }}
 		</mat-form-field>
 		<button mat-raised-button color="dark" (click)="singUp()">
 			Sing up
