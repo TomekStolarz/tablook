@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CountryPhoneCodeService } from './services/country-phone-code.service.interface';
 import { PhonePrefixPipe } from './pipes/phone-prefix.pipe';
+import { ErrorStateStrategy } from './directives/match-error-strategy';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @NgModule({
 	declarations: [RegisterCustomerComponent, PhonePrefixPipe],

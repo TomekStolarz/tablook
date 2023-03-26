@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { TbCountryPhoneCodeService } from 'src/app/services/tb-country-phone-code.service';
+import { ErrorStateStrategy } from 'src/register-module/directives/match-error-strategy';
 import { matchPasswordValidator } from 'src/register-module/directives/match-password-validator.directive';
 import { passwordValidator } from 'src/register-module/directives/password-validator.directive';
 import { phoneValidator } from 'src/register-module/directives/phone-validator.directive';
+import { WatchRepeatPasswordErrorStrategy } from 'src/register-module/directives/watch-form-error-strategy';
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
-import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
 
 @Component({
 	selector: 'app-register-customer',
@@ -19,11 +19,7 @@ export class RegisterCustomerComponent implements OnInit {
 			email: ['', [Validators.required, Validators.email]],
 			name: ['', Validators.required],
 			surname: ['', Validators.required],
-			phonePrefix: [
-				'',
-				Validators.required,
-				Validators.pattern(/\d{1,3}/),
-			],
+			phonePrefix: ['', Validators.required],
 			phone: ['', [Validators.required, phoneValidator()]],
 			password: [
 				'',
@@ -38,6 +34,9 @@ export class RegisterCustomerComponent implements OnInit {
 		{ validators: matchPasswordValidator }
 	);
 
+	matcher = new ErrorStateStrategy();
+	watchMatcher = new WatchRepeatPasswordErrorStrategy();
+
 	countryCodes: CountryPhoneCode[] = [];
 
 	constructor(
@@ -49,6 +48,13 @@ export class RegisterCustomerComponent implements OnInit {
 		this.cps
 			.getCountryCode()
 			.subscribe((codes) => (this.countryCodes = [...codes]));
+	}
+
+	singUp() {
+		if (this.registerForm.invalid) {
+			this.registerForm.markAllAsTouched();
+			return;
+		}
 	}
 
 	get password() {

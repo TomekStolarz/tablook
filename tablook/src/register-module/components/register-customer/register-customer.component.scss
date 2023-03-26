@@ -19,7 +19,7 @@ app-register-customer {
 			}
 
 			mat-error > .multiError {
-				display: flex;
+				display: inline-flex;
 				flex-direction: column;
 			}
 		}

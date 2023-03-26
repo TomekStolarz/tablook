@@ -8,10 +8,16 @@ export function passwordValidator(): ValidatorFn {
 			);
 		const errorMessages: string[] = [];
 		const errorCases = [
-			{ regex: /\d/, message: 'Should have at least one number' },
-			{ regex: /\[A-Za-z]/, message: 'Should have at least one letter' },
 			{
-				regex: /[@$!%*#?&]/,
+				regex: new RegExp(/\d/),
+				message: 'Should have at least one number',
+			},
+			{
+				regex: new RegExp(/[A-Za-z]/),
+				message: 'Should have at least one letter',
+			},
+			{
+				regex: new RegExp(/[@$!%*#?&]/),
 				message: 'Should have at least one special character',
 			},
 		];
