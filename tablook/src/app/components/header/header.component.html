@@ -30,5 +30,7 @@
 
 <ng-template #guestBar>
 	<button mat-raised-button [routerLink]="'/login'">Login</button>
-	<button mat-raised-button (click)="openRegisterPanel()">Singup</button>
+	<button mat-raised-button [routerLink]="'/register/customer'">
+		Singup
+	</button>
 </ng-template>
