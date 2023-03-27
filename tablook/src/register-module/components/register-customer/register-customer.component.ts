@@ -7,6 +7,7 @@ import { passwordValidator } from 'src/register-module/directives/password-valid
 import { phoneValidator } from 'src/register-module/directives/phone-validator.directive';
 import { WatchRepeatPasswordErrorStrategy } from 'src/register-module/directives/watch-form-error-strategy';
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
+import { RegisterService } from 'src/register-module/services/register.service';
 
 @Component({
 	selector: 'app-register-customer',
@@ -14,7 +15,7 @@ import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-c
 	styleUrls: ['./register-customer.component.scss'],
 })
 export class RegisterCustomerComponent implements OnInit {
-	registerForm = this.fb.group(
+	registerForm = this.fb.nonNullable.group(
 		{
 			email: ['', [Validators.required, Validators.email]],
 			name: ['', Validators.required],
@@ -41,7 +42,8 @@ export class RegisterCustomerComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
-		private cps: TbCountryPhoneCodeService
+		private cps: TbCountryPhoneCodeService,
+		private registerService: RegisterService
 	) {}
 
 	ngOnInit(): void {
@@ -55,6 +57,13 @@ export class RegisterCustomerComponent implements OnInit {
 			this.registerForm.markAllAsTouched();
 			return;
 		}
+		const { phonePrefix, passwordRepeat, ...registerData } = {
+			...this.registerForm.getRawValue(),
+		};
+		registerData.phone = `${phonePrefix}${registerData.phone}`;
+		this.registerService
+			.registerCustomer(registerData)
+			.subscribe((response) => console.log(response));
 	}
 
 	get password() {
