@@ -6,6 +6,8 @@ $primary-darkgray-1: #66666e;
 $primary-darkgray-2: rgba(96, 96, 104, 0.6);
 $secondary-button: #0e8d7e70;
 $secondary-button-wo: #0e8d7e;
+$primary-error-bg: rgba(255, 51, 51, 0.6666666667);
+$primary-error-text: rgb(204, 0, 0);
 
 [mat-raised-button].mat-button.mat-dark:not(:disabled),
 [mat-stroked-button].mat-dark:not(:disabled),
@@ -51,3 +53,5 @@ body {
 @import 'login-module/login-module.scss';
 
 @import 'register-module/register-module.scss';
+
+@import 'shared/shared.module.scss';
