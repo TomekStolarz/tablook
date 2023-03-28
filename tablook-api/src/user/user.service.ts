@@ -40,6 +40,7 @@ export class UserService {
     phone?: string,
     details?: UserDetails,
   ) {
+    if (!this.creationMethods[type]) return;
     return this.creationMethods[type](
       name,
       email,
@@ -72,7 +73,7 @@ export class UserService {
       this.logger.log('User successfully created!');
     } catch (error: any) {
       this.logger.error(error.message);
-      throw new HttpException('Forbidden', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
     }
     return newUser.save();
   }

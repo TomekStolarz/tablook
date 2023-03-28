@@ -38,6 +38,8 @@ export class RegisterCustomerComponent implements OnInit {
 	matcher = new ErrorStateStrategy();
 	watchMatcher = new WatchRepeatPasswordErrorStrategy();
 
+	error?: string;
+
 	countryCodes: CountryPhoneCode[] = [];
 
 	constructor(
@@ -63,7 +65,13 @@ export class RegisterCustomerComponent implements OnInit {
 		registerData.phone = `${phonePrefix}${registerData.phone}`;
 		this.registerService
 			.registerCustomer(registerData)
-			.subscribe((response) => console.log(response));
+			.subscribe((response) => {
+				if (response.status === 201) {
+					//open snackbar
+				} else {
+					this.error = response.message;
+				}
+			});
 	}
 
 	get password() {

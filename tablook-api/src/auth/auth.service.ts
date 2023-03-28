@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { NewUserDTO } from 'src/user/dtos/new-user.dto';
@@ -22,7 +22,7 @@ export class AuthService {
     const userExist = await this.userService.findByEmail(email);
 
     if (userExist) {
-      return 'Email already taken';
+      throw new HttpException('Email already taken', HttpStatus.BAD_REQUEST);
     }
 
     const hashedPassword = await this.hashPassword(password);
@@ -52,10 +52,14 @@ export class AuthService {
   ): Promise<UserInfo | null> {
     const user = await this.userService.findByEmail(email);
     const ifUserExist = !!user;
-    if (!ifUserExist) return null;
+    if (!ifUserExist) {
+      throw new HttpException('Bad email or password', HttpStatus.BAD_REQUEST);
+    }
 
     const doesPasswordMatch = this.doesPasswordMatch(password, user.password);
-    if (!doesPasswordMatch) return null;
+    if (!doesPasswordMatch) {
+      throw new HttpException('Bad email or password', HttpStatus.BAD_REQUEST);
+    }
 
     return this.userService.getUserInfo(user);
   }
@@ -63,8 +67,6 @@ export class AuthService {
   async login(userData: UserDTO): Promise<{ token: string } | null> {
     const { email, password } = userData;
     const user = await this.validateUser(email, password);
-
-    if (!user) return null;
 
     const jwt = await this.jwtService.signAsync({ user });
     return { token: jwt };
