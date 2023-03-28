@@ -1,10 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, MongooseError } from 'mongoose';
 import { UserDetails } from './models/user-details.interface';
 import { UserType } from './models/user-type.enum';
 import { UserDocument } from './models/user.schema';
 import * as bcrypt from 'bcrypt';
+import { UserInfo } from './models/user-info.interface';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,17 @@ export class UserService {
     [UserType.CUSTOMER]: this.createCustomer.bind(this),
     [UserType.RESTAURANT]: this.createRestaurant.bind(this),
   };
+
+  getUserInfo(user: UserDocument): UserInfo {
+    return {
+      name: user.name,
+      surname: user.surname,
+      phone: user.phone,
+      type: user.type,
+      details: user.details,
+      email: user.email,
+    };
+  }
 
   create(
     name: string,
@@ -46,20 +58,21 @@ export class UserService {
     type: UserType,
     surname?: string,
     phone?: string,
-  ) {
+  ): Promise<UserDocument> {
+    let newUser;
     try {
-      const hash = await bcrypt.hash(password, 10);
-      const newUser = new this.userModel({
+      newUser = new this.userModel({
         name,
         email,
-        password: hash,
+        password,
         type,
         surname,
         phone,
       });
       this.logger.log('User successfully created!');
-    } catch (error: Error) {
-        this.logger.log('User successfully created!');
+    } catch (error: any) {
+      this.logger.error(error.message);
+      throw new HttpException('Forbidden', HttpStatus.BAD_REQUEST);
     }
     return newUser.save();
   }
@@ -73,4 +86,14 @@ export class UserService {
     phone?: string,
     details?: UserDetails,
   ) {}
+
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
+  async findById(id: string): Promise<UserInfo | null> {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) return null;
+    return this.getUserInfo(user);
+  }
 }

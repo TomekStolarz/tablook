@@ -1,5 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { UserDetails } from './models/user-details.interface';
+import { UserInfo } from './models/user-info.interface';
 import { UserType } from './models/user-type.enum';
 import { UserService } from './user.service';
 
@@ -7,24 +10,8 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  createUser(
-    @Body('name') name: string,
-    @Body('email') email: string,
-    @Body('password') password: string,
-    @Body('type') type: UserType,
-    @Body('surname') surname?: string,
-    @Body('phone') phone?: string,
-    @Body('details') details?: UserDetails,
-  ) {
-    return this.userService.create(
-      name,
-      email,
-      password,
-      type,
-      surname,
-      phone,
-      details,
-    );
+  @Get(':id')
+  getUser(@Param('id') id: string): Promise<UserInfo | null> {
+    return this.userService.findById(id);
   }
 }
