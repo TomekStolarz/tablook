@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { TbCountryPhoneCodeService } from 'src/app/services/tb-country-phone-code.service';
-import { ErrorStateStrategy } from 'src/register-module/directives/match-error-strategy';
+import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 import { matchPasswordValidator } from 'src/register-module/directives/match-password-validator.directive';
 import { passwordValidator } from 'src/register-module/directives/password-validator.directive';
 import { phoneValidator } from 'src/register-module/directives/phone-validator.directive';
 import { WatchRepeatPasswordErrorStrategy } from 'src/register-module/directives/watch-form-error-strategy';
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
+import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
 import { RegisterService } from 'src/register-module/services/register.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class RegisterCustomerComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
-		private cps: TbCountryPhoneCodeService,
+		private cps: CountryPhoneCodeService,
 		private registerService: RegisterService
 	) {}
 

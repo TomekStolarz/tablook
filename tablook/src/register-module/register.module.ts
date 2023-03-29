@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 import { RegisterRoutingModule } from './register-routing.module';
 import { RegisterCustomerComponent } from './components/register-customer/register-customer.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,9 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { CountryPhoneCodeService } from './services/country-phone-code.service.interface';
 import { PhonePrefixPipe } from './pipes/phone-prefix.pipe';
-import { ErrorStateStrategy } from './directives/match-error-strategy';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { SharedModule } from 'src/shared/shared.module';
+import { TbCountryPhoneCodeService } from 'src/app/services/tb-country-phone-code.service';
 
 @NgModule({
 	declarations: [RegisterCustomerComponent, PhonePrefixPipe],
@@ -25,19 +24,24 @@ import { SharedModule } from 'src/shared/shared.module';
 		MatCardModule,
 		SharedModule,
 	],
-	providers: [],
+	providers: [
+		{
+			provide: CountryPhoneCodeService,
+			useClass: TbCountryPhoneCodeService,
+		},
+	],
 	exports: [RegisterCustomerComponent],
 })
 export class RegisterModule {
 	static forRoot(
-		countryPhoeCodeService: CountryPhoneCodeService
+		countryPhoneCodeService: Type<CountryPhoneCodeService>
 	): ModuleWithProviders<RegisterModule> {
 		return {
 			ngModule: RegisterModule,
 			providers: [
 				{
 					provide: CountryPhoneCodeService,
-					useExisting: countryPhoeCodeService,
+					useExisting: countryPhoneCodeService,
 				},
 			],
 		};
