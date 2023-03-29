@@ -4,7 +4,7 @@ import { catchError, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RegisterData } from '../interfaces/register-data.interface';
 import { Response } from 'src/shared/interfaces/response.interface';
-import { UserType } from '../interfaces/user-type.enum';
+import { UserType } from '../../app/interfaces/user-type.enum';
 
 @Injectable({
 	providedIn: 'root',

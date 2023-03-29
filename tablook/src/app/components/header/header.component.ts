@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
 })
 export class HeaderComponent {
 	@Input()
-	username!: string;
+	username?: string;
 
 	openLoginPanel(): void {}
 

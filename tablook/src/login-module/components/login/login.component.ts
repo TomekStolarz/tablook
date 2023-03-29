@@ -33,7 +33,10 @@ export class LoginComponent {
 			.login({ ...this.loginForm.getRawValue() })
 			.subscribe((response) => {
 				if (response.status !== 200) {
-					this.error = response.data;
+					this.error =
+						typeof response.data === 'string'
+							? response.data
+							: 'Unexcepted error';
 				} else {
 					this.error = '';
 					this.router.navigateByUrl('/');

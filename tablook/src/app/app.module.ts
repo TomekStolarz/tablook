@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { userReducer } from './store/user.reducer';
 
 @NgModule({
 	declarations: [AppComponent, HeaderComponent, HomeComponent],
@@ -19,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 		MatIconModule,
 		BrowserAnimationsModule,
 		HttpClientModule,
+		StoreModule.forRoot({ user: userReducer }),
 	],
 	providers: [],
 	bootstrap: [AppComponent],

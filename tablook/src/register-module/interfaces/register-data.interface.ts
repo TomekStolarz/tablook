@@ -1,4 +1,4 @@
-import { UserType } from './user-type.enum';
+import { UserType } from '../../app/interfaces/user-type.enum';
 
 export interface RegisterData {
 	name: string;
