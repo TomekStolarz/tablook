@@ -22,12 +22,12 @@ export class AuthController {
   async login(
     @Body() user: UserDTO,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<{ message: string } | null> {
+  ): Promise<string | null> {
     const token = await this.authService.login(user);
     const secureData = {
       token,
     };
     res.cookie('auth-cookie', secureData, { httpOnly: true });
-    return { message: 'logged successfully' };
+    return 'logged successfully';
   }
 }
