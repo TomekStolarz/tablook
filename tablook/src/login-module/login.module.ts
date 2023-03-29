@@ -8,7 +8,8 @@ import {
 	ErrorStateMatcher,
 	ShowOnDirtyErrorStateMatcher,
 } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
 	declarations: [LoginComponent],
@@ -18,6 +19,8 @@ import { CommonModule } from '@angular/common';
 		MatButtonModule,
 		LoginRoutingModule,
 		CommonModule,
+		SharedModule,
+		NgOptimizedImage,
 	],
 	providers: [
 		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
