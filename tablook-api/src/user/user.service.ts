@@ -22,6 +22,7 @@ export class UserService {
 
   getUserInfo(user: UserDocument): UserInfo {
     return {
+      id: user.id,
       name: user.name,
       surname: user.surname,
       phone: user.phone,

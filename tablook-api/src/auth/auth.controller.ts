@@ -6,10 +6,15 @@ import { UserDTO } from 'src/user/dtos/user.dto';
 import { UserDetails } from 'src/user/models/user-details.interface';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { UserService } from 'src/user/user.service';
+import { UserInfo } from 'src/user/models/user-info.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -22,12 +27,15 @@ export class AuthController {
   async login(
     @Body() user: UserDTO,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<string | null> {
+  ): Promise<UserInfo | null> {
     const token = await this.authService.login(user);
+
     const secureData = {
       token,
     };
     res.cookie('auth-cookie', secureData, { httpOnly: true });
-    return 'logged successfully';
+    return this.userService
+      .findByEmail(user.email)
+      .then((user) => this.userService.findById(user.id));
   }
 }
