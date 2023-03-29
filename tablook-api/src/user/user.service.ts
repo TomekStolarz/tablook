@@ -93,8 +93,12 @@ export class UserService {
   }
 
   async findById(id: string): Promise<UserInfo | null> {
-    const user = await this.userModel.findById(id).exec();
-    if (!user) return null;
-    return this.getUserInfo(user);
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) return null;
+      return this.getUserInfo(user);
+    } catch (error: any) {
+      throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+    }
   }
 }

@@ -8,6 +8,8 @@ import { JwtService } from '@nestjs/jwt/dist';
 
 @Injectable()
 export class AuthService {
+  loggedOut: string[] = [];
+
   constructor(
     private userService: UserService,
     private jwtService: JwtService,

@@ -11,6 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get(':id')
+  @UseGuards(JwtGuard)
   getUser(@Param('id') id: string): Promise<UserInfo | null> {
     return this.userService.findById(id);
   }
