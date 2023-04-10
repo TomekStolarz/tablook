@@ -16,8 +16,8 @@
 		routerLinkActive="account-button-hidden"
 	>
 		<mat-icon>{{ 'account_circle' }}</mat-icon>
-		<span>
-			{{ 'Hello ' + username }}
+		<span class="account">
+			{{ username }}
 		</span>
 	</button>
 	<button mat-raised-button (click)="logout()">

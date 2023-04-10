@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { AuthService } from 'src/login-module/services/auth.service';
 
 @Component({
 	selector: 'app-header',
@@ -8,9 +9,9 @@ export class HeaderComponent {
 	@Input()
 	username?: string;
 
-	openLoginPanel(): void {}
+	constructor(private authService: AuthService) {}
 
-	openRegisterPanel(): void {}
-
-	logout(): void {}
+	logout(): void {
+		this.authService.logout();
+	}
 }
