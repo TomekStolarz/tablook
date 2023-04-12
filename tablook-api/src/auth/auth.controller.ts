@@ -29,10 +29,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<UserInfo | null> {
     const token = await this.authService.login(user);
-
     const secureData = {
       token,
     };
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.cookie('auth-cookie', secureData, { httpOnly: true });
     return this.userService
       .findByEmail(user.email)

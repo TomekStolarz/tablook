@@ -36,6 +36,7 @@
 				matInput
 				formControlName="password"
 				[errorStateMatcher]="matcher"
+				(keydown.enter)="login()"
 			/>
 			<mat-error
 				*ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.errors?.['required']"

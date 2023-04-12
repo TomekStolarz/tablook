@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+	HttpClient,
+	HttpErrorResponse,
+	HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,7 +13,7 @@ import { UserActions } from 'src/app/store/user.actions';
 import { environment } from 'src/environments/environment';
 import { jwt } from 'src/shared/interfaces/jwt.interface';
 import { Response } from 'src/shared/interfaces/response.interface';
-import { User } from '../interfaces/user.interface';
+import { User } from '../../login-module/interfaces/user.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -25,8 +29,11 @@ export class AuthService {
 	) {}
 
 	login(user: User): Observable<Response<UserInfo | string>> {
+		const httpOptions = {
+			withCredentials: true,
+		};
 		return this.httpClient
-			.post<UserInfo>(`${this.apiPath}/auth/login`, user)
+			.post<UserInfo>(`${this.apiPath}/auth/login`, user, httpOptions)
 			.pipe(
 				map((data: UserInfo) => {
 					this.store.dispatch(UserActions.addUser({ user: data }));
@@ -45,5 +52,11 @@ export class AuthService {
 		this.store.dispatch(UserActions.removeUser());
 		this.cookieService.delete('auth-cookie');
 		this.router.navigateByUrl('/');
+	}
+
+	test() {
+		return this.httpClient.get(
+			`${this.apiPath}/user/6421e19809de2ead8ce0745b`
+		);
 	}
 }
