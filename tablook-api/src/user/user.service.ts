@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, MongooseError } from 'mongoose';
+import { Model } from 'mongoose';
 import { UserDetails } from './models/user-details.interface';
 import { UserType } from './models/user-type.enum';
 import { UserDocument } from './models/user.schema';
-import * as bcrypt from 'bcrypt';
 import { UserInfo } from './models/user-info.interface';
 
 @Injectable()

@@ -1,8 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import * as randomToken from 'rand-token';
-import * as moment from 'moment';
 import { NewUserDTO } from 'src/user/dtos/new-user.dto';
 import { UserInfo } from 'src/user/models/user-info.interface';
 import { UserDTO } from 'src/user/dtos/user.dto';
