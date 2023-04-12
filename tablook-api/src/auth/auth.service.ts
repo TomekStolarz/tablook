@@ -84,4 +84,12 @@ export class AuthService {
     this.logger.log('User successfully logged in');
     return { token: jwt };
   }
+
+  async checkJwtExpiration(token: string): Promise<string | null> {
+    const validToken = await this.jwtService.verify(token);
+    if (!validToken) return null;
+    const decodedInfo = await this.jwtService.decode(token);
+
+    return decodedInfo?.['id'];
+  }
 }
