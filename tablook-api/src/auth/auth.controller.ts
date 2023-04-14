@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { UserInfo } from 'src/user/models/user-info.interface';
+import { EMPTY } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {
@@ -30,7 +31,6 @@ export class AuthController {
   ): Promise<UserInfo | null> {
     const token = await this.authService.login(user);
     const secureData = { ...token };
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.cookie('auth-cookie', secureData, { httpOnly: true });
     return this.userService
       .findByEmail(user.email)
@@ -41,10 +41,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async isAuth(@Req() req: Request): Promise<UserInfo | null> {
     const userid = await this.authService.checkJwtExpiration(
-      req?.cookies['auth-cookie'],
+      req?.cookies['auth-cookie']?.token,
     );
-    if (!userid) return null;
-
+    if (!userid) {
+      return null;
+    }
     return this.userService.findById(userid);
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('auth-cookie');
   }
 }

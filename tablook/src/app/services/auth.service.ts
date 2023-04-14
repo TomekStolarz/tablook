@@ -1,19 +1,13 @@
-import {
-	HttpClient,
-	HttpErrorResponse,
-	HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import { catchError, map, Observable, of } from 'rxjs';
-import { UserInfo } from 'src/app/interfaces/user-info.interface';
-import { UserActions } from 'src/app/store/user.actions';
 import { environment } from 'src/environments/environment';
-import { jwt } from 'src/shared/interfaces/jwt.interface';
 import { Response } from 'src/shared/interfaces/response.interface';
-import { User } from '../../login-module/interfaces/user.interface';
+import { UserInfo } from '../interfaces/user-info.interface';
+import { UserActions } from '../store/user.actions';
+import { User } from 'src/login-module/interfaces/user.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -24,7 +18,6 @@ export class AuthService {
 	constructor(
 		private httpClient: HttpClient,
 		private router: Router,
-		private cookieService: CookieService,
 		private store: Store
 	) {}
 
@@ -50,13 +43,16 @@ export class AuthService {
 
 	logout() {
 		this.store.dispatch(UserActions.removeUser());
-		this.cookieService.delete('auth-cookie');
-		this.router.navigateByUrl('/');
+		this.httpClient.post(`${this.apiPath}/auth/logout`, {}).subscribe((_) => this.router.navigateByUrl('/'))
+		
 	}
 
-	test() {
-		return this.httpClient.get(
-			`${this.apiPath}/user/6421e19809de2ead8ce0745b`
+	isAuth() {
+		return this.httpClient.get(`${this.apiPath}/auth`).pipe(
+			map((data: UserInfo) => {
+				this.store.dispatch(UserActions.addUser({ user: data }));
+				return { status: 200, data: data };
+			})
 		);
 	}
 }

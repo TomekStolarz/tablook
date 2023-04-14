@@ -1,10 +1,17 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { NewUserDTO } from 'src/user/dtos/new-user.dto';
 import { UserInfo } from 'src/user/models/user-info.interface';
 import { UserDTO } from 'src/user/dtos/user.dto';
 import { JwtService } from '@nestjs/jwt/dist';
+import { jwtConstants } from './constant/constant';
 
 @Injectable()
 export class AuthService {
@@ -84,10 +91,15 @@ export class AuthService {
   }
 
   async checkJwtExpiration(token: string): Promise<string | null> {
-    const validToken = await this.jwtService.verify(token);
-    if (!validToken) return null;
-    const decodedInfo = await this.jwtService.decode(token);
-
-    return decodedInfo?.['id'];
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: jwtConstants.secret,
+      });
+      this.logger.log('User is authenticated');
+      return payload?.['user'].id;
+    } catch {
+      this.logger.log('User is not authenticated');
+      throw new UnauthorizedException();
+    }
   }
 }

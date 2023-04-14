@@ -93,7 +93,7 @@
 			</mat-form-field>
 		</div>
 
-		<mat-form-field>
+		<mat-form-field class="passwordField">
 			<mat-label>Password</mat-label>
 			<input
 				type="password"
@@ -102,6 +102,7 @@
 				[errorStateMatcher]="matcher"
 			/>
 			<mat-error
+				class="password-errors"
 				*ngIf="
 					password?.invalid && (password?.dirty || password?.touched)
 				"
@@ -112,11 +113,11 @@
 				<span *ngIf="password?.errors?.['minlength']"
 					>Password should have at least 8 characters</span
 				>
-				<span class="multiError" *ngIf="password?.errors?.['errors']">
+				<ng-container *ngIf="password?.errors?.['errors']">
 					<span *ngFor="let error of password?.errors?.['errors']">
 						{{ error }}
 					</span>
-				</span>
+				</ng-container>
 			</mat-error>
 		</mat-form-field>
 

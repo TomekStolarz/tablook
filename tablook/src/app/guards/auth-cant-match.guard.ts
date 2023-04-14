@@ -1,9 +1,14 @@
 import { inject } from '@angular/core';
 import { CanMatchFn } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../store/user.selector';
+import { map } from 'rxjs';
+import { UserInfo } from '../interfaces/user-info.interface';
 
 export const authCantMatch: CanMatchFn = () => {
-	const authService = inject(AuthService);
+	const store = inject(Store);
 
-	return !authService.isAuth();
+	return store
+		.select(selectUser)
+		.pipe(map((userInfo: UserInfo) => !!userInfo));
 };
