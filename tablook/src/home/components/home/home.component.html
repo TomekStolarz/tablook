@@ -1,3 +1,5 @@
+<app-header [username]="user?.name"></app-header>
+<router-outlet></router-outlet>
 <section class="top-box">
 	<div class="description">
 		<span>Tables in restaurant are waiting for you.</span>
@@ -8,7 +10,7 @@
 <section class="bottom-box">
 	<div class="quick-search"></div>
 	<div class="company-section">
-		<button mat-raised-button>
+		<button mat-raised-button [routerLink]="'/register/restaurant'">
 			Do you lead your restaurant? Join to us here
 		</button>
 	</div>

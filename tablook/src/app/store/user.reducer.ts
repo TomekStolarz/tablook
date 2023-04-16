@@ -1,13 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserInfo } from '../interfaces/user-info.interface';
 import { UserActions } from './user.actions';
-export const initialState: UserInfo = {};
+import { AppState } from './app-state.interface';
+export const initialState: AppState = {};
 
 export const userReducer = createReducer(
 	initialState,
-	on(UserActions.addUser, (_state, { user }) => {
-		_state = { ...user };
+	on(UserActions.addUser, (_state, { user }): AppState => {
+		_state = { user: { ...user } };
 		return _state;
 	}),
-	on(UserActions.removeUser, (_state) => initialState)
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	on(UserActions.removeUser, (_state): AppState => initialState)
 );

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { TbCountryPhoneCodeService } from './services/tb-country-phone-code.service';
+import { HomeComponent } from '../home/components/home/home.component';
 import { authCantMatch } from './guards/auth-cant-match.guard';
 
 const routes: Routes = [
@@ -15,12 +14,31 @@ const routes: Routes = [
 	{
 		path: 'register',
 		canMatch: [authCantMatch],
-		loadChildren: () =>
-			import('../register-module/register.module').then(
-				(m) => m.RegisterModule
-			),
+		children: [
+			{
+				path: 'customer',
+				loadChildren: () =>
+					import('../register-module/register.module').then(
+						(m) => m.RegisterModule
+					),
+			},
+			{
+				path: 'restaurant',
+				loadChildren: () =>
+					import(
+						'../register-restaurant/register-restaurant.module'
+					).then((m) => m.RegisterRestaurantModule),
+			},
+		],
 	},
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
+	{
+		path: '**',
+		loadComponent: () =>
+			import('./components/not-found/not-found.component').then(
+				(mod) => mod.NotFoundComponent
+			),
+	},
 ];
 
 @NgModule({

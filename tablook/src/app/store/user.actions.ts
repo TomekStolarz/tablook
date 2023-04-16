@@ -1,9 +1,4 @@
-import {
-	createAction,
-	createActionGroup,
-	emptyProps,
-	props,
-} from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { UserInfo } from '../interfaces/user-info.interface';
 
 export const UserActions = createActionGroup({

@@ -1,10 +1,18 @@
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { firstValueFrom, map } from 'rxjs';
+import { selectUser } from '../store/user.selector';
 
-export const authGuard = () => {
+export const authGuard = async () => {
 	const router = inject(Router);
-	const authService = inject(AuthService);
+	const store = inject(Store);
+	const isAuth = await firstValueFrom(
+		store.pipe(
+			select(selectUser),
+			map((userInfo) => !!userInfo?.id)
+		)
+	);
 
-	return authService.isAuth() || router.parseUrl('/login');
+	return isAuth || router.parseUrl('/login');
 };
