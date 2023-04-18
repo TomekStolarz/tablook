@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { userReducer } from './store/user.reducer';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { HomeModule } from 'src/home/home.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
 	declarations: [AppComponent],

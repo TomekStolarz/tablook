@@ -8,6 +8,7 @@ import { WatchRepeatPasswordErrorStrategy } from 'src/register-module/directives
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
 import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
 import { RegisterService } from 'src/register-module/services/register.service';
+import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 
 @Component({
 	selector: 'app-register-customer',
@@ -45,7 +46,8 @@ export class RegisterCustomerComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private cps: CountryPhoneCodeService,
-		private registerService: RegisterService
+		private registerService: RegisterService,
+		private customSnackbarService: CustomSnackbarService
 	) {}
 
 	ngOnInit(): void {
@@ -67,7 +69,11 @@ export class RegisterCustomerComponent implements OnInit {
 			.registerCustomer(registerData)
 			.subscribe((response) => {
 				if (response.status === 201) {
-					//open snackbar
+					this.customSnackbarService.success(
+						`User ${this.name?.value} ${this.surname?.value} successfully created.`,
+						'Success'
+					);
+					this.registerForm.reset();
 				} else {
 					this.error = response.message;
 				}
