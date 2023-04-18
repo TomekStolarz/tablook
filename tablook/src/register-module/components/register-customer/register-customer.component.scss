@@ -8,6 +8,12 @@ app-register-customer {
 			margin: auto;
 			justify-items: center;
 
+			.actions {
+				display: flex;
+				flex-direction: column;
+				row-gap: 1.5rem;
+			}
+
 			button {
 				border-radius: 1rem !important;
 			}

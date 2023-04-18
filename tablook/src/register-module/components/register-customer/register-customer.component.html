@@ -1,4 +1,5 @@
 <section class="container">
+	<div class="h2 text-center">Register in tablook</div>
 	<form [formGroup]="registerForm" class="col-5">
 		<app-error-notification
 			*ngIf="!!error"
@@ -138,8 +139,16 @@
 				Password not match
 			</mat-error>
 		</mat-form-field>
-		<button mat-raised-button color="dark" (click)="singUp()">
-			Sing up
-		</button>
+		<div class="actions">
+			<button mat-raised-button color="dark" (click)="singUp()">
+				Sing up
+			</button>
+			<button mat-stroked-button color="dark" [routerLink]="'/login'">
+				Already have account? Login here
+			</button>
+			<button mat-stroked-button color="dark" [routerLink]="'/'">
+				Back to home
+			</button>
+		</div>
 	</form>
 </section>

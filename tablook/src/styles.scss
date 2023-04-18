@@ -14,9 +14,12 @@ $primary-error-text: rgb(204, 0, 0);
 [mat-button].mat-dark:not(:disabled) {
 	color: $secondary-button-wo;
 }
-[mat-raised-button].mat-button.mat-dark:hover:not(:disabled),
-[mat-stroked-button].mat-dark:hover:not(:disabled) {
+[mat-raised-button].mat-button.mat-dark:hover:not(:disabled) {
 	background-color: #111111;
+}
+
+[mat-stroked-button].mat-dark:hover:not(:disabled) {
+	background-color: #eeeeee;
 }
 
 [mat-raised-button].mat-dark:not(:disabled),
@@ -44,6 +47,10 @@ html,
 body {
 	height: 100%;
 	color: $primary-black;
+}
+
+.pointer {
+	cursor: pointer;
 }
 
 @import 'bootstrap/scss/bootstrap';
