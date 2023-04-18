@@ -40,7 +40,7 @@ export class ResponseHeadersInterceptor implements NestInterceptor {
                 route: req.path,
                 method: req.method,
               },
-              error?.response.statusCode || 500,
+              error?.response?.statusCode || 500,
             ),
         );
       }),
