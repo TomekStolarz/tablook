@@ -1,0 +1,16 @@
+app-custom-snackbar {
+	&.success {
+		background-color: #ddffdd;
+		color: #00b337;
+		border: 1px solid #00b337;
+	}
+}
+
+mat-snack-bar-container.success > div {
+	background-color: #ddffdd !important;
+	border: 1px solid #00b337;
+
+	app-custom-snackbar > * {
+		color: #00b337;
+	}
+}
