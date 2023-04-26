@@ -8,5 +8,6 @@ export class NewUserDTO {
   type: UserType;
   surname?: string;
   phone?: string;
+  favourites?: string[];
   details?: UserDetails;
 }
