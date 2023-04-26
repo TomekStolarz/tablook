@@ -5,6 +5,7 @@ import { UserDetails } from './models/user-details.interface';
 import { UserType } from './models/user-type.enum';
 import { UserDocument } from './models/user.schema';
 import { UserInfo } from './models/user-info.interface';
+import { NewUserDTO } from './dtos/new-user.dto';
 
 @Injectable()
 export class UserService {
@@ -104,6 +105,35 @@ export class UserService {
       throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
     }
     return newUser.save();
+  }
+
+  async updateUser(
+    id: string,
+    userData: Partial<NewUserDTO>,
+  ): Promise<UserInfo | null> {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) return null;
+      const updatedUser = await this.userModel
+        .findByIdAndUpdate(id, userData)
+        .exec();
+      this.logger.log('User successfully updated');
+      return this.getUserInfo(updatedUser);
+    } catch (error: any) {
+      throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async deleteUser(id: string): Promise<string> {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) return null;
+      const deletedUser = await this.userModel.findByIdAndDelete(id).exec();
+      this.logger.log('User successfully deleted');
+      return deletedUser ? 'User successfully deleted' : 'Cannot delete user';
+    } catch (error: any) {
+      throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
