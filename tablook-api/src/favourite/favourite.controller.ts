@@ -26,13 +26,13 @@ export class FavouriteController {
   }
 
   @Post()
-  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  @UseGuards(JwtGuard)
   addFavouriteRestaurant(@Body() favourite: Favourite): Promise<string> {
     return this.favouriteService.addToFavourite(favourite);
   }
 
   @Delete()
-  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  @UseGuards(JwtGuard)
   removeFavouriteRestaurant(@Body() favourite: Favourite): Promise<string> {
     return this.favouriteService.removeFromFavourite(favourite);
   }
