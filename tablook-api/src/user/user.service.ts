@@ -86,7 +86,25 @@ export class UserService {
     surname?: string,
     phone?: string,
     details?: UserDetails,
-  ) {}
+  ) {
+    let newUser;
+    try {
+      newUser = new this.userModel({
+        name,
+        email,
+        password,
+        type,
+        surname,
+        phone,
+        details,
+      });
+      this.logger.log('Restaurant successfully created!');
+    } catch (error: any) {
+      this.logger.error(error.message);
+      throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+    }
+    return newUser.save();
+  }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ email }).exec();
