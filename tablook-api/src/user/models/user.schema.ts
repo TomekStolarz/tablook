@@ -25,6 +25,9 @@ export class User {
   @Prop({ required: true })
   type: UserType;
 
+  @Prop({ required: false })
+  favourites: string[];
+
   @Prop({ type: UserDetails, required: false })
   details?: UserDetails;
 }
