@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseHeadersInterceptor } from './interceptors/response-header.interceptor';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ResponseHeadersInterceptor } from './interceptors/response-header.inter
     PhoneCodeModule,
     UserModule,
     AuthModule,
+    FileModule,
   ],
   controllers: [],
   providers: [
