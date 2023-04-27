@@ -19,7 +19,7 @@ export class AdminCurrentUserGuard implements CanActivate {
     const userid = await this.authService.checkJwtExpiration(
       req?.cookies['auth-cookie']?.token,
     );
-    const manipulationUserId = req.url.split('/').pop();
+    const manipulationUserId = req.url.split('/').pop().split('?').shift();
     const user = await this.userService.findById(userid);
     return user.type === UserType.ADMIN || manipulationUserId === userid;
   }

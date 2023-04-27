@@ -8,6 +8,7 @@ import { ResponseHeadersInterceptor } from './interceptors/response-header.inter
 import { FileModule } from './file/file.module';
 import { SearchModule } from './search/search.module';
 import { FavouriteModule } from './favourite/favourite.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FavouriteModule } from './favourite/favourite.module';
     FileModule,
     SearchModule,
     FavouriteModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [
