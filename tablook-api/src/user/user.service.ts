@@ -29,6 +29,7 @@ export class UserService {
       type: user.type,
       details: user.details,
       email: user.email,
+      favourites: user.favourites,
     };
   }
 
