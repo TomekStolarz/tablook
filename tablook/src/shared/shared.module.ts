@@ -14,6 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatButtonModule } from '@angular/material/button';
+import { SelectTablesComponent } from './components/select-tables/select-tables.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	imports: [
@@ -25,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
 		MatInputModule,
 		ReactiveFormsModule,
 		NgxMatTimepickerModule,
+		MatIconModule,
 	],
 	declarations: [
 		ErrorNotificationComponent,
@@ -33,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
 		UpperFirstPipe,
 		PhonePrefixPipe,
 		SelectTimeComponent,
+		SelectTablesComponent,
 	],
 	providers: [CustomSnackbarService],
 	exports: [ErrorNotificationComponent, PhonePrefixPipe, SelectTimeComponent],

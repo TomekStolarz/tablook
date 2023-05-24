@@ -25,6 +25,7 @@
 			<app-details-step
 				[form]="formGroup"
 				class="step-form"
+				[(openingDayWithHours)]="openingHours"
 			></app-details-step>
 		</mat-step>
 		<mat-step [hasError]="formGroup.errors?.['photosStepError']">

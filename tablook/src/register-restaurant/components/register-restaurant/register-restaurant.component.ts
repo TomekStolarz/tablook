@@ -5,6 +5,7 @@ import { AddressStepComponent } from '../address-step/address-step.component';
 import { BasicDataStepComponent } from '../basic-data-step/basic-data-step.component';
 import { DetailsStepComponent } from '../details-step/details-step.component';
 import { PhotosStepComponent } from '../photos-step/photos-step.component';
+import { OpeningHours } from 'src/register-restaurant/models/opening-hours.interface';
 
 @Component({
 	selector: 'app-register-restaurant',
@@ -33,6 +34,8 @@ export class RegisterRestaurantComponent implements AfterViewInit {
 	)[] = [];
 
 	error?: string;
+
+	openingHours: OpeningHours[] = [];
 
 	constructor(private fb: FormBuilder) {}
 

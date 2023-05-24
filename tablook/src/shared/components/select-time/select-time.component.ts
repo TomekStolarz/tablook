@@ -30,7 +30,6 @@ export class SelectTimeComponent {
 	}
 
 	private validateTime(): boolean {
-		this.error = true;
 		const isTimeRngValid =
 			new Date().setHours(
 				parseInt(this.closingTime.split(':')[0]),
@@ -40,6 +39,7 @@ export class SelectTimeComponent {
 				parseInt(this.openingTime.split(':')[0]),
 				parseInt(this.openingTime.split(':')[1])
 			);
+		this.error = isTimeRngValid;
 		return isTimeRngValid;
 	}
 
@@ -47,8 +47,9 @@ export class SelectTimeComponent {
 		if (this.validateTime()) {
 			return;
 		}
-		this.dialogRef.close(
-			`{day: ${this.day}, hours: ${this.openingTime}-${this.closingTime}}`
-		);
+		this.dialogRef.close({
+			day: this.day,
+			hours: `${this.openingTime}-${this.closingTime}`,
+		});
 	}
 }
