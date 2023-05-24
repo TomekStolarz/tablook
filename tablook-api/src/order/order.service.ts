@@ -46,8 +46,29 @@ export class OrderService {
     return orders.map((order) => this.getOrderInfo(order));
   }
 
-  placeOrder(order: OrderDTO): Promise<string> {
-    throw new Error('Method not implemented.');
+  async placeOrder(order: OrderDTO): Promise<string> {
+    let newOrder;
+    const orderExits = await this.orderModel.find({
+      restaurantId: order.restaurantId,
+      date: order.date,
+      tableId: order.tableId,
+      time: {
+        $and: [
+          { startTime: { $gt: order.time.startTime } },
+          { endTime: { $lt: order.time.endTime } },
+        ],
+      },
+    });
+    console.log(orderExits);
+    // try {
+    //   newOrder = new this.orderModel({ ...order });
+    //   this.logger.log('Order placed successfully');
+    // } catch (error: any) {
+    //   this.logger.error(error.message);
+    //   throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+    // }
+    // return newOrder.save();
+    return Promise.resolve('tak');
   }
 
   private getOrderInfo(order: OrderDocument): OrderInfo {
