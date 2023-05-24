@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Select working hours for day: {{ day }}</h1>
+<div mat-dialog-content>
+	<p>Select working time</p>
+	<div class="form-field">
+		<mat-label [ngClass]="error ? 'error' : ''">Opening time:</mat-label>
+		<ngx-mat-timepicker-field
+			[format]="24"
+			[defaultTime]="'12:00'"
+			(timeChanged)="setOpeningTime($event)"
+		></ngx-mat-timepicker-field>
+	</div>
+	<div class="form-field">
+		<mat-label [ngClass]="error ? 'error' : ''">Closing time:</mat-label>
+		<ngx-mat-timepicker-field
+			[format]="24"
+			[defaultTime]="'12:00'"
+			(timeChanged)="setClosedTime($event)"
+		></ngx-mat-timepicker-field>
+	</div>
+</div>
+<div mat-dialog-actions class="actions">
+	<button mat-stroked-button color="dark" (click)="cancel()">Cancel</button>
+	<button mat-raised-button color="dark" cdkFocusInitial (click)="save()">
+		Save
+	</button>
+</div>
