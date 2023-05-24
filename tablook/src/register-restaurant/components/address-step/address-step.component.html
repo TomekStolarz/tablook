@@ -1,0 +1,63 @@
+<form [formGroup]="form" class="col-6">
+	<mat-form-field>
+		<mat-label>Street</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="street"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Flat</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="flat"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Zip</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="zip"
+			maxlength="6"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>City</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="city"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Country</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="country"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+
+	<div class="actions">
+		<button mat-stroked-button color="dark" matStepperPrevious>Back</button>
+		<button
+			mat-raised-button
+			color="dark"
+			matStepperNext
+			(click)="validatePart()"
+		>
+			Next
+		</button>
+	</div>
+</form>
