@@ -13,7 +13,6 @@ import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.servi
 @Component({
 	selector: 'app-register-customer',
 	templateUrl: './register-customer.component.html',
-	styleUrls: ['./register-customer.component.scss'],
 })
 export class RegisterCustomerComponent implements OnInit {
 	registerForm = this.fb.nonNullable.group(

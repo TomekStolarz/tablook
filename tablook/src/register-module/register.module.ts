@@ -8,12 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { CountryPhoneCodeService } from './services/country-phone-code.service.interface';
-import { PhonePrefixPipe } from './pipes/phone-prefix.pipe';
 import { SharedModule } from 'src/shared/shared.module';
 import { TbCountryPhoneCodeService } from 'src/app/services/tb-country-phone-code.service';
 
 @NgModule({
-	declarations: [RegisterCustomerComponent, PhonePrefixPipe],
+	declarations: [RegisterCustomerComponent],
 	imports: [
 		RegisterRoutingModule,
 		CommonModule,
