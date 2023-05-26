@@ -18,7 +18,7 @@ export class DetailsStepComponent extends StepComponent implements OnInit {
 	matcher = new ErrorStateStrategy();
 
 	controls = [
-		'decription',
+		'description',
 		'tags',
 		'googleMapsLink',
 		'tables',
