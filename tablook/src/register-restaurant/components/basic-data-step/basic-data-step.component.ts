@@ -17,7 +17,6 @@ export class BasicDataStepComponent extends StepComponent implements OnInit {
 	@Input()
 	form!: FormGroup;
 
-	matcher = new ErrorStateStrategy();
 	watchMatcher = new WatchRepeatPasswordErrorStrategy();
 
 	countryCodes: CountryPhoneCode[] = [];

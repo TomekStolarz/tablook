@@ -11,8 +11,6 @@ export class AddressStepComponent extends StepComponent implements OnInit {
 	@Input()
 	form!: FormGroup;
 
-	matcher = new ErrorStateMatcher();
-
 	controls = ['city', 'country', 'zip', 'street', 'flat'];
 
 	key = 'addressError';

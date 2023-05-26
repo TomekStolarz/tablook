@@ -1,9 +1,12 @@
 import { FormGroup } from '@angular/forms';
+import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 
 export abstract class StepComponent {
 	abstract form: FormGroup;
 	abstract key: string;
 	abstract controls: string[];
+
+	protected matcher = new ErrorStateStrategy();
 
 	validatePart() {
 		let valid = true;

@@ -1,1 +1,35 @@
-<p>photos-step works!</p>
+<form [formGroup]="form" class="col-6">
+	<div class="form-field">
+		<mat-label>Put your restaurant images</mat-label>
+		<input
+			type="file"
+			formControlName="images"
+			class="file-upload"
+			[accept]="'image'"
+			multiple
+			(change)="onFileSelected($event, 'images')"
+		/>
+	</div>
+
+	<div class="form-field">
+		<mat-label>Put your tables map here</mat-label>
+		<input
+			type="file"
+			[accept]="'image'"
+			formControlName="tablesMap"
+			(change)="onFileSelected($event, 'tablesMap')"
+		/>
+	</div>
+
+	<div class="actions">
+		<button mat-stroked-button color="dark" matStepperPrevious>Back</button>
+		<button
+			mat-raised-button
+			color="dark"
+			matStepperNext
+			(click)="register()"
+		>
+			Register
+		</button>
+	</div>
+</form>

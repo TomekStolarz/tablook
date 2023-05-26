@@ -1,4 +1,5 @@
 import { UserType } from '../../app/interfaces/user-type.enum';
+import { UserDetails } from './user-details.interface';
 
 export interface RegisterData {
 	name: string;
@@ -7,4 +8,5 @@ export interface RegisterData {
 	type: UserType;
 	surname?: string;
 	phone?: string;
+	details: UserDetails;
 }

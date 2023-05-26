@@ -15,8 +15,6 @@ export class DetailsStepComponent extends StepComponent implements OnInit {
 	@Input()
 	form!: FormGroup;
 
-	matcher = new ErrorStateStrategy();
-
 	controls = [
 		'description',
 		'tags',
