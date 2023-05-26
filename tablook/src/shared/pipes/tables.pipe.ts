@@ -6,6 +6,8 @@ import { Table } from '../interfaces/table.interface';
 })
 export class TablesPipe implements PipeTransform {
 	transform(tables: string): string {
+		if (!tables) return '';
+
 		const _tables = JSON.parse(tables);
 		if (_tables) {
 			return [..._tables]
