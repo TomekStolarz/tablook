@@ -16,6 +16,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { SelectTablesComponent } from './components/select-tables/select-tables.component';
 import { MatIconModule } from '@angular/material/icon';
+import { TablesPipe } from './pipes/tables.pipe';
 
 @NgModule({
 	imports: [
@@ -37,8 +38,14 @@ import { MatIconModule } from '@angular/material/icon';
 		PhonePrefixPipe,
 		SelectTimeComponent,
 		SelectTablesComponent,
+		TablesPipe,
 	],
 	providers: [CustomSnackbarService],
-	exports: [ErrorNotificationComponent, PhonePrefixPipe, SelectTimeComponent],
+	exports: [
+		ErrorNotificationComponent,
+		PhonePrefixPipe,
+		SelectTimeComponent,
+		TablesPipe,
+	],
 })
 export class SharedModule {}

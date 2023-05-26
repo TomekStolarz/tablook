@@ -46,9 +46,15 @@
 
 	<mat-form-field>
 		<mat-label>Tables</mat-label>
-		<input mat-input [value]="tables" />
+		<textarea
+			type="text"
+			matInput
+			formControlName="tables"
+			[errorStateMatcher]="matcher"
+			[value]="tables | tables"
+		></textarea>
 		<button mat-stroked-button (click)="openTablesDialog()">
-			Enter tables data
+			Entre tables data
 		</button>
 	</mat-form-field>
 

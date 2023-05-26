@@ -117,12 +117,6 @@ export class DetailsStepComponent extends StepComponent implements OnInit {
 	}
 
 	get tables(): string {
-		const _tables = this.form.get('tables')?.value;
-		if (_tables) {
-			return [..._tables]
-				.map((elem) => `Id: ${elem.id}, seats: ${elem.seats}`)
-				.join(', ');
-		}
-		return '';
+		return this.form.get('tables')?.value;
 	}
 }
