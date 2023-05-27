@@ -1,0 +1,21 @@
+app-select-tables {
+	form,
+	.table {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.tables {
+		overflow-y: auto;
+		max-height: 250px;
+		overflow-x: hidden;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: center;
+		gap: 12px;
+	}
+}

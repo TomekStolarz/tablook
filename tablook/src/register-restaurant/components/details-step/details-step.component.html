@@ -1,0 +1,72 @@
+<form [formGroup]="form" class="col-6">
+	<mat-form-field>
+		<mat-label>Description</mat-label>
+		<textarea
+			matInput
+			formControlName="description"
+			[errorStateMatcher]="matcher"
+		></textarea>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Google maps link</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="googleMapsLink"
+			[errorStateMatcher]="matcher"
+		/>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Tags separated by , or ;</mat-label>
+		<textarea
+			matInput
+			formControlName="tags"
+			[errorStateMatcher]="matcher"
+		></textarea>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Opening hours</mat-label>
+		<mat-select
+			formControlName="openingHours"
+			multiple
+			[errorStateMatcher]="matcher"
+		>
+			<mat-option
+				*ngFor="let day of days"
+				(click)="openDialog($event, day)"
+				[value]="day"
+				>{{ day }}</mat-option
+			>
+		</mat-select>
+		<div class="hours">{{ hours }}</div>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Tables</mat-label>
+		<textarea
+			type="text"
+			matInput
+			formControlName="tables"
+			[errorStateMatcher]="matcher"
+			[value]="tables | tables"
+		></textarea>
+		<button mat-stroked-button (click)="openTablesDialog()">
+			Entre tables data
+		</button>
+	</mat-form-field>
+
+	<div class="actions">
+		<button mat-stroked-button color="dark" matStepperPrevious>Back</button>
+		<button
+			mat-raised-button
+			color="dark"
+			matStepperNext
+			(click)="validatePart()"
+		>
+			Next
+		</button>
+	</div>
+</form>

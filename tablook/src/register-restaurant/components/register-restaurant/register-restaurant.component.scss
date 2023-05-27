@@ -1,0 +1,37 @@
+app-register-restaurant {
+	.container {
+		display: grid;
+		row-gap: 12px;
+		padding: 24px;
+
+		.top-bar {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.mat-horizontal-stepper-wrapper {
+			gap: 12px;
+		}
+
+		.step-form {
+			display: grid;
+			place-items: center;
+			form {
+				display: flex;
+				flex-direction: column;
+
+				.actions {
+					display: flex;
+					justify-content: center;
+					gap: 24px;
+				}
+			}
+		}
+
+		.mat-step-header .mat-step-icon-selected,
+		.mat-step-header .mat-step-icon-state-done,
+		.mat-step-header .mat-step-icon-state-edit {
+			background-color: $secondary-button-wo;
+		}
+	}
+}

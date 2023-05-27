@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Add tables</h1>
+<div mat-dialog-content>
+	<p>Add table</p>
+	<form [formGroup]="tableForm">
+		<mat-form-field>
+			<mat-label>Table id:</mat-label>
+			<input matInput formControlName="id" />
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Seats:</mat-label>
+			<input type="number" matInput formControlName="seats" />
+		</mat-form-field>
+		<button mat-stroked-button color="dark" (click)="add()">Add</button>
+	</form>
+	<div *ngIf="_tablesCopy.length">
+		<p class="h4">Seats:</p>
+		<div class="tables">
+			<div *ngFor="let table of _tablesCopy" class="table">
+				<div>Id: {{ table.id }}</div>
+				<div>Seats: {{ table.seats }}</div>
+				<button mat-icon-button (click)="remove(table.id)">
+					<mat-icon>close</mat-icon>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div mat-dialog-actions class="actions">
+	<button mat-stroked-button color="dark" (click)="cancel()">Cancel</button>
+	<button mat-raised-button color="dark" cdkFocusInitial (click)="save()">
+		Save
+	</button>
+</div>

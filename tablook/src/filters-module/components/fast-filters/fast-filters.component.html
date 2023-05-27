@@ -1,0 +1,3 @@
+<ng-container *ngFor="let filter of filtersData$ | async">
+	<app-fast-filter [filterData]="filter"></app-fast-filter>
+</ng-container>

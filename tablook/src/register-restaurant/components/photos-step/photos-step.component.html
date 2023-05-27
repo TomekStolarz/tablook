@@ -1,0 +1,92 @@
+<form [formGroup]="form" class="col-6">
+	<div class="form-field">
+		<mat-label
+			[ngClass]="
+				imagesInput?.invalid && imagesInput?.touched ? 'error' : ''
+			"
+			>Put your restaurant images</mat-label
+		>
+		<input
+			type="file"
+			formControlName="images"
+			class="file-upload"
+			[accept]="'image'"
+			multiple
+			(change)="onFileSelected($event, 'images')"
+			#imagesFiles
+		/>
+		<div class="files-control">
+			<div class="files" *ngIf="images['images'].length; else noFile">
+				<div class="file" *ngFor="let file of images['images']">
+					<mat-icon
+						class="pointer"
+						(click)="removeFile(file.name, 'images')"
+						>close</mat-icon
+					>
+					{{ file.name }}
+				</div>
+			</div>
+
+			<button
+				mat-mini-fab
+				color="dark"
+				class="upload-btn"
+				(click)="imagesFiles.click()"
+			>
+				<mat-icon>attach_file</mat-icon>
+			</button>
+		</div>
+	</div>
+
+	<div class="form-field">
+		<mat-label
+			[ngClass]="tableMap?.invalid && tableMap?.touched ? 'error' : ''"
+			>Put your tables map here</mat-label
+		>
+		<input
+			type="file"
+			[accept]="'image'"
+			formControlName="tableMap"
+			class="file-upload"
+			(change)="onFileSelected($event, 'tableMap')"
+			#tableMapFile
+		/>
+		<div class="files-control">
+			<div class="files" *ngIf="images['tableMap'].length; else noFile">
+				<div class="file" *ngFor="let file of images['tableMap']">
+					<mat-icon
+						class="pointer"
+						(click)="removeFile(file.name, 'tableMap')"
+						>close</mat-icon
+					>
+					{{ file.name }}
+				</div>
+			</div>
+
+			<button
+				mat-mini-fab
+				color="dark"
+				class="upload-btn"
+				(click)="tableMapFile.click()"
+			>
+				<mat-icon>attach_file</mat-icon>
+			</button>
+		</div>
+	</div>
+
+	<div class="actions">
+		<button mat-stroked-button color="dark" matStepperPrevious>Back</button>
+		<button
+			mat-raised-button
+			color="dark"
+			matStepperNext
+			(click)="register()"
+		>
+			Register
+		</button>
+	</div>
+</form>
+
+<ng-template #noFile>
+	<div>No files selected</div>
+</ng-template>

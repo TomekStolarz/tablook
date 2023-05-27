@@ -2,19 +2,67 @@ $primary-black: #000000;
 $primary-white: #f4f4f6;
 $primary-gray-1: #e6e6e9;
 $primary-gray-2: #9999a1;
-$priary-darkgray-1: #66666e;
-$priary-darkgray-2: rgba(96,96,104,0.6);
+$primary-darkgray-1: #66666e;
+$primary-darkgray-2: rgba(96, 96, 104, 0.6);
+$secondary-button: #0e8d7e70;
+$secondary-button-wo: #0e8d7e;
+$primary-error-bg: rgba(255, 51, 51, 0.6666666667);
+$primary-error-text: rgb(204, 0, 0);
 
-* {
-    box-sizing: border-box;
-    font-family: 'Space Mono';
-    font-style: normal;
-    font-weight: 400;
-    margin: 0;
-    padding: 0
+[mat-raised-button].mat-button.mat-dark:not(:disabled),
+[mat-stroked-button].mat-dark:not(:disabled),
+[mat-button].mat-dark:not(:disabled) {
+	color: $secondary-button-wo;
+}
+[mat-raised-button].mat-button.mat-dark:hover:not(:disabled) {
+	background-color: #111111;
 }
 
+[mat-stroked-button].mat-dark:hover:not(:disabled) {
+	background-color: #eeeeee;
+}
 
-@import "app/components/header/header.component.scss";
+[mat-raised-button].mat-dark:not(:disabled),
+.mat-flat-button.mat-dark:not(:disabled),
+.mat-fab.mat-dark:not(:disabled),
+.mat-mini-fab.mat-dark:not(:disabled) {
+	color: $primary-white;
+	background-color: $secondary-button-wo;
+}
 
-html, body { height: 100%; color: white;}
+.mat-icon-button.mat-dark:not(:disabled) {
+	color: $secondary-button-wo;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: 'Space Mono';
+	font-style: normal;
+	font-weight: 400;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+	color: $primary-black;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+@import 'bootstrap/scss/bootstrap';
+
+@import 'app/app-module.styles.scss';
+
+@import 'login-module/login-module.scss';
+
+@import 'register-module/register-module.scss';
+
+@import 'shared/shared.module.scss';
+
+@import 'home/home.module.scss';
+
+@import 'register-restaurant/register-restaurant.module.scss';

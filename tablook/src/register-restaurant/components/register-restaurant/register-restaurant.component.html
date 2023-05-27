@@ -1,0 +1,50 @@
+<section class="container">
+	<div class="top-bar">
+		<button mat-stroked-button color="dark" [routerLink]="'/'">
+			Homepage
+		</button>
+		<div class="h2 text-center">Register your restaurant in tablook</div>
+		<button mat-stroked-button color="dark" [routerLink]="'/login'">
+			Login
+		</button>
+	</div>
+	<app-error-notification
+		*ngIf="!!error"
+		[error]="error"
+		class="col-5 text-center"
+	></app-error-notification>
+	<mat-stepper class="text-center" (selectionChange)="validatePart($event)">
+		<mat-step [hasError]="formGroup.errors?.['basicDataStepErrors']">
+			<ng-template matStepLabel>Fill basic restaurant data</ng-template>
+			<app-basic-data-step
+				[form]="formGroup"
+				class="step-form"
+			></app-basic-data-step>
+		</mat-step>
+		<mat-step [hasError]="formGroup.errors?.['addressError']">
+			<ng-template matStepLabel>Fill address details</ng-template>
+			<app-address-step
+				[form]="formGroup"
+				class="step-form"
+			></app-address-step>
+		</mat-step>
+		<mat-step [hasError]="formGroup.errors?.['detailsError']">
+			<ng-template matStepLabel>Fill restaurant details</ng-template>
+			<app-details-step
+				[form]="formGroup"
+				class="step-form"
+				[(openingDayWithHours)]="openingHours"
+			></app-details-step>
+		</mat-step>
+		<mat-step [hasError]="formGroup.errors?.['photosStepError']">
+			<ng-template matStepLabel>Add photos</ng-template>
+			<app-photos-step
+				class="step-form"
+				[form]="formGroup"
+				[formResetEvent]="formResetEvent"
+				(validateForm)="validateForm()"
+				(registerRestaurant)="register($event)"
+			></app-photos-step>
+		</mat-step>
+	</mat-stepper>
+</section>

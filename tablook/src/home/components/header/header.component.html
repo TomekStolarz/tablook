@@ -1,0 +1,36 @@
+<nav>
+	<div class="logo" [routerLink]="'/'">
+		<img [src]="'assets/icons/logoIcon.svg'" alt="logo" />
+	</div>
+	<h1>tablook</h1>
+	<div class="buttons">
+		<ng-content *ngTemplateOutlet="username ? loggedBar : guestBar">
+		</ng-content>
+	</div>
+</nav>
+
+<ng-template #loggedBar>
+	<button
+		mat-raised-button
+		[routerLink]="'/account-details'"
+		routerLinkActive="account-button-hidden"
+	>
+		<mat-icon>{{ 'account_circle' }}</mat-icon>
+		<span class="account">
+			{{ username }}
+		</span>
+	</button>
+	<button mat-raised-button (click)="logout()">
+		<mat-icon>{{ 'exit_to_app' }}</mat-icon>
+		<span>
+			{{ 'Logout' }}
+		</span>
+	</button>
+</ng-template>
+
+<ng-template #guestBar>
+	<button mat-raised-button [routerLink]="'/login'">Login</button>
+	<button mat-raised-button [routerLink]="'/register/customer'">
+		Singup
+	</button>
+</ng-template>

@@ -1,0 +1,33 @@
+app-select-time {
+	.form-field {
+		padding-bottom: 12px;
+
+		mat-label {
+			padding-bottom: 12px;
+		}
+
+		ngx-mat-timepicker-field {
+			.ngx-mat-timepicker {
+				justify-content: center;
+			}
+
+			ngx-mat-timepicker-toggle {
+				margin-bottom: 0;
+			}
+
+			.mat-mdc-form-field-subscript-wrapper {
+				display: none;
+			}
+		}
+	}
+
+	.actions {
+		display: flex;
+		gap: 24px;
+		justify-content: center;
+	}
+
+	.error {
+		color: $primary-error-text;
+	}
+}

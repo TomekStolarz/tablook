@@ -1,0 +1,130 @@
+<form [formGroup]="form" class="col-6">
+	<mat-form-field>
+		<mat-label>Name</mat-label>
+		<input
+			type="text"
+			matInput
+			formControlName="name"
+			[errorStateMatcher]="matcher"
+		/>
+		<mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+			Name is <strong>required</strong>
+		</mat-error>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Email</mat-label>
+		<input
+			type="email"
+			matInput
+			formControlName="email"
+			[errorStateMatcher]="matcher"
+		/>
+		<mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+			<span *ngIf="email?.errors?.['required']"
+				>Email is <strong>required</strong></span
+			>
+			<span *ngIf="email?.errors?.['email']"
+				>That not looklike email</span
+			>
+		</mat-error>
+	</mat-form-field>
+	<div class="phone-group">
+		<mat-form-field>
+			<mat-label>Prefix</mat-label>
+			<mat-select
+				formControlName="phonePrefix"
+				[errorStateMatcher]="matcher"
+			>
+				<mat-option
+					*ngFor="let code of countryCodes"
+					[value]="code.phoneCode"
+				>
+					{{ code.phoneCode | phonePrefix }}
+				</mat-option>
+			</mat-select>
+			<mat-error
+				*ngIf="
+					phonePrefix?.invalid &&
+					(phonePrefix?.dirty || phonePrefix?.touched)
+				"
+			>
+				<span *ngIf="phone?.errors?.['required']">Select option!</span>
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Phone</mat-label>
+			<input
+				type="text"
+				matInput
+				formControlName="phone"
+				[errorStateMatcher]="matcher"
+			/>
+			<mat-error
+				*ngIf="phone?.invalid && (phone?.dirty || phone?.touched)"
+			>
+				<span *ngIf="phone?.errors?.['required']"
+					>Phone is <strong>required</strong></span
+				>
+
+				<span
+					*ngIf="!phone?.errors?.['required'] && phone?.errors?.['errors']"
+					>{{phone?.errors?.['errors']}}</span
+				>
+			</mat-error>
+		</mat-form-field>
+	</div>
+
+	<mat-form-field class="passwordField">
+		<mat-label>Password</mat-label>
+		<input
+			type="password"
+			matInput
+			formControlName="password"
+			[errorStateMatcher]="matcher"
+		/>
+		<mat-error
+			class="password-errors"
+			*ngIf="password?.invalid && (password?.dirty || password?.touched)"
+		>
+			<span *ngIf="password?.errors?.['required']"
+				>Password is <strong>required</strong></span
+			>
+			<span *ngIf="password?.errors?.['minlength']"
+				>Password should have at least 8 characters</span
+			>
+			<ng-container *ngIf="password?.errors?.['errors']">
+				<span *ngFor="let error of password?.errors?.['errors']">
+					{{ error }}
+				</span>
+			</ng-container>
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Repeat password</mat-label>
+		<input
+			type="password"
+			matInput
+			formControlName="passwordRepeat"
+			[errorStateMatcher]="watchMatcher"
+		/>
+		<mat-error
+			*ngIf="
+                (passwordRepeat?.invalid || form.errors?.['notSame']) &&
+                (passwordRepeat?.dirty || passwordRepeat?.touched) 
+            "
+		>
+			Password not match
+		</mat-error>
+	</mat-form-field>
+	<div>
+		<button
+			matStepperNext
+			mat-raised-button
+			color="dark"
+			(click)="validatePart()"
+		>
+			Next
+		</button>
+	</div>
+</form>

@@ -1,0 +1,57 @@
+app-register-customer {
+	section {
+		padding: 24px;
+
+		form {
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+			justify-items: center;
+
+			.actions {
+				display: flex;
+				flex-direction: column;
+				row-gap: 1.5rem;
+			}
+
+			button {
+				border-radius: 1rem !important;
+			}
+
+			.phoneGroup {
+				display: grid;
+				grid-template-columns: 1fr 2fr;
+				gap: 24px;
+			}
+
+			mat-error > .multiError {
+				display: inline-flex;
+				flex-direction: column;
+			}
+
+			.passwordField {
+				.mat-mdc-form-field-subscript-wrapper {
+					display: grid;
+
+					.mat-mdc-form-field-error-wrapper {
+						position: static;
+					}
+				}
+
+				.mat-mdc-form-field-bottom-align::before {
+					height: 0 !important;
+				}
+				margin-bottom: 16px;
+			}
+
+			.password-errors {
+				&::before {
+					height: 0;
+				}
+
+				display: flex;
+				flex-direction: column;
+			}
+		}
+	}
+}
