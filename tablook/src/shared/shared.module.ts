@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SelectTablesComponent } from './components/select-tables/select-tables.component';
 import { MatIconModule } from '@angular/material/icon';
 import { TablesPipe } from './pipes/tables.pipe';
+import { TagComponent } from './components/tag/tag.component';
 
 @NgModule({
 	imports: [
@@ -39,6 +40,7 @@ import { TablesPipe } from './pipes/tables.pipe';
 		SelectTimeComponent,
 		SelectTablesComponent,
 		TablesPipe,
+  TagComponent,
 	],
 	providers: [CustomSnackbarService],
 	exports: [
