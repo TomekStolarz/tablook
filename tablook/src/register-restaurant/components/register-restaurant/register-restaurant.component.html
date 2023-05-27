@@ -33,6 +33,8 @@
 			<app-photos-step
 				[form]="formGroup"
 				class="step-form"
+				(validateForm)="validateForm()"
+				(registerRestaurant)="register($event)"
 			></app-photos-step>
 		</mat-step>
 	</mat-stepper>

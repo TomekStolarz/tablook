@@ -8,7 +8,24 @@
 			[accept]="'image'"
 			multiple
 			(change)="onFileSelected($event, 'images')"
+			#imagesFiles
 		/>
+		<div class="files-control">
+			<div class="files" *ngIf="images['images'].length; else noFile">
+				<div class="file" *ngFor="let file of images['images']">
+					{{ file.name }}
+				</div>
+			</div>
+
+			<button
+				mat-mini-fab
+				color="dark"
+				class="upload-btn"
+				(click)="imagesFiles.click()"
+			>
+				<mat-icon>attach_file</mat-icon>
+			</button>
+		</div>
 	</div>
 
 	<div class="form-field">
@@ -16,9 +33,27 @@
 		<input
 			type="file"
 			[accept]="'image'"
-			formControlName="tablesMap"
-			(change)="onFileSelected($event, 'tablesMap')"
+			formControlName="tableMap"
+			class="file-upload"
+			(change)="onFileSelected($event, 'tableMap')"
+			#tableMapFile
 		/>
+		<div class="files-control">
+			<div class="files" *ngIf="images['tableMap'].length; else noFile">
+				<div class="file" *ngFor="let file of images['tableMap']">
+					{{ file.name }}
+				</div>
+			</div>
+
+			<button
+				mat-mini-fab
+				color="dark"
+				class="upload-btn"
+				(click)="tableMapFile.click()"
+			>
+				<mat-icon>attach_file</mat-icon>
+			</button>
+		</div>
 	</div>
 
 	<div class="actions">
@@ -33,3 +68,7 @@
 		</button>
 	</div>
 </form>
+
+<ng-template #noFile>
+	<div>No files selected</div>
+</ng-template>

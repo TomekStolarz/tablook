@@ -15,6 +15,7 @@ import { AddressStepComponent } from './components/address-step/address-step.com
 import { DetailsStepComponent } from './components/details-step/details-step.component';
 import { PhotosStepComponent } from './components/photos-step/photos-step.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	declarations: [
@@ -34,6 +35,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 		SharedModule,
 		MatOptionModule,
 		MatStepperModule,
+		MatIconModule,
 	],
 	providers: [
 		{

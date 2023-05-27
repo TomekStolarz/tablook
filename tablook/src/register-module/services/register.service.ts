@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RegisterData } from '../interfaces/register-data.interface';
 import { Response } from 'src/shared/interfaces/response.interface';
@@ -17,8 +17,8 @@ export class RegisterService {
 	) {}
 
 	private apiPath = environment.apiPath;
-	registerCustomer(userData: Partial<RegisterData>) {
-		userData.type = UserType.CUSTOMER;
+	register(userData: Partial<RegisterData>, userType: UserType) {
+		userData.type = userType;
 		return this.httpClient
 			.post<Response<string>>(`${this.apiPath}/auth/register`, userData)
 			.pipe(
@@ -35,21 +35,23 @@ export class RegisterService {
 			);
 	}
 
-	registerRestaurant(userData: RegisterData) {
-		userData.type = UserType.RESTAURANT;
-		return this.httpClient
-			.post<Response<string>>(`${this.apiPath}/auth/register`, userData)
-			.pipe(
-				map((data) => ({
-					status: 201,
-					message: 'Successfully created',
-				})),
-				catchError((error: HttpErrorResponse) => {
-					return of({
-						status: error.status,
-						message: error.error.message,
-					});
-				})
-			);
+	registerRestaurant(
+		userData: RegisterData,
+		images: File[],
+		tablePlan: File
+	) {
+		return this.fileService.sendImages(images, tablePlan).pipe(
+			map((imagesData): RegisterData => {
+				return {
+					...userData,
+					details: {
+						...userData.details,
+						images: imagesData.images,
+						tablesMap: imagesData.tablePlanName[0],
+					},
+				};
+			}),
+			switchMap((x) => this.register(x, UserType.RESTAURANT))
+		);
 	}
 }

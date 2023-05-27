@@ -9,6 +9,7 @@ import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-c
 import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
 import { RegisterService } from 'src/register-module/services/register.service';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
+import { UserType } from 'src/app/interfaces/user-type.enum';
 
 @Component({
 	selector: 'app-register-customer',
@@ -63,9 +64,9 @@ export class RegisterCustomerComponent implements OnInit {
 		const { phonePrefix, passwordRepeat, ...registerData } = {
 			...this.registerForm.getRawValue(),
 		};
-		registerData.phone = `${phonePrefix}${registerData.phone}`;
+		registerData.phone = `+${phonePrefix}${registerData.phone}`;
 		this.registerService
-			.registerCustomer(registerData)
+			.register(registerData, UserType.CUSTOMER)
 			.subscribe((response) => {
 				if (response.status === 201) {
 					this.customSnackbarService.success(

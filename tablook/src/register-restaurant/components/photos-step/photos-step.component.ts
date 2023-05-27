@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StepComponent } from 'src/register-restaurant/models/step-component.interface';
-import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 
 @Component({
 	selector: 'app-photos-step',
@@ -11,9 +10,16 @@ export class PhotosStepComponent extends StepComponent implements OnInit {
 	@Input()
 	form!: FormGroup;
 
+	@Output()
+	validateForm: EventEmitter<void> = new EventEmitter<void>();
+
+	@Output()
+	registerRestaurant: EventEmitter<{ [key: string]: File[] }> =
+		new EventEmitter<{ [key: string]: File[] }>();
+
 	key = 'photosStepError';
 
-	controls = ['images', 'tablesMap'];
+	controls = ['images', 'tableMap'];
 
 	images: { [key: string]: File[] } = {
 		[this.controls[0]]: [],
@@ -30,7 +36,7 @@ export class PhotosStepComponent extends StepComponent implements OnInit {
 			this.fb.control('', Validators.required)
 		);
 		this.form.addControl(
-			'tablesMap',
+			'tableMap',
 			this.fb.control([''], Validators.required)
 		);
 	}
@@ -40,9 +46,12 @@ export class PhotosStepComponent extends StepComponent implements OnInit {
 		if (this.form.invalid) {
 			return;
 		}
+
+		this.registerRestaurant.emit(this.images);
 	}
 
 	onFileSelected(event: any, key: string) {
 		this.images[key] = [...event.target.files];
+		this.validateForm.emit();
 	}
 }

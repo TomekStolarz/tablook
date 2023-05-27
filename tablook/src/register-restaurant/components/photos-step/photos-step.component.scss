@@ -1,5 +1,23 @@
 app-photos-step {
 	.form-field {
 		padding-bottom: 24px;
+
+		.file-upload {
+			display: none;
+		}
+
+		.files-control {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 12px;
+
+			.files {
+				display: grid;
+			}
+			.upload-btn {
+				align-self: flex-start;
+			}
+		}
 	}
 }
