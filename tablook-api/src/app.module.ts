@@ -9,6 +9,7 @@ import { FileModule } from './file/file.module';
 import { SearchModule } from './search/search.module';
 import { FavouriteModule } from './favourite/favourite.module';
 import { OrderModule } from './order/order.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { OrderModule } from './order/order.module';
     SearchModule,
     FavouriteModule,
     OrderModule,
+    RestaurantModule,
   ],
   controllers: [],
   providers: [
