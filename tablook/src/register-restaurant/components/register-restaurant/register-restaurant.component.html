@@ -1,5 +1,13 @@
 <section class="container">
-	<div class="h2 text-center">Register your restaurant in tablook</div>
+	<div class="top-bar">
+		<button mat-stroked-button color="dark" [routerLink]="'/'">
+			Homepage
+		</button>
+		<div class="h2 text-center">Register your restaurant in tablook</div>
+		<button mat-stroked-button color="dark" [routerLink]="'/login'">
+			Login
+		</button>
+	</div>
 	<app-error-notification
 		*ngIf="!!error"
 		[error]="error"

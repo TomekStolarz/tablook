@@ -4,6 +4,11 @@ app-register-restaurant {
 		row-gap: 12px;
 		padding: 24px;
 
+		.top-bar {
+			display: flex;
+			justify-content: space-between;
+		}
+
 		.mat-horizontal-stepper-wrapper {
 			gap: 12px;
 		}
