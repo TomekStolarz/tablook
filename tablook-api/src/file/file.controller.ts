@@ -1,5 +1,7 @@
 import {
+  BadRequestException,
   Controller,
+  Delete,
   Get,
   Header,
   HttpException,
@@ -14,7 +16,7 @@ import {
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { imageOptions } from './interceptors/image-multer-options';
 import { FilesService } from './file.service';
-import { createReadStream } from 'fs';
+import { createReadStream, unlink } from 'fs';
 import { join } from 'path';
 
 @Controller('file')
@@ -51,6 +53,18 @@ export class FileController {
     try {
       const file = createReadStream(join(process.cwd(), `upload/${id}`));
       return new StreamableFile(file);
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Delete(':id')
+  deleteFile(@Param('id') id: string) {
+    try {
+      unlink(join(process.cwd(), `upload/${id}`), (err) => {
+        throw new BadRequestException(`Bad id provided: ${err.message}`);
+      });
+      return;
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
