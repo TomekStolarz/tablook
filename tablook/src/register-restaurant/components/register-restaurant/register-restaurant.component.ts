@@ -10,6 +10,7 @@ import { RegisterService } from 'src/register-module/services/register.service';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 import { RegisterData } from 'src/register-module/interfaces/register-data.interface';
 import { UserType } from 'src/app/interfaces/user-type.enum';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-register-restaurant',
@@ -40,6 +41,8 @@ export class RegisterRestaurantComponent implements AfterViewInit {
 	error?: string;
 
 	openingHours: OpeningHours[] = [];
+
+	formResetEvent: Subject<void> = new Subject();
 
 	constructor(
 		private fb: FormBuilder,
@@ -113,6 +116,8 @@ export class RegisterRestaurantComponent implements AfterViewInit {
 						'Success'
 					);
 					this.formGroup.reset();
+					this.openingHours = [];
+					this.formResetEvent.next();
 				} else {
 					this.error = response.message;
 				}

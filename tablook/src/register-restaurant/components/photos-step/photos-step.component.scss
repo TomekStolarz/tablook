@@ -6,6 +6,10 @@ app-photos-step {
 			display: none;
 		}
 
+		.error {
+			color: $primary-error-text;
+		}
+
 		.files-control {
 			display: flex;
 			justify-content: center;
@@ -14,7 +18,13 @@ app-photos-step {
 
 			.files {
 				display: grid;
+
+				.file {
+					display: flex;
+					align-items: center;
+				}
 			}
+
 			.upload-btn {
 				align-self: flex-start;
 			}

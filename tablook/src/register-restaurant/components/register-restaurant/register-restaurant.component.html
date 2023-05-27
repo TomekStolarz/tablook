@@ -31,8 +31,9 @@
 		<mat-step [hasError]="formGroup.errors?.['photosStepError']">
 			<ng-template matStepLabel>Add photos</ng-template>
 			<app-photos-step
-				[form]="formGroup"
 				class="step-form"
+				[form]="formGroup"
+				[formResetEvent]="formResetEvent"
 				(validateForm)="validateForm()"
 				(registerRestaurant)="register($event)"
 			></app-photos-step>
