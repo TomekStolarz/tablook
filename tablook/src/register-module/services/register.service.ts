@@ -16,6 +16,8 @@ export class RegisterService {
 		private fileService: FilesService
 	) {}
 
+	images?: { images: string[]; tablePlanName: string[] };
+
 	private apiPath = environment.apiPath;
 	register(userData: Partial<RegisterData>, userType: UserType) {
 		userData.type = userType;
@@ -27,6 +29,14 @@ export class RegisterService {
 					message: 'Successfully created',
 				})),
 				catchError((error: HttpErrorResponse) => {
+					if (this.images) {
+						this.images.images.forEach((e) =>
+							this.fileService.deleteImage(e).subscribe()
+						);
+						this.images.tablePlanName.forEach((e) =>
+							this.fileService.deleteImage(e).subscribe()
+						);
+					}
 					return of({
 						status: error.status,
 						message: error.error.message,
@@ -42,6 +52,7 @@ export class RegisterService {
 	) {
 		return this.fileService.sendImages(images, tablePlan).pipe(
 			map((imagesData): RegisterData => {
+				this.images = { ...imagesData };
 				return {
 					...userData,
 					details: {

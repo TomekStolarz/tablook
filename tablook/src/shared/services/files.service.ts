@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -22,5 +22,12 @@ export class FilesService {
 			images: string[];
 			tablePlanName: string[];
 		}>(`${this.apiPath}/file`, formData);
+	}
+
+	deleteImage(id: string) {
+		const params = {
+			params: new HttpParams().set(`id`, id),
+		};
+		return this.httpClient.delete(`${this.apiPath}/file`, params);
 	}
 }
