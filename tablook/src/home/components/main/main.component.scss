@@ -1,0 +1,45 @@
+app-main {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+
+	.top-box {
+		background-color: $primary-gray-1;
+		padding: 1.5rem;
+		font-size: 1.2rem;
+		flex: 0 1 auto;
+
+		.description {
+			display: flex;
+			flex-direction: column;
+
+			span {
+				text-align: center;
+			}
+		}
+	}
+
+	.bottom-box {
+		flex: 1 1 auto;
+		display: flex;
+		justify-content: center;
+		padding: 1.5rem;
+		background: image-set(
+				'assets/background-m.webp' 1x,
+				'assets/background-l.webp' 2x,
+				'assets/background-xl.webp' 3x
+			)
+			rgba(0, 0, 0, 0.5);
+		background-position: center center;
+		background-size: cover;
+		background-blend-mode: multiply;
+
+		.company-section {
+			button {
+				border-radius: 2rem;
+				background-color: $secondary-button;
+				color: $primary-white;
+			}
+		}
+	}
+}

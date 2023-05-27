@@ -95,7 +95,7 @@ export class RegisterRestaurantComponent implements AfterViewInit {
 				description: formData.description,
 				googleMapsLink: formData.googleMapsLink,
 				tags: formData.tags
-					.split(/{,;}/)
+					.split(/[,;]/)
 					.map((x: string) => x.trim())
 					.filter((x: string) => !!x),
 				tables: JSON.parse(formData.tables),

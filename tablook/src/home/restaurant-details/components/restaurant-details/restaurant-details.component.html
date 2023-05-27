@@ -1,0 +1,38 @@
+<div class="det-container">
+	<div class="photos-side" *ngIf="restaurantDetails">
+		<div class="images">
+			<img
+				*ngFor="let image of restaurantDetails.details?.images"
+				[src]="'http://localhost:3000/file/' + image"
+				[alt]="'Restaurant photo'"
+			/>
+		</div>
+		<img
+			*ngIf="restaurantDetails.details?.tablesMap"
+			[src]="
+				'http://localhost:3000/file/' +
+				restaurantDetails.details?.tablesMap
+			"
+			[alt]="'Plan of tables'"
+		/>
+	</div>
+	<div class="details-side" *ngIf="restaurantDetails">
+		<div class="h2" *ngIf="restaurantDetails.name">
+			{{ restaurantDetails.name | upperFirst }}
+		</div>
+		<div class="tags">
+			<app-tag
+				*ngFor="let tag of restaurantDetails.details?.tags"
+				[name]="tag"
+			></app-tag>
+		</div>
+		<div class="openingHours">
+			<span class="h4">Opening hours:</span>
+			<div *ngFor="let day of restaurantDetails.details?.openingHours">
+				{{ day.day | lowercase | upperFirst }}<span>:</span
+				>{{ day.hours }}
+			</div>
+		</div>
+		<div class="h5">{{ restaurantDetails.details?.description }}</div>
+	</div>
+</div>

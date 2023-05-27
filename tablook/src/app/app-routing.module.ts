@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from '../home/components/home/home.component';
 import { authCantMatch } from './guards/auth-cant-match.guard';
 
 const routes: Routes = [
-	{ path: 'home', component: HomeComponent },
+	{
+		path: 'home',
+		loadChildren: () =>
+			import('../home/home.module').then((m) => m.HomeModule),
+	},
 	{
 		path: 'login',
 		canMatch: [authCantMatch],
@@ -31,7 +34,7 @@ const routes: Routes = [
 			},
 		],
 	},
-	{ path: '', redirectTo: '/home', pathMatch: 'full' },
+	{ path: '', redirectTo: '/home/main', pathMatch: 'full' },
 	{
 		path: '**',
 		loadComponent: () =>

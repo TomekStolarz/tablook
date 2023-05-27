@@ -40,7 +40,7 @@ import { TagComponent } from './components/tag/tag.component';
 		SelectTimeComponent,
 		SelectTablesComponent,
 		TablesPipe,
-  TagComponent,
+		TagComponent,
 	],
 	providers: [CustomSnackbarService],
 	exports: [
@@ -48,6 +48,8 @@ import { TagComponent } from './components/tag/tag.component';
 		PhonePrefixPipe,
 		SelectTimeComponent,
 		TablesPipe,
+		TagComponent,
+		UpperFirstPipe,
 	],
 })
 export class SharedModule {}
