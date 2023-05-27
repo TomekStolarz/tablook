@@ -7,7 +7,6 @@ import { WatchRepeatPasswordErrorStrategy } from 'src/register-module/directives
 import { CountryPhoneCode } from 'src/register-module/interfaces/country-phone-code.interface';
 import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
 import { StepComponent } from 'src/register-restaurant/models/step-component.interface';
-import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 
 @Component({
 	selector: 'app-basic-data-step',

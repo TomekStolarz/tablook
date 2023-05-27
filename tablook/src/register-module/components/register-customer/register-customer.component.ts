@@ -61,6 +61,7 @@ export class RegisterCustomerComponent implements OnInit {
 			this.registerForm.markAllAsTouched();
 			return;
 		}
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { phonePrefix, passwordRepeat, ...registerData } = {
 			...this.registerForm.getRawValue(),
 		};

@@ -5,7 +5,6 @@ import { OpeningHours } from 'src/register-restaurant/models/opening-hours.inter
 import { StepComponent } from 'src/register-restaurant/models/step-component.interface';
 import { SelectTablesComponent } from 'src/shared/components/select-tables/select-tables.component';
 import { SelectTimeComponent } from 'src/shared/components/select-time/select-time.component';
-import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 
 @Component({
 	selector: 'app-details-step',

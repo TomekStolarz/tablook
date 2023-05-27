@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { StepComponent } from 'src/register-restaurant/models/step-component.interface';
 
 @Component({

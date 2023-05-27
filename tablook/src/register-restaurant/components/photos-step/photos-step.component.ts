@@ -76,6 +76,7 @@ export class PhotosStepComponent
 		this.registerRestaurant.emit(this.images);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onFileSelected(event: any, key: string) {
 		if (event.target.files.length) {
 			this.images[key] = [...event.target.files];
