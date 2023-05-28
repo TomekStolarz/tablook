@@ -1,20 +1,23 @@
 <div class="det-container">
 	<div class="photos-side" *ngIf="restaurantDetails">
-		<div class="images">
+		<ng-image-slider
+			[images]="imagesData"
+			[animationSpeed]="0.4"
+			[imageSize]="{ width: '98%' }"
+			[manageImageRatio]="true"
+			#nav
+		></ng-image-slider>
+		<div class="section">
+			<span class="h4">Tables plan:</span>
 			<img
-				*ngFor="let image of restaurantDetails.details?.images"
-				[src]="'http://localhost:3000/file/' + image"
-				[alt]="'Restaurant photo'"
+				*ngIf="restaurantDetails.details?.tablesMap"
+				[src]="
+					'http://localhost:3000/file/' +
+					restaurantDetails.details?.tablesMap
+				"
+				[alt]="'Plan of tables'"
 			/>
 		</div>
-		<img
-			*ngIf="restaurantDetails.details?.tablesMap"
-			[src]="
-				'http://localhost:3000/file/' +
-				restaurantDetails.details?.tablesMap
-			"
-			[alt]="'Plan of tables'"
-		/>
 	</div>
 	<div class="details-side" *ngIf="restaurantDetails">
 		<div class="h2" *ngIf="restaurantDetails.name">
@@ -26,13 +29,16 @@
 				[name]="tag"
 			></app-tag>
 		</div>
-		<div class="openingHours">
+		<div class="section">
 			<span class="h4">Opening hours:</span>
 			<div *ngFor="let day of restaurantDetails.details?.openingHours">
 				{{ day.day | lowercase | upperFirst }}<span>:</span
 				>{{ day.hours }}
 			</div>
 		</div>
-		<div class="h5">{{ restaurantDetails.details?.description }}</div>
+		<div class="section">
+			<span class="h4">Description:</span>
+			<div class="h6">{{ restaurantDetails.details?.description }}</div>
+		</div>
 	</div>
 </div>

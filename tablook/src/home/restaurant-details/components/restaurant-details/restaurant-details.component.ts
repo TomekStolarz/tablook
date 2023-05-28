@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RestaurantDetailsService } from '../../services/restaurant-details.service';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
+import { ImageData } from 'src/shared/interfaces/image-data.interface';
 
 @Component({
 	selector: 'app-restaurant-details',
@@ -13,6 +14,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 
 	restaurantDetails?: UserInfo;
 
+	imagesData: ImageData[] = [];
+
 	constructor(
 		private route: ActivatedRoute,
 		private restaurantService: RestaurantDetailsService
@@ -22,7 +25,20 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 		const sub = this.route.params.subscribe((params) => {
 			const detSub = this.restaurantService
 				.getRestaurantDetails(params['id'])
-				.subscribe((info) => (this.restaurantDetails = info));
+				.subscribe((info) => {
+					this.restaurantDetails = info;
+					this.imagesData = [];
+					if (this.restaurantDetails.details?.images) {
+						this.imagesData =
+							this.restaurantDetails.details.images.map(
+								(image) => ({
+									image: `http://localhost:3000/file/${image}`,
+									thumbImage: `http://localhost:3000/file/${image}`,
+									alt: 'Restaurant photo',
+								})
+							);
+					}
+				});
 			this.subscriptions.push(detSub);
 		});
 		this.subscriptions.push(sub);
