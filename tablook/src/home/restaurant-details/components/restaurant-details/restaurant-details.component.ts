@@ -24,7 +24,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		const sub = this.route.params.subscribe((params) => {
 			const detSub = this.restaurantService
-				.getRestaurantDetails(params['id'])
+				.getRestaurantDetails(params['id'], true)
 				.subscribe((info) => {
 					this.restaurantDetails = info;
 					this.imagesData = [];
