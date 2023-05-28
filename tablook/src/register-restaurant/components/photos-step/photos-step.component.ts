@@ -49,13 +49,11 @@ export class PhotosStepComponent
 	}
 
 	ngOnInit(): void {
-		this.form.addControl(
-			'images',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tableMap',
-			this.fb.control('', Validators.required)
+		this.controls.forEach((control) =>
+			this.form.addControl(
+				control,
+				this.fb.control('', Validators.required)
+			)
 		);
 
 		this.subscription = this.formResetEvent.subscribe(

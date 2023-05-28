@@ -39,25 +39,11 @@ export class DetailsStepComponent extends StepComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.form.addControl(
-			'description',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tags',
-			this.fb.control([''], Validators.required)
-		);
-		this.form.addControl(
-			'googleMapsLink',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tables',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'openingHours',
-			this.fb.control('', Validators.required)
+		this.controls.forEach((control) =>
+			this.form.addControl(
+				control,
+				this.fb.control('', Validators.required)
+			)
 		);
 	}
 

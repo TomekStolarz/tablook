@@ -16,6 +16,7 @@ import { DetailsStepComponent } from './components/details-step/details-step.com
 import { PhotosStepComponent } from './components/photos-step/photos-step.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatIconModule } from '@angular/material/icon';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
 	declarations: [
@@ -41,6 +42,10 @@ import { MatIconModule } from '@angular/material/icon';
 		{
 			provide: CountryPhoneCodeService,
 			useClass: TbCountryPhoneCodeService,
+		},
+		{
+			provide: STEPPER_GLOBAL_OPTIONS,
+			useValue: { showError: true },
 		},
 	],
 })
