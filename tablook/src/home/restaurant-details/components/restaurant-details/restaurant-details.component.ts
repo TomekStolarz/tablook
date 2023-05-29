@@ -2,8 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RestaurantDetailsService } from '../../services/restaurant-details.service';
-import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { ImageData } from 'src/shared/interfaces/image-data.interface';
+import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
+import { DomSanitizer } from '@angular/platform-browser';
+import { apiKey } from 'api-key';
 
 @Component({
 	selector: 'app-restaurant-details',
@@ -12,13 +14,14 @@ import { ImageData } from 'src/shared/interfaces/image-data.interface';
 export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 
-	restaurantDetails?: UserInfo;
+	restaurantDetails?: RestaurantInfo;
 
 	imagesData: ImageData[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
-		private restaurantService: RestaurantDetailsService
+		private restaurantService: RestaurantDetailsService,
+		private sanitizer: DomSanitizer
 	) {}
 
 	ngOnInit(): void {
@@ -46,5 +49,11 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscriptions.forEach((sub) => sub.unsubscribe());
+	}
+
+	get url(): string {
+		return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+			this.restaurantDetails?.details?.googleMapsLink || ''
+		)}&key=${apiKey}`;
 	}
 }

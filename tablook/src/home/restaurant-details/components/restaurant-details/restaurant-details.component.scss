@@ -24,8 +24,14 @@ app-restaurant-details {
 
 		.details-side {
 			display: grid;
-			row-gap: 24px;
+			row-gap: 12px;
 			overflow-y: auto;
+			max-height: 75vh;
+
+			.ratings {
+				display: flex;
+				gap: 8px;
+			}
 
 			.tags {
 				display: flex;
@@ -39,6 +45,16 @@ app-restaurant-details {
 
 		.section {
 			display: grid;
+
+			.reviews {
+				display: grid;
+				row-gap: 12px;
+			}
+
+			iframe {
+				border: 0;
+				aspect-ratio: 1/1;
+			}
 		}
 	}
 }
