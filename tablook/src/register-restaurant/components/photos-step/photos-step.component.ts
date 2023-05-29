@@ -49,13 +49,11 @@ export class PhotosStepComponent
 	}
 
 	ngOnInit(): void {
-		this.form.addControl(
-			'images',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tableMap',
-			this.fb.control('', Validators.required)
+		this.controls.forEach((control) =>
+			this.form.addControl(
+				control,
+				this.fb.control('', Validators.required)
+			)
 		);
 
 		this.subscription = this.formResetEvent.subscribe(
@@ -76,6 +74,7 @@ export class PhotosStepComponent
 		this.registerRestaurant.emit(this.images);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onFileSelected(event: any, key: string) {
 		if (event.target.files.length) {
 			this.images[key] = [...event.target.files];

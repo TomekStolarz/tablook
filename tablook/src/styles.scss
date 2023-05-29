@@ -53,6 +53,25 @@ body {
 	cursor: pointer;
 }
 
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+}
+
+::-webkit-scrollbar-track {
+	background: $primary-white;
+}
+
+::-webkit-scrollbar-thumb {
+	background: $primary-darkgray-2;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: $primary-darkgray-1;
+}
+
 @import 'bootstrap/scss/bootstrap';
 
 @import 'app/app-module.styles.scss';

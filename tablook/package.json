@@ -25,6 +25,7 @@
     "bootstrap": "^5.3.0-alpha1",
     "bootstrap-icons": "^1.10.3",
     "material-design-icons-iconfont": "^6.7.0",
+    "ng-image-slider": "^7.0.0",
     "ngx-mat-timepicker": "^15.1.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

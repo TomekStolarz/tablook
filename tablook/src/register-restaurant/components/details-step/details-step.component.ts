@@ -5,7 +5,6 @@ import { OpeningHours } from 'src/register-restaurant/models/opening-hours.inter
 import { StepComponent } from 'src/register-restaurant/models/step-component.interface';
 import { SelectTablesComponent } from 'src/shared/components/select-tables/select-tables.component';
 import { SelectTimeComponent } from 'src/shared/components/select-time/select-time.component';
-import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 
 @Component({
 	selector: 'app-details-step',
@@ -40,25 +39,11 @@ export class DetailsStepComponent extends StepComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.form.addControl(
-			'description',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tags',
-			this.fb.control([''], Validators.required)
-		);
-		this.form.addControl(
-			'googleMapsLink',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'tables',
-			this.fb.control('', Validators.required)
-		);
-		this.form.addControl(
-			'openingHours',
-			this.fb.control('', Validators.required)
+		this.controls.forEach((control) =>
+			this.form.addControl(
+				control,
+				this.fb.control('', Validators.required)
+			)
 		);
 	}
 

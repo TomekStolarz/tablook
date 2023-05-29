@@ -1,0 +1,11 @@
+<div class="review-container">
+	<div class="top-header h5">
+		<mat-icon>star_outline</mat-icon>
+		<span>{{ review.rating }}</span>
+		<span>{{ review.author_name }}</span>
+		<span class="date">posted at {{ review.time | tbDate }}</span>
+	</div>
+	<div class="review-text h6">
+		{{ review.text }}
+	</div>
+</div>

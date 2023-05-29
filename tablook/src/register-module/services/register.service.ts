@@ -24,7 +24,7 @@ export class RegisterService {
 		return this.httpClient
 			.post<Response<string>>(`${this.apiPath}/auth/register`, userData)
 			.pipe(
-				map((data) => ({
+				map(() => ({
 					status: 201,
 					message: 'Successfully created',
 				})),

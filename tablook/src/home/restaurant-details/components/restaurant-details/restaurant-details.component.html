@@ -1,0 +1,68 @@
+<div class="det-container">
+	<div class="photos-side" *ngIf="restaurantDetails">
+		<ng-image-slider
+			[images]="imagesData"
+			[animationSpeed]="0.4"
+			[imageSize]="{ width: '98%' }"
+			[manageImageRatio]="true"
+			#nav
+		></ng-image-slider>
+		<div class="section">
+			<span class="h4">Tables plan:</span>
+			<img
+				*ngIf="restaurantDetails.details?.tablesMap"
+				[src]="
+					'http://localhost:3000/file/' +
+					restaurantDetails.details?.tablesMap
+				"
+				[alt]="'Plan of tables'"
+			/>
+		</div>
+	</div>
+	<div class="details-side" *ngIf="restaurantDetails">
+		<div class="h2" *ngIf="restaurantDetails.name">
+			{{ restaurantDetails.name | upperFirst }}
+		</div>
+		<div class="ratings">
+			<mat-icon class="h4">star_outline</mat-icon>
+			<span class="h4"
+				>{{ restaurantDetails.ratings }} based on
+				{{ restaurantDetails.totalOpinions }} opinions</span
+			>
+		</div>
+		<div class="tags">
+			<app-tag
+				*ngFor="let tag of restaurantDetails.details?.tags"
+				[name]="tag"
+			></app-tag>
+		</div>
+		<div class="section">
+			<span class="h4">Opening hours:</span>
+			<div *ngFor="let day of restaurantDetails.details?.openingHours">
+				{{ day.day | lowercase | upperFirst }}<span>:</span
+				>{{ day.hours }}
+			</div>
+		</div>
+		<div class="section">
+			<span class="h4">Description:</span>
+			<div class="h6">{{ restaurantDetails.details?.description }}</div>
+		</div>
+		<div class="section" *ngIf="restaurantDetails.reviews?.length">
+			<span class="h4">Opinions:</span>
+			<div class="reviews">
+				<app-review-box
+					*ngFor="let review of restaurantDetails.reviews"
+					[review]="review"
+				></app-review-box>
+			</div>
+		</div>
+		<div class="section">
+			<iframe
+				width="100%"
+				loading="lazy"
+				allowfullscreen
+				[src]="url | safeUrl"
+			></iframe>
+		</div>
+	</div>
+</div>

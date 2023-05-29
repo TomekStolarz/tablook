@@ -1,0 +1,23 @@
+app-review-box {
+	.review-container {
+		padding: 1%;
+		background: $primary-gray-1;
+		border-radius: 10px;
+
+		.top-header {
+			display: flex;
+
+			mat-icon {
+				margin-right: 8px;
+			}
+
+			span {
+				margin-right: 24px;
+			}
+
+			.date {
+				justify-self: flex-end;
+			}
+		}
+	}
+}

@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDetails } from './models/user-details.interface';
@@ -145,6 +151,19 @@ export class UserService {
     try {
       const user = await this.userModel.findById(id).exec();
       if (!user) return null;
+      return this.getUserInfo(user);
+    } catch (error: any) {
+      throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async findRestaurantById(id: string): Promise<UserInfo | null> {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) return null;
+      if (user.type !== UserType.RESTAURANT) {
+        throw new ForbiddenException("You don't have access to this data");
+      }
       return this.getUserInfo(user);
     } catch (error: any) {
       throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);

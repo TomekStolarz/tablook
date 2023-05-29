@@ -25,9 +25,6 @@ export class FilesService {
 	}
 
 	deleteImage(id: string) {
-		const params = {
-			params: new HttpParams().set(`id`, id),
-		};
-		return this.httpClient.delete(`${this.apiPath}/file`, params);
+		return this.httpClient.delete(`${this.apiPath}/file/${id}`);
 	}
 }

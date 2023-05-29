@@ -1,0 +1,60 @@
+app-restaurant-details {
+	padding: 2%;
+	.det-container {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		align-items: flex-start;
+		background-color: $primary-white;
+		border-radius: 5px;
+		gap: 24px;
+		flex: 1 1 auto;
+		padding: 1%;
+
+		.photos-side {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+
+			a.icons {
+				color: $secondary-button-wo;
+				text-decoration: none;
+				font-family: 'Arial';
+			}
+		}
+
+		.details-side {
+			display: grid;
+			row-gap: 12px;
+			overflow-y: auto;
+			max-height: 75vh;
+
+			.ratings {
+				display: flex;
+				gap: 8px;
+			}
+
+			.tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 24px;
+				app-tag {
+					flex: 0 1 22%;
+				}
+			}
+		}
+
+		.section {
+			display: grid;
+
+			.reviews {
+				display: grid;
+				row-gap: 12px;
+			}
+
+			iframe {
+				border: 0;
+				aspect-ratio: 1/1;
+			}
+		}
+	}
+}
