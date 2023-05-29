@@ -8,6 +8,8 @@ app-main {
 		padding: 1.5rem;
 		font-size: 1.2rem;
 		flex: 0 1 auto;
+		display: grid;
+		gap: 1rem;
 
 		.description {
 			display: flex;

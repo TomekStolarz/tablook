@@ -1,0 +1,15 @@
+<div [formGroup]="form" class="control-wrapper">
+	<mat-checkbox
+		*ngIf="control.disablabed"
+		[color]="'basic'"
+		(change)="changeDisabled($event.checked)"
+	></mat-checkbox>
+	<mat-form-field class="filter">
+		<mat-label>{{ control.label | upperFirst }}</mat-label>
+		<input
+			matInput
+			[type]="control.type"
+			formControlName="{{ control.name }}"
+		/>
+	</mat-form-field>
+</div>

@@ -3,10 +3,14 @@
 		<span>Tables in restaurant are waiting for you.</span>
 		<span>Book it before other do that</span>
 	</div>
-	<div class="filters"></div>
+	<div class="filters">
+		<app-filters></app-filters>
+	</div>
 </section>
 <section class="bottom-box">
-	<div class="quick-search"><app-fast-filters></app-fast-filters></div>
+	<div class="quick-search">
+		<app-fast-filters></app-fast-filters>
+	</div>
 	<div class="company-section">
 		<button mat-raised-button [routerLink]="'/register/restaurant'">
 			Do you lead your restaurant? Join to us here
