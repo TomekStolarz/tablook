@@ -11,8 +11,6 @@ import { PlaceDetails } from 'src/shared/interfaces/place-details.interface';
 })
 export class RestaurantDetailsService {
 	apiPath = environment.apiPath;
-	private googleMapsApi = environment.googleMapsLink;
-	private apiKey = environment.apiKey;
 
 	constructor(private http: HttpClient) {}
 
@@ -36,49 +34,16 @@ export class RestaurantDetailsService {
 		const placeText = userData.details?.googleMapsLink.match(
 			/(?<=place\/).*?(?=\/)/
 		)?.[0];
-		const params = new HttpParams()
-			.set('fields', 'user_ratings_total%2Crating%2Creviews')
-			.set('key', this.apiKey);
-		return this.getPlaceId(placeText || '').pipe(
-			switchMap((place_id) => {
-				params.set('place_id', place_id);
-				return this.http
-					.get<PlaceDetails>(
-						`${this.googleMapsApi}/place/details/json`,
-						{
-							params: params,
-						}
-					)
-					.pipe(
-						map((googleData) => {
-							return {
-								...userData,
-								reviews: googleData.reviews,
-								ratings: googleData.rating,
-								totalOpinions: googleData.user_ratings_total,
-							};
-						})
-					);
-			})
-		);
-	}
-
-	private getPlaceId(placeText: string): Observable<string> {
-		const params = new HttpParams()
-			.set('fields', 'place_id')
-			.set('inputtype', 'textquery')
-			.set('input', placeText)
-			.set('key', this.apiKey);
 		return this.http
-			.get<{ candidates: [{ place_id: string }] }>(
-				`${this.googleMapsApi}/place/findplacefromtext/json`,
-				{
-					params: params,
-				}
-			)
+			.get<PlaceDetails>(`${this.apiPath}/restaurant/place/${placeText}`)
 			.pipe(
 				map((googleData) => {
-					return googleData.candidates[0].place_id;
+					return {
+						...userData,
+						reviews: googleData.reviews,
+						ratings: googleData.rating,
+						totalOpinions: googleData.user_ratings_total,
+					};
 				})
 			);
 	}
