@@ -15,14 +15,11 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { imageOptions } from './interceptors/image-multer-options';
-import { FilesService } from './file.service';
 import { createReadStream, unlink } from 'fs';
 import { join } from 'path';
 
 @Controller('file')
 export class FileController {
-  constructor(private filesService: FilesService) {}
-
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor(

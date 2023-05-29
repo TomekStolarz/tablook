@@ -21,8 +21,7 @@ app-main {
 
 	.bottom-box {
 		flex: 1 1 auto;
-		display: flex;
-		justify-content: center;
+		display: grid;
 		padding: 1.5rem;
 		background: image-set(
 				'assets/background-m.webp' 1x,
@@ -35,6 +34,8 @@ app-main {
 		background-blend-mode: multiply;
 
 		.company-section {
+			display: flex;
+			justify-content: center;
 			button {
 				border-radius: 2rem;
 				background-color: $secondary-button;
