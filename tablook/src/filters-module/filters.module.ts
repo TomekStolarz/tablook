@@ -12,6 +12,7 @@ import { ControlComponent } from './components/control/control.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
 	declarations: [
@@ -31,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
 		MatCheckboxModule,
 		FormsModule,
 		NgxMatTimepickerModule,
+		MatDatepickerModule,
 	],
 	providers: [],
 	exports: [FastFiltersComponent, FiltersComponent],

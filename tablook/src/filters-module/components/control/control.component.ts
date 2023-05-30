@@ -16,6 +16,7 @@ export class ControlComponent implements OnInit {
 	currentTime = '';
 	timeRegex = /\d\d:\d\d/;
 	disabled = false;
+	minDate = new Date();
 
 	ngOnInit(): void {
 		if (this.control.disablabed) {

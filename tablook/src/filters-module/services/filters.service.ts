@@ -12,8 +12,6 @@ export class FiltersService {
 
 	constructor(private http: HttpClient) {}
 
-	filterResults(filterName: string) {}
-
 	getFastFilters(): Observable<FastFilter[]> {
 		return this.http.get<FastFilter[]>(`${this.apiPath}/fastFilter`).pipe(
 			catchError((err) => {

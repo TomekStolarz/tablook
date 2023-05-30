@@ -4,7 +4,10 @@
 		*ngFor="let control of controls"
 		[control]="control"
 		[form]="searchForm"
-		[ngClass]="control.stretch ? 'stretch' : ''"
+		[ngClass]="{
+			stretch: control.stretch,
+			'no-min-width': isExchancedForm
+		}"
 	></app-control>
 </form>
 <button *ngIf="!isExchancedForm" mat-raised-button (click)="search()">

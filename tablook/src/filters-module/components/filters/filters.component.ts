@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { Alignment } from 'src/filters-module/models/alignment.enum';
 import { Control } from 'src/filters-module/models/control.interface';
+import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
+import { SearchService } from 'src/home/search-module/services/search.service';
 
 @Component({
 	selector: 'app-filters',
@@ -28,6 +30,7 @@ export class FiltersComponent implements OnInit {
 		size: 'number',
 		arrival: 'time',
 		leave: 'time',
+		date: 'date',
 	};
 
 	searchForm: FormGroup = this.fb.group({
@@ -38,21 +41,37 @@ export class FiltersComponent implements OnInit {
 		leave: ['', [Validators.pattern(/\d\d:\d\d/)]],
 	});
 
-	constructor(private fb: FormBuilder) {}
+	constructor(
+		private fb: FormBuilder,
+		private searchService: SearchService
+	) {}
 
 	ngOnInit(): void {
 		if (this.isExchancedForm) {
 			this.searchForm.addControl(
 				'date',
-				this.fb.control('', Validators.required)
+				this.fb.control(new Date(), Validators.required)
 			);
 			this.searchForm.addControl('rating', this.fb.control(''));
 
-			this.searchForm.valueChanges.pipe(
-				distinctUntilChanged(),
-				debounceTime(400)
-			);
+			if (this.searchService.lastSearchedQuery) {
+				Object.entries(this.searchService.lastSearchedQuery).forEach(
+					([key, value]) => {
+						if (value) {
+							if (key === 'date') {
+								value = new Date(value);
+							}
+							this.searchForm.get(key)?.setValue(value);
+						}
+					}
+				);
+			}
+
+			this.searchForm.valueChanges
+				.pipe(debounceTime(400), distinctUntilChanged())
+				.subscribe(() => this.search());
 		}
+
 		this.controls = Object.keys(this.searchForm.controls).map((key) => {
 			return {
 				name: key,
@@ -69,5 +88,31 @@ export class FiltersComponent implements OnInit {
 			this.searchForm.markAllAsTouched();
 			return;
 		}
+
+		const request = this.prepareFormValue();
+
+		this.searchService.search(request);
+
+		this.searchEvent.emit();
+	}
+
+	private prepareFormValue(): SearchRequest {
+		const formData = this.searchForm.getRawValue();
+		const request = {
+			date: formData.date ?? new Date().toDateString(),
+			size: formData.size,
+			arrival: formData.arrival.trim(),
+			location: formData.location.trim(),
+			query: formData.query.trim(),
+			leave: formData.leave.trim(),
+			rating: formData.rating,
+		};
+		Object.entries(request).forEach(([key, value]) => {
+			if (!value) {
+				delete request[key as keyof typeof request];
+			}
+		});
+
+		return request;
 	}
 }

@@ -9,6 +9,16 @@ app-filters {
 		.stretch {
 			flex-grow: 1;
 		}
+
+		.filter {
+			&.no-min-width {
+				mat-form-field {
+					&.time {
+						max-width: unset;
+					}
+				}
+			}
+		}
 	}
 
 	button[mat-raised-button] {

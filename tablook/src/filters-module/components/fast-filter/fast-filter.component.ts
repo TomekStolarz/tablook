@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FastFilter } from 'src/filters-module/models/fast-filter.interface';
-import { FiltersService } from 'src/filters-module/services/filters.service';
+import { SearchService } from 'src/home/search-module/services/search.service';
 
 @Component({
 	selector: 'app-fast-filter',
@@ -10,9 +10,9 @@ export class FastFilterComponent {
 	@Input()
 	filterData!: FastFilter;
 
-	constructor(private filterService: FiltersService) {}
+	constructor(private searchService: SearchService) {}
 
 	showFilterResulst() {
-		this.filterService.filterResults(this.filterData?.filterKey);
+		this.searchService.filterResults(this.filterData?.filterKey);
 	}
 }

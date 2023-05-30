@@ -12,6 +12,7 @@ app-control {
 
 		.mat-mdc-text-field-wrapper {
 			background-color: $primary-darkgray-2;
+			border-radius: 12px;
 
 			&.mdc-text-field--disabled {
 				background-color: $primary-darkgray-1;
