@@ -14,3 +14,16 @@ mat-snack-bar-container.success > div {
 		color: #00b337;
 	}
 }
+
+mat-snack-bar-container.error > div {
+	background-color: $secondary-error-text !important;
+	border: 1px solid #ddffdd;
+
+	mw-custom-snackbar > * {
+		color: #ddffdd;
+	}
+}
+
+mat-snack-bar-container {
+	max-width: 30vw;
+}

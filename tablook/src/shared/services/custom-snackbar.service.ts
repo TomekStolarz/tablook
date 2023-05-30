@@ -17,4 +17,14 @@ export class CustomSnackbarService {
 			data: { message: message, header: header },
 		});
 	}
+
+	error(message: string, header: string) {
+		this.matSnack.openFromComponent(CustomSnackbarComponent, {
+			duration: 5000,
+			horizontalPosition: 'end',
+			verticalPosition: 'bottom',
+			panelClass: 'error',
+			data: { message: message, header: header },
+		});
+	}
 }
