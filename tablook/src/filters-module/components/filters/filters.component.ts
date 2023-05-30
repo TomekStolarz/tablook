@@ -24,13 +24,18 @@ export class FiltersComponent implements OnInit {
 		rating: 'Min. rating',
 		size: 'Table size',
 	};
+	types: { [key: string]: string } = {
+		size: 'number',
+		arrival: 'time',
+		leave: 'time',
+	};
 
 	searchForm: FormGroup = this.fb.group({
 		query: [''],
 		size: [1, [Validators.required, Validators.min(1)]],
 		location: [''],
-		arrival: [''],
-		leave: [''],
+		arrival: ['', [Validators.pattern(/\d\d:\d\d/)]],
+		leave: ['', [Validators.pattern(/\d\d:\d\d/)]],
 	});
 
 	constructor(private fb: FormBuilder) {}
@@ -52,7 +57,7 @@ export class FiltersComponent implements OnInit {
 			return {
 				name: key,
 				label: this.labels[key] || key,
-				type: key === 'size' ? 'number' : 'string',
+				type: this.types[key] || 'text',
 				stretch: key === 'query',
 				disablabed: key === 'leave',
 			};

@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ControlComponent } from './components/control/control.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
 	declarations: [
@@ -23,10 +25,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 		SharedModule,
 		MatFormFieldModule,
 		MatInputModule,
+		MatIconModule,
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatCheckboxModule,
 		FormsModule,
+		NgxMatTimepickerModule,
 	],
 	providers: [],
 	exports: [FastFiltersComponent, FiltersComponent],

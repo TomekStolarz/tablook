@@ -5,6 +5,9 @@ app-control {
 
 		mat-form-field {
 			flex-grow: 1;
+			&.time {
+				max-width: 150px;
+			}
 		}
 
 		.mat-mdc-text-field-wrapper {
@@ -15,6 +18,7 @@ app-control {
 			}
 
 			input,
+			input::placeholder,
 			.mat-mdc-form-field-required-marker,
 			mat-label {
 				color: $primary-white !important;
@@ -23,6 +27,14 @@ app-control {
 
 		.mdc-text-field {
 			padding: 0 8px;
+		}
+
+		mat-icon {
+			color: $primary-white;
+
+			&:hover {
+				color: #c3c3c4;
+			}
 		}
 	}
 }

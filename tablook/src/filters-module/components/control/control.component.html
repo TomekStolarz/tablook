@@ -4,7 +4,7 @@
 		[color]="'basic'"
 		(change)="changeDisabled($event.checked)"
 	></mat-checkbox>
-	<mat-form-field class="filter">
+	<mat-form-field class="filter" *ngIf="control.type !== 'time'; else time">
 		<mat-label>{{ control.label | upperFirst }}</mat-label>
 		<input
 			matInput
@@ -12,4 +12,28 @@
 			formControlName="{{ control.name }}"
 		/>
 	</mat-form-field>
+	<ng-template #time>
+		<mat-form-field class="time">
+			<mat-label>{{ control.label | upperFirst }}</mat-label>
+			<input
+				matInput
+				[pattern]="timeRegex"
+				formControlName="{{ control.name }}"
+				[placeholder]="currentTime"
+				[maxlength]="5"
+			/>
+			<mat-icon
+				class="pointer"
+				matSuffix
+				*ngIf="!disabled"
+				(click)="pickerH.open()"
+				>schedule_outline</mat-icon
+			>
+		</mat-form-field>
+		<ngx-mat-timepicker
+			(timeSet)="updateTime($event)"
+			[format]="24"
+			#pickerH
+		></ngx-mat-timepicker>
+	</ng-template>
 </div>
