@@ -20,6 +20,7 @@ import { TablesPipe } from './pipes/tables.pipe';
 import { TagComponent } from './components/tag/tag.component';
 import { TbDatePipe } from './pipes/tb-date.pipe';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { AddressFormatPipe } from './pipes/address-format.pipe';
 
 @NgModule({
 	imports: [
@@ -45,6 +46,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 		TagComponent,
 		TbDatePipe,
 		SafeUrlPipe,
+		AddressFormatPipe,
 	],
 	providers: [CustomSnackbarService, DatePipe],
 	exports: [
@@ -56,6 +58,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 		UpperFirstPipe,
 		TbDatePipe,
 		SafeUrlPipe,
+		AddressFormatPipe,
 	],
 })
 export class SharedModule {}

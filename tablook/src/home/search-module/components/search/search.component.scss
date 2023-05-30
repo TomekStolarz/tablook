@@ -1,0 +1,19 @@
+app-search {
+	.search-wrapper {
+		display: grid;
+		grid-template-columns: 1fr 4fr;
+
+		& > div {
+			max-height: 89vh;
+			overflow-y: auto;
+		}
+
+		.filters {
+			background-color: $primary-white;
+			padding: 12px;
+		}
+
+		.results {
+		}
+	}
+}

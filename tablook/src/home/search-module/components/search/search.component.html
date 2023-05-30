@@ -1,0 +1,15 @@
+<div class="search-wrapper">
+	<div class="filters">
+		<app-filters
+			[isExchancedForm]="true"
+			[alignment]="verticalAlign"
+		></app-filters>
+	</div>
+
+	<div class="results">
+		<app-search-tile
+			*ngFor="let tile of searchResults$ | async"
+			[restaurantInfo]="tile"
+		></app-search-tile>
+	</div>
+</div>

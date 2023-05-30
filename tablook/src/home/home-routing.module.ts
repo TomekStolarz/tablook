@@ -18,6 +18,13 @@ const routes: Routes = [
 						'./restaurant-details/restaurant-detials.module'
 					).then((m) => m.RestaurantDetailsModule),
 			},
+			{
+				path: 'search',
+				loadChildren: () =>
+					import('./search-module/search.module').then(
+						(m) => m.SearchModule
+					),
+			},
 		],
 	},
 ];
