@@ -169,4 +169,60 @@ export class UserService {
       throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async findRestaurant(
+    tableSize: number,
+    date: string,
+    arrival: string,
+    leave?: string,
+    query?: string,
+    location?: string,
+  ): Promise<UserInfo[]> {
+    let queryRegex,
+      locationRegex = new RegExp('.*');
+    if (query) {
+      queryRegex = new RegExp(query.trim(), 'i');
+    }
+    if (location) {
+      locationRegex = new RegExp(location.trim(), 'i');
+    }
+
+    console.log(queryRegex);
+    console.log(locationRegex);
+    const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+    const matchedRestaurants = await this.userModel
+      .find({
+        type: UserType.RESTAURANT,
+        $or: [
+          { name: { $regex: queryRegex } },
+          { 'details.tags': { $regex: queryRegex } },
+        ],
+        'details.tables.seats': { $gte: tableSize },
+        'details.address.city': { $regex: locationRegex },
+      })
+      .exec();
+
+    const arrivalPart = arrival.split(':').map((x) => parseInt(x));
+    const _arrival = new Date().setHours(arrivalPart[0], arrivalPart[1]);
+    let _leaving = 0;
+    if (leave) {
+      const leavingPart = leave.split(':').map((x) => parseInt(x));
+      _leaving = new Date().setHours(leavingPart[0], leavingPart[1]);
+    }
+
+    return matchedRestaurants
+      .map((rest) => this.getUserInfo(rest))
+      .filter((restaurant) => {
+        const dayHours = restaurant.details.openingHours.find(
+          (d) => d.day === day,
+        );
+        if (!dayHours) {
+          return false;
+        }
+        const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
+        const opening = new Date().setHours(hours[0], hours[1]);
+        const closing = new Date().setHours(hours[2], hours[3]);
+        return opening <= _arrival && closing >= _leaving;
+      });
+  }
 }

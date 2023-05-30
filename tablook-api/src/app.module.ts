@@ -24,6 +24,7 @@ import { FastFilterModule } from './fast-filters/fast-filter.module';
     OrderModule,
     RestaurantModule,
     FastFilterModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [
