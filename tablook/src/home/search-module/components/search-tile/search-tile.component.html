@@ -1,0 +1,36 @@
+<div
+	class="search-tile-wrapper"
+	[routerLink]="'/home/restaurant/{{restaurantInfo.id}}'"
+>
+	<div class="image">
+		<img
+			[src]="'http://localhost:3000/file/' + restaurantInfo.image"
+			[alt]="'Restaurant profile image'"
+		/>
+	</div>
+	<div class="details">
+		<div class="h3">
+			<span>{{ restaurantInfo.name }}</span>
+			<mat-icon class="h4">star_outline</mat-icon>
+			<span class="h4"
+				>{{ restaurantInfo.rating }}{{ ' '
+				}}{{ restaurantInfo.totalOpinions }} opinions</span
+			>
+		</div>
+		<span class="small-details h5">
+			{{ restaurantInfo.address | addressFormat }}
+		</span>
+		<span class="small-details h5">
+			{{ 'Phone ' + restaurantInfo.phone }}
+		</span>
+		<div class="tags">
+			<app-tag
+				*ngFor="let tag of restaurantInfo.tags.slice(4)"
+				[name]="tag"
+			></app-tag>
+		</div>
+		<span class="small-details h5">
+			{{ 'Free tables: ' + restaurantInfo.freeTables }}
+		</span>
+	</div>
+</div>
