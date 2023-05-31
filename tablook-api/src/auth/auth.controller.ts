@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { Get, HttpCode, Req, Res } from '@nestjs/common/decorators';
 import { HttpStatus } from '@nestjs/common/enums';
 import { NewUserDTO } from 'src/user/dtos/new-user.dto';
@@ -38,14 +38,23 @@ export class AuthController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async isAuth(@Req() req: Request): Promise<UserInfo | null> {
+  async isAuth(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<UserInfo | null> {
     if (!req?.cookies['auth-cookie']) {
       return null;
     }
+    let userid = null;
+    try {
+      userid = await this.authService.checkJwtExpiration(
+        req?.cookies['auth-cookie']?.token,
+      );
+    } catch (ex: any) {
+      res.clearCookie('auth-cookie');
+      throw new UnauthorizedException();
+    }
 
-    const userid = await this.authService.checkJwtExpiration(
-      req?.cookies['auth-cookie']?.token,
-    );
     if (!userid) {
       return null;
     }
