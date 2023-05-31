@@ -25,15 +25,31 @@ export class FavouriteController {
     return this.favouriteService.getAllFavourites(userId);
   }
 
+  @Post(':id')
+  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  isRestaurantFavourite(
+    @Param('id') userId,
+    @Body() restaurantId: { restaurantId: string },
+  ): Promise<{ isFavourite: boolean }> {
+    return this.favouriteService.isRestaurantFavourite(
+      userId,
+      restaurantId.restaurantId,
+    );
+  }
+
   @Post()
   @UseGuards(JwtGuard)
-  addFavouriteRestaurant(@Body() favourite: Favourite): Promise<string> {
+  addFavouriteRestaurant(
+    @Body() favourite: Favourite,
+  ): Promise<{ message: string }> {
     return this.favouriteService.addToFavourite(favourite);
   }
 
   @Delete()
   @UseGuards(JwtGuard)
-  removeFavouriteRestaurant(@Body() favourite: Favourite): Promise<string> {
+  removeFavouriteRestaurant(
+    @Body() favourite: Favourite,
+  ): Promise<{ message: string }> {
     return this.favouriteService.removeFromFavourite(favourite);
   }
 }
