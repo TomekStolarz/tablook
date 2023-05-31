@@ -1,0 +1,13 @@
+<form [formGroup]="orderForm" class="filter-container">
+	<app-control
+		class="filter"
+		*ngFor="let control of controls"
+		[control]="control"
+		[form]="orderForm"
+		[ngClass]="{
+			stretch: control.stretch,
+			'no-min-width': true
+		}"
+	></app-control>
+</form>
+<button mat-raised-button (click)="reserve()">Reserve</button>

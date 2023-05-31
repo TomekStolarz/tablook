@@ -1,0 +1,11 @@
+<div class="free-table-wrapper">
+	<span
+		>{{ 'Table id: ' }}{{ freeTableDate.id }}{{ ', size: '
+		}}{{ freeTableDate.seats }}</span
+	>
+	<span class="hours">
+		<span *ngFor="let freeTime of freeTableDate.available">
+			{{ freeTime.startTime }}{{ '-' }}{{ freeTime.endTime }}
+		</span>
+	</span>
+</div>
