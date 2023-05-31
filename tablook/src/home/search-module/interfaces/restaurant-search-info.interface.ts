@@ -12,4 +12,5 @@ export interface RestaurantSearchInfo {
 	tables: Table[];
 	tags: string[];
 	image: string;
+	isFavourite?: boolean;
 }

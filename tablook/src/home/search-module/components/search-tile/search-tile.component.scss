@@ -36,6 +36,20 @@ app-search-tile {
 
 			display: grid;
 			padding: 0 1%;
+			position: relative;
+
+			.favorite-icon {
+				position: absolute;
+				top: 0.5rem;
+				right: 1rem;
+				color: black;
+				width: unset;
+				height: unset;
+			}
+
+			.in-favourite {
+				color: $favorite-icon;
+			}
 		}
 
 		&:hover {

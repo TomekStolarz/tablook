@@ -6,6 +6,7 @@ import { RestaurantDetailsComponent } from './components/restaurant-details/rest
 import { NgImageSliderModule } from 'ng-image-slider';
 import { MatIconModule } from '@angular/material/icon';
 import { ReviewBoxComponent } from './components/review-box/review-box.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [RestaurantDetailsComponent, ReviewBoxComponent],
@@ -15,6 +16,7 @@ import { ReviewBoxComponent } from './components/review-box/review-box.component
 		RestaurantDetailsRoutingModule,
 		NgImageSliderModule,
 		MatIconModule,
+		MatTooltipModule,
 	],
 	exports: [],
 })

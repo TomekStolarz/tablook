@@ -18,7 +18,7 @@ export class FavouriteService {
     return resp;
   }
 
-  async addToFavourite(favourite: Favourite): Promise<string> {
+  async addToFavourite(favourite: Favourite): Promise<{ message: string }> {
     const userData = await this.userService.findById(favourite.userId);
     const restaurant = await this.userService.findById(favourite.favourite);
     if (!userData)
@@ -44,10 +44,12 @@ export class FavouriteService {
       favourites: favourites,
     });
     this.logger.log(`Successfully added restaurant to favourites`);
-    return 'Successfully added restaurant to favourites';
+    return { message: 'Successfully added restaurant to favourites' };
   }
 
-  async removeFromFavourite(favourite: Favourite): Promise<string> {
+  async removeFromFavourite(
+    favourite: Favourite,
+  ): Promise<{ message: string }> {
     const userData = await this.userService.findById(favourite.userId);
 
     if (!userData)
@@ -74,6 +76,19 @@ export class FavouriteService {
       favourites: newFavourites,
     });
     this.logger.log(`Successfully deleted restaurant from favourites`);
-    return 'Successfully deleted restaurant from favourites';
+    return { message: 'Successfully deleted restaurant from favourites' };
+  }
+
+  async isRestaurantFavourite(
+    userId: string,
+    restaurantId: string,
+  ): Promise<{ isFavourite: boolean }> {
+    const userDetails = await this.userService.findById(userId);
+    if (!userDetails)
+      throw new HttpException('Cannot find user', HttpStatus.BAD_REQUEST);
+    const resp = {
+      isFavourite: !!userDetails.favourites.find((e) => e === restaurantId),
+    };
+    return resp;
   }
 }

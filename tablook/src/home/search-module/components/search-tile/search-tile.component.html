@@ -9,6 +9,12 @@
 		/>
 	</div>
 	<div class="details">
+		<mat-icon
+			*ngIf="userInfo"
+			class="favorite-icon h1 pointer"
+			[ngClass]="!!restaurantInfo.isFavourite ? 'in-favourite' : ''"
+			>favorite_outline</mat-icon
+		>
 		<div class="h4 title-row">
 			<span>{{ restaurantInfo.name }}</span>
 			<mat-icon class="h4">star_outline</mat-icon>
