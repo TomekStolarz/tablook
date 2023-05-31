@@ -170,7 +170,7 @@ export class UserService {
     }
   }
 
-  async findRestaurant(
+  async findRestaurants(
     tableSize: number,
     date: string,
     arrival: string,
@@ -178,7 +178,7 @@ export class UserService {
     query?: string,
     location?: string,
   ): Promise<UserInfo[]> {
-    let queryRegex,
+    let queryRegex = new RegExp('.*'),
       locationRegex = new RegExp('.*');
     if (query) {
       queryRegex = new RegExp(query.trim(), 'i');
@@ -186,9 +186,10 @@ export class UserService {
     if (location) {
       locationRegex = new RegExp(location.trim(), 'i');
     }
-
     console.log(queryRegex);
     console.log(locationRegex);
+    console.log(tableSize);
+    console.log(UserType.RESTAURANT);
     const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
     const matchedRestaurants = await this.userModel
       .find({
@@ -202,7 +203,8 @@ export class UserService {
       })
       .exec();
 
-    const arrivalPart = arrival.split(':').map((x) => parseInt(x));
+    const arrivalCp = arrival || new Date().toTimeString().slice(0, 5);
+    const arrivalPart = arrivalCp.split(':').map((x) => parseInt(x));
     const _arrival = new Date().setHours(arrivalPart[0], arrivalPart[1]);
     let _leaving = 0;
     if (leave) {
@@ -213,6 +215,7 @@ export class UserService {
     return matchedRestaurants
       .map((rest) => this.getUserInfo(rest))
       .filter((restaurant) => {
+        console.log(restaurant);
         const dayHours = restaurant.details.openingHours.find(
           (d) => d.day === day,
         );

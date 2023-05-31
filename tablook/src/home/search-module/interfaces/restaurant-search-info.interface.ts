@@ -1,4 +1,5 @@
 import { Address } from 'src/app/interfaces/address.interface';
+import { Table } from 'src/shared/interfaces/table.interface';
 
 export interface RestaurantSearchInfo {
 	id: string;
@@ -8,6 +9,7 @@ export interface RestaurantSearchInfo {
 	rating: number;
 	totalOpinions: number;
 	freeTables: number;
+	tables: Table[];
 	tags: string[];
 	image: string;
 }

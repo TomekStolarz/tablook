@@ -1,6 +1,6 @@
 <div
-	class="search-tile-wrapper"
-	[routerLink]="'/home/restaurant/{{restaurantInfo.id}}'"
+	class="search-tile-wrapper pointer"
+	[routerLink]="'/home/restaurant/' + restaurantInfo.id"
 >
 	<div class="image">
 		<img
@@ -9,7 +9,7 @@
 		/>
 	</div>
 	<div class="details">
-		<div class="h3">
+		<div class="h4 title-row">
 			<span>{{ restaurantInfo.name }}</span>
 			<mat-icon class="h4">star_outline</mat-icon>
 			<span class="h4"
@@ -17,19 +17,19 @@
 				}}{{ restaurantInfo.totalOpinions }} opinions</span
 			>
 		</div>
-		<span class="small-details h5">
+		<span class="small-details h6">
 			{{ restaurantInfo.address | addressFormat }}
 		</span>
-		<span class="small-details h5">
+		<span class="small-details h6">
 			{{ 'Phone ' + restaurantInfo.phone }}
 		</span>
 		<div class="tags">
 			<app-tag
-				*ngFor="let tag of restaurantInfo.tags.slice(4)"
+				*ngFor="let tag of restaurantInfo.tags.slice(0, 4)"
 				[name]="tag"
 			></app-tag>
 		</div>
-		<span class="small-details h5">
+		<span class="small-details h6">
 			{{ 'Free tables: ' + restaurantInfo.freeTables }}
 		</span>
 	</div>

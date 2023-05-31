@@ -8,6 +8,9 @@ app-control {
 			&.time {
 				max-width: 150px;
 			}
+			.mat-mdc-form-field-infix {
+				width: unset;
+			}
 		}
 
 		.mat-mdc-text-field-wrapper {

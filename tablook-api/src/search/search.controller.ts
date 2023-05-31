@@ -8,7 +8,7 @@ export class SearchController {
   constructor(private searchService: SearchService) {}
 
   @Post()
-  getSearch(@Body() request: SearchRequest) {
+  getSearch(@Body() request: SearchRequest): Promise<RestaurantSearchInfo[]> {
     return this.searchService.getAvailableRestaurant(request);
   }
 }

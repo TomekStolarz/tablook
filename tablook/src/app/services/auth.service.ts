@@ -43,14 +43,17 @@ export class AuthService {
 
 	logout() {
 		this.store.dispatch(UserActions.removeUser());
-		this.httpClient.post(`${this.apiPath}/auth/logout`, {}).subscribe((_) => this.router.navigateByUrl('/'))
-		
+		this.httpClient
+			.post(`${this.apiPath}/auth/logout`, {})
+			.subscribe((_) => this.router.navigateByUrl('/'));
 	}
 
 	isAuth() {
 		return this.httpClient.get(`${this.apiPath}/auth`).pipe(
 			map((data: UserInfo) => {
-				this.store.dispatch(UserActions.addUser({ user: data }));
+				if (data) {
+					this.store.dispatch(UserActions.addUser({ user: data }));
+				}
 				return { status: 200, data: data };
 			})
 		);

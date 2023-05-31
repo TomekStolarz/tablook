@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SearchRequest } from './models/search-request.interface';
 import { UserService } from 'src/user/user.service';
-import { Model } from 'mongoose';
 import { OrderService } from 'src/order/order.service';
+import { RestaurantSearchInfo } from './models/restaurant-search-info.interface';
 
 @Injectable()
 export class SearchService {
@@ -12,22 +12,22 @@ export class SearchService {
     private orderService: OrderService,
   ) {}
 
-  async getAvailableRestaurant(request: SearchRequest) {
-    const dateStart = new Date(request.date.split('T')[0]);
-    const dateEnd = new Date(dateStart.setHours(24));
-    const arrival = request.arrival || new Date().toTimeString().slice(0, 5);
-    const restaurant = await this.userService.findRestaurant(
+  async getAvailableRestaurant(
+    request: SearchRequest,
+  ): Promise<RestaurantSearchInfo[]> {
+    const restaurants = await this.userService.findRestaurants(
       request.size,
       request.date,
-      arrival,
+      request.arrival,
       request.leave,
       request.query,
       request.location,
     );
-    // const bookedTables = await this.orderModel.find({
-    //   date: { $gte: dateStart, $lte: dateEnd },
-    //   tableSize: { $gte: request.size },
-    // });
-    console.log(restaurant);
+    if (restaurants.length) {
+      this.logger.log('Founded restaurant with passed criteria');
+    } else {
+      this.logger.warn('No restaurant with given criteria');
+    }
+    return this.orderService.getFreeTables(restaurants, request);
   }
 }

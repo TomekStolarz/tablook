@@ -104,7 +104,7 @@ export class FiltersComponent implements OnInit {
 			arrival: formData.arrival.trim(),
 			location: formData.location.trim(),
 			query: formData.query.trim(),
-			leave: formData.leave.trim(),
+			leave: formData.leave?.trim(),
 			rating: formData.rating,
 		};
 		Object.entries(request).forEach(([key, value]) => {
