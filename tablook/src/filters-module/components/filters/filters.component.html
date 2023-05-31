@@ -1,0 +1,15 @@
+<form [formGroup]="searchForm" class="filter-container" [ngClass]="alignment">
+	<app-control
+		class="filter"
+		*ngFor="let control of controls"
+		[control]="control"
+		[form]="searchForm"
+		[ngClass]="{
+			stretch: control.stretch,
+			'no-min-width': isExchancedForm
+		}"
+	></app-control>
+</form>
+<button *ngIf="!isExchancedForm" mat-raised-button (click)="search()">
+	Search
+</button>

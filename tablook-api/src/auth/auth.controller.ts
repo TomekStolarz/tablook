@@ -8,7 +8,6 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { UserInfo } from 'src/user/models/user-info.interface';
-import { EMPTY } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {
@@ -40,6 +39,10 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async isAuth(@Req() req: Request): Promise<UserInfo | null> {
+    if (!req?.cookies['auth-cookie']) {
+      return null;
+    }
+
     const userid = await this.authService.checkJwtExpiration(
       req?.cookies['auth-cookie']?.token,
     );

@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FileService } from './file.service';
+import { FastFilterService } from './fast-filter.service';
 
-describe('FileService', () => {
-  let service: FileService;
+describe('FastFilterService', () => {
+  let service: FastFilterService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FileService],
+      providers: [FastFilterService],
     }).compile();
 
-    service = module.get<FileService>(FileService);
+    service = module.get<FastFilterService>(FastFilterService);
   });
 
   it('should be defined', () => {

@@ -5,8 +5,7 @@ import { FiltersService } from 'src/filters-module/services/filters.service';
 
 @Component({
 	selector: 'app-fast-filters',
-	templateUrl: './fast-filters.component.html',
-	styleUrls: ['./fast-filters.component.scss'],
+	templateUrl: './fast-filters.component.html'
 })
 export class FastFiltersComponent implements OnInit {
 	filtersData$!: Observable<FastFilter[]>;

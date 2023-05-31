@@ -1,0 +1,69 @@
+<div [formGroup]="form" class="control-wrapper">
+	<mat-checkbox
+		*ngIf="control.disablabed"
+		[color]="'basic'"
+		(change)="changeDisabled($event.checked)"
+	></mat-checkbox>
+	<ng-container
+		[ngTemplateOutlet]="
+			control.type === 'time'
+				? time
+				: control.type === 'date'
+				? date
+				: default
+		"
+	></ng-container>
+
+	<ng-template #default>
+		<mat-form-field class="filter">
+			<mat-label>{{ control.label | upperFirst }}</mat-label>
+			<input
+				matInput
+				[type]="control.type"
+				formControlName="{{ control.name }}"
+			/>
+		</mat-form-field>
+	</ng-template>
+
+	<ng-template #time>
+		<mat-form-field class="filter time">
+			<mat-label>{{ control.label | upperFirst }}</mat-label>
+			<input
+				matInput
+				[pattern]="timeRegex"
+				formControlName="{{ control.name }}"
+				[placeholder]="currentTime"
+				[maxlength]="5"
+			/>
+			<mat-icon
+				class="pointer"
+				matSuffix
+				*ngIf="!disabled"
+				(click)="pickerH.open()"
+				>schedule_outline</mat-icon
+			>
+		</mat-form-field>
+		<ngx-mat-timepicker
+			(timeSet)="updateTime($event)"
+			[format]="24"
+			#pickerH
+		></ngx-mat-timepicker>
+	</ng-template>
+
+	<ng-template #date>
+		<mat-form-field class="filter">
+			<mat-label>{{ control.label | upperFirst }}</mat-label>
+			<input
+				matInput
+				[matDatepicker]="picker"
+				formControlName="{{ control.name }}"
+				[min]="minDate"
+			/>
+			<mat-datepicker-toggle
+				matIconSuffix
+				[for]="picker"
+			></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</ng-template>
+</div>

@@ -1,4 +1,4 @@
-app-fast-filters {
+app-fast-filter {
 	.circle {
 		display: flex;
 		justify-content: center;
@@ -6,5 +6,12 @@ app-fast-filters {
 		border-radius: 50%;
 		background: $primary-white;
 		color: $primary-black;
+		aspect-ratio: 1/1;
+		padding: 1em;
+
+		img {
+			width: 48px;
+			aspect-ratio: 1/1;
+		}
 	}
 }

@@ -8,7 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { userReducer } from './store/user.reducer';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { HomeModule } from 'src/home/home.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -19,6 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		HttpClientModule,
 		StoreModule.forRoot({ user: userReducer }),
 		HomeModule,
+		MatNativeDateModule,
 	],
 	providers: [
 		{

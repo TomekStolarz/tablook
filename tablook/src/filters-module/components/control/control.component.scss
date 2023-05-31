@@ -1,0 +1,44 @@
+app-control {
+	.control-wrapper {
+		display: flex;
+		align-items: center;
+
+		mat-form-field {
+			flex-grow: 1;
+			&.time {
+				max-width: 150px;
+			}
+			.mat-mdc-form-field-infix {
+				width: unset;
+			}
+		}
+
+		.mat-mdc-text-field-wrapper {
+			background-color: $primary-darkgray-2;
+			border-radius: 12px;
+
+			&.mdc-text-field--disabled {
+				background-color: $primary-darkgray-1;
+			}
+
+			input,
+			input::placeholder,
+			.mat-mdc-form-field-required-marker,
+			mat-label {
+				color: $primary-white !important;
+			}
+		}
+
+		.mdc-text-field {
+			padding: 0 8px;
+		}
+
+		mat-icon {
+			color: $primary-white;
+
+			&:hover {
+				color: #c3c3c4;
+			}
+		}
+	}
+}

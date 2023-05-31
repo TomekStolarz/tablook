@@ -1,5 +1,6 @@
 $primary-black: #000000;
 $primary-white: #f4f4f6;
+$primary-white-hover: #fafafb;
 $primary-gray-1: #e6e6e9;
 $primary-gray-2: #9999a1;
 $primary-darkgray-1: #66666e;
@@ -8,6 +9,7 @@ $secondary-button: #0e8d7e70;
 $secondary-button-wo: #0e8d7e;
 $primary-error-bg: rgba(255, 51, 51, 0.6666666667);
 $primary-error-text: rgb(204, 0, 0);
+$secondary-error-text: rgba(255, 51, 51, 0.88888);
 
 [mat-raised-button].mat-button.mat-dark:not(:disabled),
 [mat-stroked-button].mat-dark:not(:disabled),
@@ -85,3 +87,5 @@ body {
 @import 'home/home.module.scss';
 
 @import 'register-restaurant/register-restaurant.module.scss';
+
+@import './filters-module/filters-module.scss';

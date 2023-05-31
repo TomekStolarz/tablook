@@ -10,6 +10,7 @@ import { SearchModule } from './search/search.module';
 import { FavouriteModule } from './favourite/favourite.module';
 import { OrderModule } from './order/order.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { FastFilterModule } from './fast-filters/fast-filter.module';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { RestaurantModule } from './restaurant/restaurant.module';
     FavouriteModule,
     OrderModule,
     RestaurantModule,
+    FastFilterModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [
