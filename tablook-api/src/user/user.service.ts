@@ -186,10 +186,7 @@ export class UserService {
     if (location) {
       locationRegex = new RegExp(location.trim(), 'i');
     }
-    console.log(queryRegex);
-    console.log(locationRegex);
-    console.log(tableSize);
-    console.log(UserType.RESTAURANT);
+
     const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
     const matchedRestaurants = await this.userModel
       .find({
@@ -215,7 +212,6 @@ export class UserService {
     return matchedRestaurants
       .map((rest) => this.getUserInfo(rest))
       .filter((restaurant) => {
-        console.log(restaurant);
         const dayHours = restaurant.details.openingHours.find(
           (d) => d.day === day,
         );

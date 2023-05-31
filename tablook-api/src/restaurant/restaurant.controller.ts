@@ -1,7 +1,6 @@
 import { Controller, Param, Get } from '@nestjs/common';
 import { UserInfo } from 'src/user/models/user-info.interface';
 import { UserService } from 'src/user/user.service';
-import { PlaceDetails } from './interfaces/place-details.interface';
 import { RestaurantService } from './restaurant.service';
 
 @Controller('restaurant')
