@@ -27,6 +27,7 @@ app-restaurant-details {
 			row-gap: 12px;
 			overflow-y: auto;
 			max-height: 75vh;
+			position: relative;
 
 			.ratings {
 				display: flex;
@@ -59,6 +60,19 @@ app-restaurant-details {
 			.row {
 				width: 100%;
 			}
+		}
+
+		.favorite-icon {
+			position: absolute;
+			top: 0.5rem;
+			right: 1rem;
+			color: black;
+			width: unset;
+			height: unset;
+		}
+
+		.in-favourite {
+			color: $favorite-icon;
 		}
 	}
 }

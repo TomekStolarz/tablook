@@ -20,6 +20,19 @@
 		</div>
 	</div>
 	<div class="details-side" *ngIf="restaurantDetails">
+		<mat-icon
+			*ngIf="user"
+			class="favorite-icon h1 pointer"
+			[ngClass]="!!restaurantDetails.isFavourite ? 'in-favourite' : ''"
+			(click)="handleFavChange()"
+			[matTooltip]="
+				!restaurantDetails.isFavourite
+					? 'Add to favourites'
+					: 'Remove from favourites'
+			"
+			[matTooltipPosition]="'right'"
+			>favorite_outline</mat-icon
+		>
 		<div class="h2" *ngIf="restaurantDetails.name">
 			{{ restaurantDetails.name | upperFirst }}
 		</div>

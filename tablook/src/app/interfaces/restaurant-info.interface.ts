@@ -5,4 +5,5 @@ export interface RestaurantInfo extends UserInfo {
 	ratings?: number;
 	reviews?: Review[];
 	totalOpinions?: number;
+	isFavourite?: boolean;
 }
