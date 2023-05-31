@@ -28,6 +28,11 @@ export class SearchService {
     } else {
       this.logger.warn('No restaurant with given criteria');
     }
-    return this.orderService.getFreeTables(restaurants, request);
+    const results = await this.orderService.getFreeTables(restaurants, request);
+    if (request.rating) {
+      return results.filter((res) => res.rating >= request.rating);
+    } else {
+      return results;
+    }
   }
 }
