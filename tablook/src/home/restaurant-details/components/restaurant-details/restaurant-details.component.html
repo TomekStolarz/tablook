@@ -38,9 +38,13 @@
 		</div>
 		<div class="section">
 			<span class="h4">Opening hours:</span>
-			<div *ngFor="let day of restaurantDetails.details?.openingHours">
-				{{ day.day | lowercase | upperFirst }}<span>:</span
-				>{{ day.hours }}
+			<div
+				class="row"
+				*ngFor="let day of restaurantDetails.details?.openingHours"
+			>
+				<span class="col-3"
+					>{{ day.day | lowercase | upperFirst }}<span>:</span></span
+				><span class="col-auto">{{ day.hours }}</span>
 			</div>
 		</div>
 		<div class="section">
