@@ -52,8 +52,8 @@ export class SearchService {
 	filterResults(filterKey: string) {
 		const date = new Date();
 		const request = {
-			date: date.toDateString(),
-			size: 2,
+			date: date.toISOString(),
+			size: 1,
 			arrival: `${date.getHours()}:${date.getMinutes()}`,
 			query: filterKey,
 		};
