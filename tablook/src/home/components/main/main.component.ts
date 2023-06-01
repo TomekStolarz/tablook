@@ -1,19 +1,20 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-main',
 	templateUrl: './main.component.html',
 })
-export class MainComponent implements OnInit{
+export class MainComponent implements OnInit, OnDestroy{
 	constructor(private router: Router,
 		private responsive: BreakpointObserver) { }
-	
 	isMobile = false;
+	responsiveSubscription?: Subscription;
 	
 	ngOnInit(): void {
-		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+		this.responsiveSubscription = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -21,6 +22,10 @@ export class MainComponent implements OnInit{
 					this.isMobile = false;
 				}
 			});
+	}
+
+	ngOnDestroy(): void {
+		this.responsiveSubscription?.unsubscribe();
 	}
 
 	goToSearch() {

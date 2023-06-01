@@ -69,8 +69,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 			this.user = user;
 		});
 		this.subscriptions.push(userSub);
-		
-		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+
+		const respSub = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -78,6 +78,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 					this.isMobile = false;
 				}
 			});
+
+		this.subscriptions.push(respSub);
 	}
 
 	ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ErrorStateStrategy } from 'src/shared/directives/match-error-strategy';
 import { matchPasswordValidator } from 'src/register-module/directives/match-password-validator.directive';
@@ -11,12 +11,13 @@ import { RegisterService } from 'src/register-module/services/register.service';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 import { UserType } from 'src/app/interfaces/user-type.enum';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-register-customer',
 	templateUrl: './register-customer.component.html',
 })
-export class RegisterCustomerComponent implements OnInit {
+export class RegisterCustomerComponent implements OnInit, OnDestroy {
 	registerForm = this.fb.nonNullable.group(
 		{
 			email: ['', [Validators.required, Validators.email]],
@@ -44,6 +45,7 @@ export class RegisterCustomerComponent implements OnInit {
 	isMobile = false;
 
 	countryCodes: CountryPhoneCode[] = [];
+	responsiveSubscription?: Subscription;
 
 	constructor(
 		private fb: FormBuilder,
@@ -58,7 +60,7 @@ export class RegisterCustomerComponent implements OnInit {
 			.getCountryCode()
 			.subscribe((codes) => (this.countryCodes = [...codes]));
 		
-		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+		this.responsiveSubscription =this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -66,6 +68,10 @@ export class RegisterCustomerComponent implements OnInit {
 					this.isMobile = false;
 				}
 			});
+	}
+
+	ngOnDestroy(): void {
+		this.responsiveSubscription?.unsubscribe();
 	}
 
 	singUp() {

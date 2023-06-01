@@ -34,7 +34,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 		this.subscriptions.push(userSub);
 		this.subscriptions.push(searchSub);
 
-		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+		const respSub = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -42,6 +42,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 					this.isMobile = false;
 				}
 			});
+			
+		this.subscriptions.push(respSub);
 	}
 
 	ngOnDestroy(): void {

@@ -1,20 +1,22 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 	selector: 'app-header',
 	templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 	@Input()
 	username?: string;
 	isMobile = false;
-
+	responsiveSubscription?: Subscription;
+	
 	constructor(private authService: AuthService, private responsive: BreakpointObserver) {}
 
 	ngOnInit(): void {
-		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+		this.responsiveSubscription = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -22,6 +24,10 @@ export class HeaderComponent implements OnInit {
 					this.isMobile = false;
 				}
 			});
+	}
+
+	ngOnDestroy(): void {
+		this.responsiveSubscription?.unsubscribe();
 	}
 
 	logout(): void {
