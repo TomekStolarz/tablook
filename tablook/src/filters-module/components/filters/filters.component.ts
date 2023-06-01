@@ -100,7 +100,7 @@ export class FiltersComponent implements OnInit {
 		const formData = this.searchForm.getRawValue();
 		const request = {
 			date: formData.date ?? new Date().toISOString(),
-			size: formData.size,
+			size: parseInt(formData.size),
 			arrival: formData.arrival.trim(),
 			location: formData.location.trim(),
 			query: formData.query.trim(),

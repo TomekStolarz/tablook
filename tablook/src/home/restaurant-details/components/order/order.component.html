@@ -9,6 +9,20 @@
 			'no-min-width': true
 		}"
 	></app-control>
+	<mat-form-field class="table-id-select">
+		<mat-label>Table id</mat-label>
+		<mat-select formControlName="tableId">
+			<mat-option
+				*ngFor="let table of restaurant.freeTables"
+				[value]="table.id"
+			>
+				{{ table.id }}
+			</mat-option>
+		</mat-select>
+		<mat-error *ngIf="tableId && tableId.hasError('toSmallTable')"
+			>This table is to small to picked size</mat-error
+		>
+	</mat-form-field>
 </form>
 <button mat-raised-button color="dark" (click)="reserve()">Reserve</button>
 <div class="freetables">

@@ -188,6 +188,7 @@ export class UserService {
     }
 
     const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+    const size = parseInt(new Number(tableSize).toString());
 
     const matchedRestaurants = await this.userModel
       .find({
@@ -196,7 +197,7 @@ export class UserService {
           { name: { $regex: queryRegex } },
           { 'details.tags': { $regex: queryRegex } },
         ],
-        'details.tables.seats': { $gte: tableSize },
+        'details.tables.seats': { $gte: size },
         'details.address.city': { $regex: locationRegex },
       })
       .exec();

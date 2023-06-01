@@ -5,6 +5,9 @@ import { SearchRequest } from 'src/home/search-module/interfaces/search-request.
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Control } from 'src/filters-module/models/control.interface';
 import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
+import { Order } from './order.interface';
+import { UserInfo } from 'src/app/interfaces/user-info.interface';
+import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 
 @Component({
 	selector: 'app-order',
@@ -15,6 +18,8 @@ export class OrderComponent implements OnInit {
 	restaurant!: RestaurantInfo;
 
 	searchRequest?: SearchRequest;
+	@Input()
+	user?: UserInfo;
 
 	controls: Control[] = [];
 	labels: { [key: string]: string } = {
@@ -31,20 +36,27 @@ export class OrderComponent implements OnInit {
 		size: [1, [Validators.required, Validators.min(1)]],
 		arrival: ['', [Validators.required, Validators.pattern(/\d\d:\d\d/)]],
 		leave: ['', [Validators.pattern(/\d\d:\d\d/)]],
-		date: ['', Validators.required],
+		date: [new Date(), Validators.required],
 		tableId: ['', Validators.required],
 	});
 
 	constructor(
 		private orderService: OrderService,
 		private searchService: SearchService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private snackbarService: CustomSnackbarService
 	) {}
 
 	ngOnInit(): void {
 		this.searchRequest = this.searchService.lastSearchedQuery;
+		if (this.searchRequest) {
+			this.orderForm.get('date')?.setValue(this.searchRequest.date);
+			this.orderForm.get('size')?.setValue(this.searchRequest.size);
+			this.orderForm.get('arrival')?.setValue(this.searchRequest.arrival);
+			this.orderForm.get('leave')?.setValue(this.searchRequest.leave);
+		}
 
-		this.controls = Object.keys(this.orderForm.controls).map((key) => {
+		this.controls = Object.keys(this.types).map((key) => {
 			return {
 				name: key,
 				label: this.labels[key] || key,
@@ -53,6 +65,11 @@ export class OrderComponent implements OnInit {
 				disablabed: key === 'leave',
 			};
 		});
+
+		this.orderForm.valueChanges.subscribe((x) => {
+			this.orderForm.get("size")?.setErrors(null);
+			this.tableId?.setErrors(null);
+		})
 	}
 
 	reserve() {
@@ -60,5 +77,49 @@ export class OrderComponent implements OnInit {
 			this.orderForm.markAllAsTouched();
 			return;
 		}
+		const selectedTable = this.restaurant.details?.tables.find((table) => table.id = this.tableId?.value);
+		if (selectedTable?.seats && selectedTable.seats < this.orderForm.get("size")?.value) {
+			this.orderForm.get("size")?.setErrors({ toSmallTable: true });
+			this.tableId?.setErrors({ toSmallTable: true });
+		}
+
+		const request = this.prepareOrderRequest();
+
+		if (request) {
+			this.orderService.postOrder(request)?.subscribe();
+		} else {
+			this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+		}
+	}
+
+	get tableId() {
+		return this.orderForm.get('tableId');
+	}
+
+	prepareOrderRequest(): Order | undefined {
+		const startTimeParts = this.orderForm.get('arrival')?.value.split(":").map((x: string) => parseInt(x));
+		const startTime = new Date().setHours(startTimeParts[0], startTimeParts[1]);
+		let endTime = 0;
+		if (this.orderForm.get('leave')?.value) {
+			const endTimeParts = this.orderForm.get('leave')?.value.split(":").map((x: string) => parseInt(x));
+			const endTime = new Date().setHours(endTimeParts[0], endTimeParts[1]);
+		}
+		
+		const order: Order = {
+			userId: this.user?.id || '',
+			restaurantId: this.restaurant.id || '',
+			tableId: this.tableId?.value,
+			tableSize: this.orderForm.get('size')?.value,
+			date: new Date(this.orderForm.get('date')?.value),
+			time: {
+				startTime: new Date(startTime),
+				endTime: endTime || this.orderForm.get('leave')?.value
+			}
+		}
+		if (Object.values(order).find((val) => val === undefined))
+		{
+			return undefined;
+		}
+		return order;
 	}
 }

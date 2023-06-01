@@ -12,6 +12,7 @@ import { FilterModule } from 'src/filters-module/filters.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrderComponent } from './components/order/order.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
 	declarations: [
@@ -30,6 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
 		FilterModule,
 		ReactiveFormsModule,
 		MatButtonModule,
+		MatSelectModule
 	],
 	exports: [],
 })

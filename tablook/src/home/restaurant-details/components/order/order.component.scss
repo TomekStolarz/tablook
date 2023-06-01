@@ -6,6 +6,7 @@ app-order {
 		flex-wrap: wrap;
 		gap: 24px;
 
+		.table-id-select,
 		app-control {
 			flex: 0 1 40%;
 

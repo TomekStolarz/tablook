@@ -24,7 +24,7 @@ export class OrderController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtGuard)
-  createOrder(@Body() order: OrderDTO): Promise<string> {
+  createOrder(@Body() order: OrderDTO) {
     return this.orderService.placeOrder(order);
   }
 
