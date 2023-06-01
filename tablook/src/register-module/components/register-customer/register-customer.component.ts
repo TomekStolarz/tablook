@@ -10,6 +10,7 @@ import { CountryPhoneCodeService } from 'src/register-module/services/country-ph
 import { RegisterService } from 'src/register-module/services/register.service';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 import { UserType } from 'src/app/interfaces/user-type.enum';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
 	selector: 'app-register-customer',
@@ -40,6 +41,7 @@ export class RegisterCustomerComponent implements OnInit {
 	watchMatcher = new WatchRepeatPasswordErrorStrategy();
 
 	error?: string;
+	isMobile = false;
 
 	countryCodes: CountryPhoneCode[] = [];
 
@@ -47,13 +49,23 @@ export class RegisterCustomerComponent implements OnInit {
 		private fb: FormBuilder,
 		private cps: CountryPhoneCodeService,
 		private registerService: RegisterService,
-		private customSnackbarService: CustomSnackbarService
+		private customSnackbarService: CustomSnackbarService,
+		private responsive: BreakpointObserver
 	) {}
 
 	ngOnInit(): void {
 		this.cps
 			.getCountryCode()
 			.subscribe((codes) => (this.countryCodes = [...codes]));
+		
+		this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+			.subscribe((result) => {
+				if (result.matches) {
+					this.isMobile = true;
+				} else {
+					this.isMobile = false;
+				}
+			});
 	}
 
 	singUp() {
