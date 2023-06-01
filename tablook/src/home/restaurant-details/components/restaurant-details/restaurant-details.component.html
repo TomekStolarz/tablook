@@ -49,6 +49,9 @@
 				[name]="tag"
 			></app-tag>
 		</div>
+		<div class="section" *ngIf="restaurantDetails.id">
+			<app-order [restaurantId]="restaurantDetails.id"></app-order>
+		</div>
 		<div class="section">
 			<span class="h4">Opening hours:</span>
 			<div

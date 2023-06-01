@@ -50,7 +50,7 @@ export class RestaurantService {
 
   getDetailsFromGoogle(placeText: string): Observable<PlaceDetails> {
     const params = {
-      fields: 'reviews,user_ratings_total,rating',
+      fields: 'reviews,user_ratings_total,rating, place_id',
       key: this.apiKey,
     };
     return this.getPlaceId(placeText || '').pipe(
@@ -69,6 +69,7 @@ export class RestaurantService {
                 reviews: googleData.data.result.reviews,
                 rating: googleData.data.result.rating,
                 user_ratings_total: googleData.data.result.user_ratings_total,
+                place_id: place_id,
               };
             }),
             tap(() => this.logger.log('Succefully get place details')),

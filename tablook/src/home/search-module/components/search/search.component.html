@@ -6,11 +6,24 @@
 		></app-filters>
 	</div>
 
-	<div class="results">
-		<app-search-tile
-			*ngFor="let tile of searchResults$ | async"
-			[restaurantInfo]="tile"
-			[userInfo]="user"
-		></app-search-tile>
+	<div class="results" *ngIf="searchResults$ | async as searchResults">
+		<ng-container *ngIf="searchResults.length; else empty">
+			<app-search-tile
+				*ngFor="let tile of searchResults"
+				[restaurantInfo]="tile"
+				[userInfo]="user"
+			></app-search-tile>
+		</ng-container>
 	</div>
 </div>
+
+<ng-template #empty>
+	<div class="no-results" *ngIf="!isSearching">
+		<img
+			[src]="'assets/no-results.png'"
+			[width]="256"
+			[alt]="'No results'"
+		/>
+		<div class="h3">No results for this query.</div>
+	</div>
+</ng-template>

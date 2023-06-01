@@ -188,6 +188,7 @@ export class UserService {
     }
 
     const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+
     const matchedRestaurants = await this.userModel
       .find({
         type: UserType.RESTAURANT,

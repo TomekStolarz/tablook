@@ -11,6 +11,7 @@ import { FreeTableComponent } from './components/free-table/free-table.component
 import { FilterModule } from 'src/filters-module/filters.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrderComponent } from './components/order/order.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import { OrderComponent } from './components/order/order.component';
 		MatTooltipModule,
 		FilterModule,
 		ReactiveFormsModule,
+		MatButtonModule,
 	],
 	exports: [],
 })

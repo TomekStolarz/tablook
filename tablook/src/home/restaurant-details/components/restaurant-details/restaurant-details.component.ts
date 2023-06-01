@@ -73,9 +73,9 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	get url(): string {
-		return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-			this.restaurantDetails?.details?.googleMapsLink || ''
-		)}&key=${apiKey}`;
+		return `https://www.google.com/maps/embed/v1/place?origin=place_id:${
+			this.restaurantDetails?.place_id || ''
+		}&key=${apiKey}`;
 	}
 
 	addToFav() {
