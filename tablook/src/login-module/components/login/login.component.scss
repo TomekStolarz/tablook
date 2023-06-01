@@ -1,36 +1,43 @@
 app-login {
-	display: grid;
-	grid-template-columns: 1fr 2fr;
-	align-items: center;
-	padding: 1.5rem;
+	.login-wrapper {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		align-items: center;
+		padding: 1.5rem;
 
-	.login > form {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
+		.login > form {
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
 
-		.form-title {
-			text-align: center;
+			.form-title {
+				text-align: center;
+			}
+
+			.buttons {
+				display: flex;
+				justify-content: flex-end;
+				gap: 1.5rem;
+				button {
+					border-radius: 1rem;
+					min-width: 100px;
+				}
+			}
 		}
 
-		.buttons {
-			display: flex;
-			justify-content: flex-end;
-			gap: 1.5rem;
-			button {
-				border-radius: 1rem;
-				min-width: 100px;
+		.picutre {
+			justify-self: center;
+			img {
+				width: auto;
+				height: auto;
+				max-width: 55vw;
+				max-height: 70vh;
 			}
 		}
 	}
 
-	.picutre {
-		justify-self: center;
-		img {
-			width: auto;
-			height: auto;
-			max-width: 55vw;
-			max-height: 70vh;
-		}
+	.mobile {
+		grid-template-columns: 1fr;
+		place-items: center;
 	}
 }
