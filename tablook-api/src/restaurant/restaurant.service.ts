@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { apiKey } from 'api-key';
 import { AxiosError } from 'axios';
-import { Observable, catchError, map, switchMap, tap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 import { PlaceDetails } from './interfaces/place-details.interface';
 
 @Injectable()
@@ -20,6 +20,9 @@ export class RestaurantService {
       input: placeText,
       key: this.apiKey,
     };
+    if (!placeText) {
+      return of('');
+    }
     return this.http
       .get<{ candidates: [{ place_id: string }] }>(
         `${this.googleMapsApi}/place/findplacefromtext/json`,
@@ -50,12 +53,20 @@ export class RestaurantService {
 
   getDetailsFromGoogle(placeText: string): Observable<PlaceDetails> {
     const params = {
-      fields: 'reviews,user_ratings_total,rating, place_id',
+      fields: 'reviews,user_ratings_total,rating,place_id',
       key: this.apiKey,
     };
     return this.getPlaceId(placeText || '').pipe(
       switchMap((place_id) => {
         params['place_id'] = place_id;
+        if (!place_id) {
+          return of({
+            reviews: [],
+            rating: 0,
+            user_ratings_total: 0,
+            place_id: '',
+          });
+        }
         return this.http
           .get<{ result: PlaceDetails }>(
             `${this.googleMapsApi}/place/details/json`,

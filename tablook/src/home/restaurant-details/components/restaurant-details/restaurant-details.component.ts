@@ -73,7 +73,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	get url(): string {
-		return `https://www.google.com/maps/embed/v1/place?origin=place_id:${
+		return `https://www.google.com/maps/embed/v1/place?q=place_id:${
 			this.restaurantDetails?.place_id || ''
 		}&key=${apiKey}`;
 	}

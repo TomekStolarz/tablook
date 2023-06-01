@@ -54,5 +54,10 @@ export class OrderComponent implements OnInit {
 		});
 	}
 
-	reserve() {}
+	reserve() {
+		if (this.orderForm.invalid) {
+			this.orderForm.markAllAsTouched();
+			return;
+		}
+	}
 }

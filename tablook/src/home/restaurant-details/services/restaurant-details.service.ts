@@ -43,6 +43,7 @@ export class RestaurantDetailsService {
 						reviews: googleData.reviews,
 						ratings: googleData.rating,
 						totalOpinions: googleData.user_ratings_total,
+						place_id: googleData.place_id
 					};
 				})
 			);

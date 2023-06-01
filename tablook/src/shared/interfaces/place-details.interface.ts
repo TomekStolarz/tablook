@@ -4,4 +4,5 @@ export interface PlaceDetails {
 	user_ratings_total: number;
 	rating: number;
 	reviews: Review[];
+	place_id: string;
 }
