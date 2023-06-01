@@ -50,7 +50,7 @@
 			></app-tag>
 		</div>
 		<div class="section" *ngIf="restaurantDetails.id">
-			<app-order [restaurantId]="restaurantDetails.id"></app-order>
+			<app-order [restaurant]="restaurantDetails"></app-order>
 		</div>
 		<div class="section">
 			<span class="h4">Opening hours:</span>

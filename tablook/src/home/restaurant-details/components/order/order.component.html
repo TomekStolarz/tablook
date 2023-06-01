@@ -11,3 +11,12 @@
 	></app-control>
 </form>
 <button mat-raised-button color="dark" (click)="reserve()">Reserve</button>
+<div class="freetables">
+	<span class="h5">{{ 'Tables availability' }}</span>
+	<div class="tables">
+		<app-free-table
+			*ngFor="let table of restaurant?.freeTables"
+			[freeTableDate]="table"
+		></app-free-table>
+	</div>
+</div>

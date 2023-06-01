@@ -45,4 +45,12 @@ app-order {
 		border-radius: 24px !important;
 		margin-right: 24px;
 	}
+
+	.freetables {
+		.tables {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 24px;
+		}
+	}
 }

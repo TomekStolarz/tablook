@@ -4,6 +4,7 @@ import { SearchService } from 'src/home/search-module/services/search.service';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Control } from 'src/filters-module/models/control.interface';
+import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 
 @Component({
 	selector: 'app-order',
@@ -11,7 +12,7 @@ import { Control } from 'src/filters-module/models/control.interface';
 })
 export class OrderComponent implements OnInit {
 	@Input()
-	restaurantId!: string;
+	restaurant!: RestaurantInfo;
 
 	searchRequest?: SearchRequest;
 
