@@ -1,4 +1,4 @@
-<div class="det-container">
+<div class="det-container" [ngClass]="isMobile ? 'mobile' : ''">
 	<div class="photos-side" *ngIf="restaurantDetails">
 		<ng-image-slider
 			[images]="imagesData"
