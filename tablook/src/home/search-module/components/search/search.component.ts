@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 	user?: UserInfo;
 	user$ = this.store.select(selectUser);
+	isSearching = true;
 
 	constructor(private searchService: SearchService, private store: Store) {}
 
@@ -25,7 +26,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 		const userSub = this.user$.subscribe((user) => {
 			this.user = user;
 		});
+		const searchSub = this.searchService.isSearching$.subscribe(
+			(x) => (this.isSearching = x)
+		);
 		this.subscriptions.push(userSub);
+		this.subscriptions.push(searchSub);
 	}
 
 	ngOnDestroy(): void {

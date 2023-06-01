@@ -55,29 +55,80 @@ export class OrderService {
     return orders.map((order) => this.getOrderInfo(order));
   }
 
-  async placeOrder(order: OrderDTO): Promise<string> {
+  async placeOrder(order: OrderDTO) {
     let newOrder;
-    const orderExits = await this.orderModel.find({
-      restaurantId: order.restaurantId,
-      date: order.date,
-      tableId: order.tableId,
-      time: {
-        $and: [
-          { startTime: { $gt: order.time.startTime } },
-          { endTime: { $lt: order.time.endTime } },
-        ],
-      },
+    const restaurant = await this.userService.findRestaurantById(
+      order.restaurantId,
+    );
+
+    const day = new Date(order.date).toLocaleDateString('en-US', {
+      weekday: 'long',
     });
+
+    const dayHours = restaurant.details.openingHours.find((d) => d.day === day);
+    if (!dayHours) {
+      throw new HttpException(
+        'Restaurant is closed on given date',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
+    const closing = new Date(order.date).setHours(hours[2], hours[3]);
+    const opening = new Date(order.date).setHours(hours[0], hours[1]);
+    const endTime = new Date(order.time.endTime || closing);
+    const startTime = new Date(order.time.startTime);
+    order.time.endTime = endTime;
+    order.time.startTime = startTime;
+
+    if (opening > startTime.getTime() || endTime.getTime() > closing) {
+      throw new HttpException(
+        'Restaurant is closed on given time',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const orderExits = await this.orderModel
+      .find({
+        restaurantId: order.restaurantId,
+        date: order.date,
+        tableId: order.tableId,
+        time: {
+          $in: [
+            {
+              startTime: { $gte: startTime },
+              endTime: { $lte: endTime },
+            },
+            {
+              startTime: { $lt: startTime },
+              endTime: { $gt: endTime },
+            },
+            {
+              startTime: { $lt: startTime },
+              endTime: { $lt: endTime },
+            },
+            {
+              startTime: { $gt: startTime },
+              endTime: { $gt: endTime },
+            },
+          ],
+        },
+      })
+      .exec();
+    console.log(order);
     console.log(orderExits);
-    // try {
-    //   newOrder = new this.orderModel({ ...order });
-    //   this.logger.log('Order placed successfully');
-    // } catch (error: any) {
-    //   this.logger.error(error.message);
-    //   throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
-    // }
-    // return newOrder.save();
-    return Promise.resolve('tak');
+    if (orderExits.length) {
+      throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      newOrder = new this.orderModel({ ...order });
+      this.logger.log('Order placed successfully');
+    } catch (error: any) {
+      this.logger.error(error.message);
+      throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+    }
+    newOrder.save();
   }
 
   private getOrderInfo(order: OrderDocument): OrderInfo {

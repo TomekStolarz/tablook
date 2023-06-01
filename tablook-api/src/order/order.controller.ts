@@ -14,6 +14,8 @@ import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { OrderDTO } from './models/orderDTO.interface';
 import { AdminCurrentUserGuard } from 'src/auth/guards/admin-user.guard';
 import { OrderInfo } from './models/order-info.interface';
+import { FreeTable } from 'src/search/models/free-table.interface';
+import { SearchRequest } from 'src/search/models/search-request.interface';
 
 @Controller('order')
 export class OrderController {
@@ -22,7 +24,7 @@ export class OrderController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtGuard)
-  createOrder(@Body() order: OrderDTO): Promise<string> {
+  createOrder(@Body() order: OrderDTO) {
     return this.orderService.placeOrder(order);
   }
 
@@ -36,6 +38,14 @@ export class OrderController {
       return this.getAllOrder(userId);
     }
     return this.orderService.getOrderDetails(userId, orderId);
+  }
+
+  @Post('freetable/:id')
+  getFreeTables(
+    @Param('id') restaurantId: string,
+    @Body() request: SearchRequest,
+  ): Promise<FreeTable[]> {
+    return this.orderService.getFreeTableInRestaurant(restaurantId, request);
   }
 
   @Get(':id')

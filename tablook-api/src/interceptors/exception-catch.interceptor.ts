@@ -27,6 +27,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : 'Application error';
 
     this.logger.error(exception);
+    if (status === HttpStatus.UNAUTHORIZED) {
+      if (response.req.cookies['auth-cookie']) {
+        this.logger.log('Clearing cookie');
+        response.clearCookie('auth-cookie');
+      }
+    }
 
     response.status(status).json({
       statusCode: status,

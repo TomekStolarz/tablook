@@ -27,6 +27,7 @@ export class SearchService {
       this.logger.log('Founded restaurant with passed criteria');
     } else {
       this.logger.warn('No restaurant with given criteria');
+      this.logger.warn(request);
     }
     const results = await this.orderService.getFreeTables(restaurants, request);
     if (request.rating) {

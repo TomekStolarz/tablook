@@ -14,6 +14,7 @@ export class SearchService {
 	searchResults: RestaurantSearchInfo[] = [];
 	searchResults$: BehaviorSubject<RestaurantSearchInfo[]> =
 		new BehaviorSubject<RestaurantSearchInfo[]>([]);
+	isSearching$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 	lastSearchedQuery?: SearchRequest;
 
 	constructor(
@@ -31,12 +32,14 @@ export class SearchService {
 			return;
 		}
 		this.lastSearchedQuery = searchQuery;
+		this.isSearching$.next(true);
 		this.http
 			.post<RestaurantSearchInfo[]>(`${this.apiPath}/search`, searchQuery)
 			.pipe(
 				tap((results) => {
 					this.searchResults = results;
 					this.searchResults$.next(this.searchResults);
+					this.isSearching$.next(false);
 				}),
 				catchError((error: HttpErrorResponse) => {
 					this.customSnackbarService.error(
@@ -52,8 +55,8 @@ export class SearchService {
 	filterResults(filterKey: string) {
 		const date = new Date();
 		const request = {
-			date: date.toDateString(),
-			size: 2,
+			date: date.toISOString(),
+			size: 1,
 			arrival: `${date.getHours()}:${date.getMinutes()}`,
 			query: filterKey,
 		};

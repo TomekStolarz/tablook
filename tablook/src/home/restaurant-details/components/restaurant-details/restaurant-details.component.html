@@ -49,6 +49,12 @@
 				[name]="tag"
 			></app-tag>
 		</div>
+		<div class="section" *ngIf="restaurantDetails.id">
+			<app-order
+				[user]="user"
+				[restaurant]="restaurantDetails"
+			></app-order>
+		</div>
 		<div class="section">
 			<span class="h4">Opening hours:</span>
 			<div
@@ -73,7 +79,7 @@
 				></app-review-box>
 			</div>
 		</div>
-		<div class="section">
+		<div class="section" *ngIf="restaurantDetails.place_id">
 			<iframe
 				width="100%"
 				loading="lazy"

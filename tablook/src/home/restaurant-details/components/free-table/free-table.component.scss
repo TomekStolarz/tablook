@@ -1,0 +1,15 @@
+app-free-table {
+	.free-table-wrapper {
+		display: grid;
+
+		.hours {
+			display: flex;
+			gap: 24px;
+			flex-wrap: wrap;
+		}
+
+		.title {
+			font-weight: bold;
+		}
+	}
+}

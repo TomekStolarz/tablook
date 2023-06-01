@@ -186,11 +186,10 @@ export class UserService {
     if (location) {
       locationRegex = new RegExp(location.trim(), 'i');
     }
-    console.log(queryRegex);
-    console.log(locationRegex);
-    console.log(tableSize);
-    console.log(UserType.RESTAURANT);
+
     const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+    const size = parseInt(new Number(tableSize).toString());
+
     const matchedRestaurants = await this.userModel
       .find({
         type: UserType.RESTAURANT,
@@ -198,7 +197,7 @@ export class UserService {
           { name: { $regex: queryRegex } },
           { 'details.tags': { $regex: queryRegex } },
         ],
-        'details.tables.seats': { $gte: tableSize },
+        'details.tables.seats': { $gte: size },
         'details.address.city': { $regex: locationRegex },
       })
       .exec();
@@ -215,7 +214,6 @@ export class UserService {
     return matchedRestaurants
       .map((rest) => this.getUserInfo(rest))
       .filter((restaurant) => {
-        console.log(restaurant);
         const dayHours = restaurant.details.openingHours.find(
           (d) => d.day === day,
         );

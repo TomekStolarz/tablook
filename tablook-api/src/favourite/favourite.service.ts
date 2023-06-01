@@ -40,7 +40,7 @@ export class FavouriteService {
       ? [...userData.favourites, favourite.favourite]
       : [favourite.favourite];
 
-    const user = await this.userService.updateUser(favourite.userId, {
+    await this.userService.updateUser(favourite.userId, {
       favourites: favourites,
     });
     this.logger.log(`Successfully added restaurant to favourites`);
@@ -71,8 +71,7 @@ export class FavouriteService {
       ...userData.favourites?.filter((fav) => fav !== favourite.favourite),
     ];
 
-    console.log(newFavourites);
-    const user = await this.userService.updateUser(favourite.userId, {
+    await this.userService.updateUser(favourite.userId, {
       favourites: newFavourites,
     });
     this.logger.log(`Successfully deleted restaurant from favourites`);
