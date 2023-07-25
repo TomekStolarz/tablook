@@ -1,68 +1,70 @@
-<section class="login">
-	<form [formGroup]="loginForm">
-		<app-error-notification
-			*ngIf="!!error"
-			[error]="error"
-			class="col-5"
-		></app-error-notification>
-		<div class="form-title h2">Login to tablook</div>
-		<mat-form-field>
-			<mat-label>Email</mat-label>
-			<input
-				type="email"
-				matInput
-				formControlName="email"
-				[errorStateMatcher]="matcher"
-			/>
-			<mat-error
-				*ngIf="email?.invalid && (email?.dirty || email?.touched)"
-			>
-				<ng-template
-					[ngTemplateOutlet]="(email?.errors && email?.errors?.['email']) ? emailError : requiredError"
-				></ng-template>
-				<ng-template #emailError>
-					Please enter a valid email address
-				</ng-template>
-				<ng-template #requiredError>
-					Email is <strong>required</strong>
-				</ng-template>
-			</mat-error>
-		</mat-form-field>
+<div class="login-wrapper" [ngClass]="isMobile ? 'mobile' : ''">
+	<section class="login">
+		<form [formGroup]="loginForm">
+			<app-error-notification
+				*ngIf="!!error"
+				[error]="error"
+				class="col-5"
+			></app-error-notification>
+			<div class="form-title h2">Login to tablook</div>
+			<mat-form-field>
+				<mat-label>Email</mat-label>
+				<input
+					type="email"
+					matInput
+					formControlName="email"
+					[errorStateMatcher]="matcher"
+				/>
+				<mat-error
+					*ngIf="email?.invalid && (email?.dirty || email?.touched)"
+				>
+					<ng-template
+						[ngTemplateOutlet]="(email?.errors && email?.errors?.['email']) ? emailError : requiredError"
+					></ng-template>
+					<ng-template #emailError>
+						Please enter a valid email address
+					</ng-template>
+					<ng-template #requiredError>
+						Email is <strong>required</strong>
+					</ng-template>
+				</mat-error>
+			</mat-form-field>
 
-		<mat-form-field>
-			<mat-label>Password</mat-label>
-			<input
-				type="password"
-				matInput
-				formControlName="password"
-				[errorStateMatcher]="matcher"
-				(keydown.enter)="login()"
+			<mat-form-field>
+				<mat-label>Password</mat-label>
+				<input
+					type="password"
+					matInput
+					formControlName="password"
+					[errorStateMatcher]="matcher"
+					(keydown.enter)="login()"
+				/>
+				<mat-error
+					*ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.errors?.['required']"
+				>
+					Password is <strong>required</strong>
+				</mat-error>
+			</mat-form-field>
+			<div class="buttons">
+				<button mat-button color="dark">Restore password</button>
+				<button mat-raised-button color="dark" (click)="login()">
+					Login
+				</button>
+			</div>
+		</form>
+	</section>
+	<section class="picutre" *ngIf="!isMobile">
+		<picture>
+			<img
+				ngSrc="assets/login-picture.webp"
+				[alt]="'User trying to login'"
+				data-author="vecteezy.com"
+				[width]="1380"
+				[height]="920"
+				priority
+				[routerLink]="'/'"
+				class="pointer"
 			/>
-			<mat-error
-				*ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.errors?.['required']"
-			>
-				Password is <strong>required</strong>
-			</mat-error>
-		</mat-form-field>
-		<div class="buttons">
-			<button mat-button color="dark">Restore password</button>
-			<button mat-raised-button color="dark" (click)="login()">
-				Login
-			</button>
-		</div>
-	</form>
-</section>
-<section class="picutre">
-	<picture>
-		<img
-			ngSrc="assets/login-picture.webp"
-			[alt]="'User trying to login'"
-			data-author="vecteezy.com"
-			[width]="1380"
-			[height]="920"
-			priority
-			[routerLink]="'/'"
-			class="pointer"
-		/>
-	</picture>
-</section>
+		</picture>
+	</section>
+</div>

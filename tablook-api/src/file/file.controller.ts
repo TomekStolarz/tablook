@@ -59,7 +59,7 @@ export class FileController {
   deleteFile(@Param('id') id: string) {
     try {
       unlink(join(process.cwd(), `upload/${id}`), (err) => {
-        throw new BadRequestException(`Bad id provided: ${err.message}`);
+        throw new BadRequestException(`Bad id provided: ${err}`);
       });
       return;
     } catch (error) {

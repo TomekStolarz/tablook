@@ -1,4 +1,4 @@
-<nav>
+<nav [ngClass]="isMobile ? 'wrap' : ''">
 	<div class="logo" [routerLink]="'/'">
 		<img [src]="'assets/icons/logoIcon.svg'" alt="logo" />
 	</div>

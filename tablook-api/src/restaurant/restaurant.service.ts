@@ -17,12 +17,13 @@ export class RestaurantService {
     const params = {
       fields: 'place_id',
       inputtype: 'textquery',
-      input: placeText,
+      input: decodeURI(placeText),
       key: this.apiKey,
     };
     if (!placeText) {
       return of('');
     }
+
     return this.http
       .get<{ candidates: [{ place_id: string }] }>(
         `${this.googleMapsApi}/place/findplacefromtext/json`,

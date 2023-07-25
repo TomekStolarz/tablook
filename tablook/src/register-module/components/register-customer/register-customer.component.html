@@ -1,6 +1,6 @@
 <section class="container">
 	<div class="h2 text-center">Register in tablook</div>
-	<form [formGroup]="registerForm" class="col-5">
+	<form [formGroup]="registerForm" [ngClass]="isMobile ? 'col-10' : 'col-5'">
 		<app-error-notification
 			*ngIf="!!error"
 			[error]="error"

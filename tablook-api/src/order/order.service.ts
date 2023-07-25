@@ -284,7 +284,12 @@ export class OrderService {
               /(?<=place\/).*?(?=\/)/,
             )?.[0],
           ),
-        );
+        ).catch((error) => ({
+          user_ratings_total: 0,
+          rating: 0,
+          reviews: [],
+          place_id: '',
+        }));
         return {
           id: restaurant.id,
           name: restaurant.name,

@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { selectUser } from 'src/app/store/user.selector';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { FavouriteService } from 'src/shared/services/favourite.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
 	selector: 'app-restaurant-details',
@@ -18,6 +19,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 	user?: UserInfo;
 	user$ = this.store.select(selectUser);
+	isMobile = false;
 
 	restaurantDetails!: RestaurantInfo;
 
@@ -27,7 +29,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private restaurantService: RestaurantDetailsService,
 		private store: Store,
-		private favouriteService: FavouriteService
+		private favouriteService: FavouriteService,
+		private responsive: BreakpointObserver
 	) {}
 
 	ngOnInit(): void {
@@ -66,6 +69,17 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 			this.user = user;
 		});
 		this.subscriptions.push(userSub);
+
+		const respSub = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+			.subscribe((result) => {
+				if (result.matches) {
+					this.isMobile = true;
+				} else {
+					this.isMobile = false;
+				}
+			});
+
+		this.subscriptions.push(respSub);
 	}
 
 	ngOnDestroy(): void {

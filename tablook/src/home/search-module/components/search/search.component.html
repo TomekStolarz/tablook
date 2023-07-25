@@ -1,4 +1,4 @@
-<div class="search-wrapper">
+<div class="search-wrapper" [ngClass]="isMobile ? 'mobile' : ''">
 	<div class="filters">
 		<app-filters
 			[isExchancedForm]="true"

@@ -45,4 +45,25 @@ app-main {
 			}
 		}
 	}
+	.wrap {
+		app-fast-filters {
+			flex-wrap: wrap;
+			gap: 24px;
+		}
+
+		&.quick-search {
+			padding-bottom: 24px;
+		}
+
+		app-filters {
+			.filter-container {
+				flex-wrap: wrap;
+				gap: 24px;
+
+				app-control {
+					flex-grow: 1;
+				}
+			}
+		}
+	}
 }
