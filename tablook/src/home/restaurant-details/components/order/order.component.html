@@ -24,13 +24,21 @@
 		>
 	</mat-form-field>
 </form>
-<button mat-raised-button color="dark" (click)="reserve()">Reserve</button>
+<div class="action-buttons">
+	<button mat-stroked-button color="dark" (click)="refresh()">Refresh</button>
+	<button mat-raised-button color="dark" (click)="reserve()">Reserve</button>
+</div>
 <div class="freetables">
 	<span class="h5">{{ 'Tables availability' }}</span>
 	<div class="tables">
-		<app-free-table
-			*ngFor="let table of restaurant?.freeTables"
-			[freeTableDate]="table"
-		></app-free-table>
+		<ng-container *ngIf="restaurant.freeTables?.length; else zeroTables">
+			<app-free-table
+				*ngFor="let table of restaurant?.freeTables"
+				[freeTableDate]="table"
+			></app-free-table>
+		</ng-container>
+		<ng-template #zeroTables>
+			<span>No vacant tables</span>
+		</ng-template>
 	</div>
 </div>
