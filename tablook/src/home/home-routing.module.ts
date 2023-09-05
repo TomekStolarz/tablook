@@ -25,6 +25,12 @@ const routes: Routes = [
 						(m) => m.SearchModule
 					),
 			},
+			{
+				path: 'account-details',
+				loadChildren: () => import('../account-module/account.module').then(
+					(m) => m.AccountModule
+				),
+			}
 		],
 	},
 ];

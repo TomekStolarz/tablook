@@ -1,0 +1,13 @@
+<nav>
+	<button
+		*ngFor="let tab of tabs"
+		mat-raised-button
+		[routerLink]="tab.route"
+		routerLinkActive="active-tab"
+	>
+		{{ tab.name }}
+	</button>
+</nav>
+<aside>
+	<router-outlet></router-outlet>
+</aside>
