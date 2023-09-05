@@ -1,0 +1,72 @@
+<form [formGroup]="settingsForm">
+	<div class="filter">
+		<label>Email</label>
+		<mat-form-field>
+			<mat-label>Email</mat-label>
+			<input readonly disabled type="email" matInput />
+		</mat-form-field>
+	</div>
+	<app-setting
+		*ngFor="let setting of settingFields"
+		[setting]="setting"
+		[form]="settingsForm"
+		(editingStateChange)="checkEditingStates()"
+	></app-setting>
+	<app-setting
+		*ngIf="settingFields[settingFields.length - 1].editing"
+		[setting]="passwordRepeatField"
+		[actionVisible]="false"
+	></app-setting>
+
+	<!-- <div class="filter">
+		<label>Phone</label>
+		<div class="phone-group">
+			<mat-form-field>
+				<mat-label>Prefix</mat-label>
+				<mat-select
+					formControlName="prefix"
+					[errorStateMatcher]="matcher"
+					[disabled]="!isEditable"
+				>
+					<mat-option
+						*ngFor="let code of coutryCodes | async"
+						[value]="code.phoneCode"
+					>
+						{{ code.phoneCode | phonePrefix }}
+					</mat-option>
+				</mat-select>
+				<mat-error
+					*ngIf="
+						phonePrefix?.invalid &&
+						(phonePrefix?.dirty || phonePrefix?.touched)
+					"
+				>
+					<span *ngIf="phone?.errors?.['required']"
+						>Select option!</span
+					>
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Phone</mat-label>
+				<input
+					type="text"
+					matInput
+					formControlName="phone"
+					[errorStateMatcher]="matcher"
+					[disabled]="!isEditable"
+				/>
+			</mat-form-field>
+		</div>
+	</div> -->
+
+	<div class="actions">
+		<button mat-stroked-button color="dark">
+			<mat-icon class="icon-danger">delete_outline</mat-icon>
+			<span>Delete account</span>
+		</button>
+		<button *ngIf="isEditable" mat-stroked-button color="dark">
+			<mat-icon>save_outline</mat-icon>
+			<span>Save all</span>
+		</button>
+	</div>
+</form>

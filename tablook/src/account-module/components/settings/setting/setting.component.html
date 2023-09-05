@@ -1,0 +1,90 @@
+<label>{{ setting.name }}</label>
+<mat-form-field>
+	<mat-label>{{ setting.name }}</mat-label>
+	<input
+		[type]="setting.type"
+		matInput
+		[formControl]="setting.control"
+		[disabled]="!setting.editing"
+		[readonly]="!setting.editing"
+	/>
+	<mat-error
+		*ngIf="
+			setting.control?.invalid &&
+			(setting.control?.dirty || setting.control?.touched)
+		"
+	>
+		<ng-container [ngTemplateOutlet]="errorTemplate"></ng-container>
+	</mat-error>
+</mat-form-field>
+<button *ngIf="setting.editing" mat-icon-button color="dark">
+	<mat-icon>save_outline</mat-icon>
+</button>
+<button
+	*ngIf="actionVisible"
+	mat-icon-button
+	color="dark"
+	(click)="onEditClick()"
+>
+	<mat-icon *ngIf="!setting.editing; else cancelTmp">edit_outline</mat-icon>
+	<ng-template #cancelTmp>
+		<mat-icon>cancel</mat-icon>
+	</ng-template>
+</button>
+
+<ng-template #noEmpty>
+	<mat-error
+		*ngIf="
+			setting.control?.invalid &&
+			(setting.control?.dirty || setting.control?.touched)
+		"
+	>
+		<span>This field cannot be empty</span>
+	</mat-error>
+</ng-template>
+
+<ng-template #phoneErrors>
+	<mat-error
+		*ngIf="
+			setting.control?.invalid &&
+			(setting.control?.dirty || setting.control?.touched)
+		"
+	>
+		<span *ngIf="setting.control?.errors?.['required']"
+			>Select option!</span
+		>
+	</mat-error>
+</ng-template>
+
+<ng-template #passwordErrors>
+	<mat-error
+		class="password-errors"
+		*ngIf="
+			setting.control?.invalid &&
+			(setting.control?.dirty || setting.control?.touched)
+		"
+	>
+		<span *ngIf="setting.control?.errors?.['required']"
+			>Password is <strong>required</strong></span
+		>
+		<span *ngIf="setting.control?.errors?.['minlength']"
+			>Password should have at least 8 characters</span
+		>
+		<ng-container *ngIf="setting.control?.errors?.['errors']">
+			<span *ngFor="let error of setting.control?.errors?.['errors']">
+				{{ error }}
+			</span>
+		</ng-container>
+	</mat-error>
+</ng-template>
+
+<ng-template #passwordRepeatErrors>
+	<mat-error
+		*ngIf="
+						(setting.control?.invalid || form.errors?.['notSame']) &&
+						(setting.control?.dirty || setting.control?.touched) 
+					"
+	>
+		Password not match
+	</mat-error>
+</ng-template>
