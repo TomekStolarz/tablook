@@ -80,7 +80,7 @@ export class RegisterRestaurantComponent implements AfterViewInit {
 			name: formData.name,
 			email: formData.email,
 			password: formData.password,
-			phone: `+${formData.phonePrefix}${formData.phone}`,
+			phone: `+${formData.phonePrefix} ${formData.phone}`,
 			type: UserType.RESTAURANT,
 			details: {
 				address: {
