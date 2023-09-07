@@ -13,3 +13,16 @@ label {
 	min-width: 120px;
 	width: 10%;
 }
+
+button {
+	align-self: flex-start;
+}
+
+.password-errors {
+	&::before {
+		height: 0;
+	}
+
+	display: flex;
+	flex-direction: column;
+}

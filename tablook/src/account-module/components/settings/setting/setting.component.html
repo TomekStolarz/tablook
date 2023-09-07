@@ -1,21 +1,19 @@
 <label>{{ setting.name }}</label>
+<mat-form-field *ngIf="setting.additionalSelect">
+	<mat-label>{{ setting.additionalSelect.name }}</mat-label>
+	<mat-select [formControl]="setting.additionalSelect.control">
+		<mat-option
+			*ngFor="let code of setting.additionalSelect.settingData | async"
+			[value]="code.value"
+		>
+			{{ code.label }}
+		</mat-option>
+	</mat-select>
+</mat-form-field>
 <mat-form-field>
 	<mat-label>{{ setting.name }}</mat-label>
-	<input
-		[type]="setting.type"
-		matInput
-		[formControl]="setting.control"
-		[disabled]="!setting.editing"
-		[readonly]="!setting.editing"
-	/>
-	<mat-error
-		*ngIf="
-			setting.control?.invalid &&
-			(setting.control?.dirty || setting.control?.touched)
-		"
-	>
-		<ng-container [ngTemplateOutlet]="errorTemplate"></ng-container>
-	</mat-error>
+	<input [type]="setting.type" matInput [formControl]="setting.control" />
+	<ng-container [ngTemplateOutlet]="errorTemplate"></ng-container>
 </mat-form-field>
 <button *ngIf="setting.editing" mat-icon-button color="dark">
 	<mat-icon>save_outline</mat-icon>

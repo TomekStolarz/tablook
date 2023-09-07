@@ -49,7 +49,7 @@ export class AuthService {
 	}
 
 	isAuth() {
-		return this.httpClient.get(`${this.apiPath}/auth`).pipe(
+		return this.httpClient.get<UserInfo>(`${this.apiPath}/auth`).pipe(
 			map((data: UserInfo) => {
 				if (data) {
 					this.store.dispatch(UserActions.addUser({ user: data }));

@@ -56,9 +56,24 @@ export class SettingComponent implements OnInit{
   onEditClick()
   {
     this.setting.editing = !this.setting.editing;
-    if (!this.setting.editing) {
-      this.setting.control.reset();
+    if (this.setting.editing) {
+      this.enableEdit();
+    } else {
+      this.disableEdit();
     }
+
     this.editingStateChange.emit();
+  }
+
+  enableEdit() {
+    this.setting.control.enable();
+    this.setting.additionalSelect?.control.enable();
+  }
+
+  disableEdit() {
+    this.setting.control.disable();
+    this.setting.additionalSelect?.control.disable();
+    this.setting.control.reset();
+    this.setting.additionalSelect?.control.reset();
   }
 }
