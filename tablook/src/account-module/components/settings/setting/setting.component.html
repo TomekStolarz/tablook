@@ -15,7 +15,12 @@
 	<input [type]="setting.type" matInput [formControl]="setting.control" />
 	<ng-container [ngTemplateOutlet]="errorTemplate"></ng-container>
 </mat-form-field>
-<button *ngIf="setting.editing" mat-icon-button color="dark">
+<button
+	*ngIf="setting.editing"
+	mat-icon-button
+	color="dark"
+	(click)="onSaveClick()"
+>
 	<mat-icon>save_outline</mat-icon>
 </button>
 <button

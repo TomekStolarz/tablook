@@ -18,6 +18,7 @@
 			*ngFor="let setting of settingFields"
 			[setting]="setting"
 			[form]="settingsForm"
+			[userId]="userId"
 			(editingStateChange)="checkEditingStates()"
 		></app-setting>
 		<app-setting
@@ -27,11 +28,16 @@
 		></app-setting>
 
 		<div class="actions">
-			<button mat-stroked-button color="dark">
+			<button mat-stroked-button color="dark" (click)="onDeleteAccount()">
 				<mat-icon class="icon-danger">delete_outline</mat-icon>
 				<span>Delete account</span>
 			</button>
-			<button *ngIf="isEditable" mat-stroked-button color="dark">
+			<button
+				*ngIf="isEditable"
+				mat-stroked-button
+				color="dark"
+				(click)="onSaveAll()"
+			>
 				<mat-icon>save_outline</mat-icon>
 				<span>Save all</span>
 			</button>
