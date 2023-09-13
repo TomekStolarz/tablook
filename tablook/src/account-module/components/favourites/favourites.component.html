@@ -1,1 +1,4 @@
-<p>favourites works!</p>
+<app-fav-tile
+	*ngFor="let tile of favouriteData$ | async"
+	[restaurantInfo]="tile"
+></app-fav-tile>
