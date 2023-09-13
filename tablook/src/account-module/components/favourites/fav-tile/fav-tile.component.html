@@ -1,0 +1,35 @@
+<div class="image">
+	<img
+		[src]="'http://localhost:3000/file/' + restaurantInfo.image"
+		[alt]="'Restaurant profile image'"
+	/>
+</div>
+<div class="details">
+	<mat-icon
+		class="favorite-icon h1 pointer"
+		[ngClass]="!!restaurantInfo.isFavourite ? 'in-favourite' : ''"
+		(click)="handleFavChange($event)"
+		[matTooltipPosition]="'right'"
+		[matTooltip]="
+			!restaurantInfo.isFavourite
+				? 'Add to favourites'
+				: 'Remove from favourites'
+		"
+		>favorite_outline
+	</mat-icon>
+	<div class="h4 title-row">
+		<span>{{ restaurantInfo.name }}</span>
+	</div>
+	<span class="small-details h6">
+		{{ restaurantInfo.address | addressFormat }}
+	</span>
+	<span class="small-details h6">
+		{{ 'Phone ' + restaurantInfo.phone }}
+	</span>
+	<div class="tags">
+		<app-tag
+			*ngFor="let tag of restaurantInfo.tags.slice(0, 4)"
+			[name]="tag"
+		></app-tag>
+	</div>
+</div>

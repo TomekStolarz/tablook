@@ -17,6 +17,8 @@ import { CountryPhoneCodeService } from 'src/register-module/services/country-ph
 import { TbCountryPhoneCodeService } from 'src/app/services/tb-country-phone-code.service';
 import { MatIconModule } from '@angular/material/icon';
 import { SettingComponent } from './components/settings/setting/setting.component';
+import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -27,7 +29,8 @@ import { SettingComponent } from './components/settings/setting/setting.componen
     ReservationsComponent,
     FavouritesComponent,
     ContactComponent,
-    SettingComponent
+    SettingComponent,
+    FavTileComponent
   ],
   providers: [
 		{
@@ -46,6 +49,7 @@ import { SettingComponent } from './components/settings/setting/setting.componen
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    MatTooltipModule,
   ]
 })
 export class AccountModule { }
