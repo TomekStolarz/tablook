@@ -12,6 +12,9 @@ nav {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
+	position: sticky;
+	top: 70px;
+	height: calc(100svh - 70px);
 	background-color: $primary-white;
 
 	button {
