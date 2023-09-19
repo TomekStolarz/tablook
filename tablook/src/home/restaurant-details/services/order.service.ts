@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Order } from '../components/order/order.interface';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 import { EMPTY, catchError, tap } from 'rxjs';
+import { OrderDetails } from '../components/order/order-details.type';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,9 @@ export class OrderService {
         return EMPTY;
       })
     );
+  }
+
+  getOrders(userId: string) {
+    return this.http.get<OrderDetails[]>(`${this.apiPath}/order/${userId}`);
   }
 }

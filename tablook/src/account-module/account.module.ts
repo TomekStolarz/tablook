@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SettingComponent } from './components/settings/setting/setting.component';
 import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { OrderTileComponent } from './components/reservations/order-tile/order-tile.component';
 
 
 
@@ -30,7 +31,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FavouritesComponent,
     ContactComponent,
     SettingComponent,
-    FavTileComponent
+    FavTileComponent,
+    OrderTileComponent
   ],
   providers: [
 		{

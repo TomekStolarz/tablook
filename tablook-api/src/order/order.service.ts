@@ -20,6 +20,7 @@ import { FreeTable } from 'src/search/models/free-table.interface';
 import { TableResult } from 'src/search/models/table-result.interface';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 import { lastValueFrom } from 'rxjs';
+import { DetailedOrderInfo } from './models/detailed-order-info.type';
 
 @Injectable()
 export class OrderService {
@@ -45,14 +46,18 @@ export class OrderService {
     }
   }
 
-  async getOrders(userId: string): Promise<OrderInfo[]> {
+  async getOrders(userId: string): Promise<DetailedOrderInfo[]> {
     const userInfo = await this.userService.findById(userId);
     const key =
       userInfo.type === UserType.RESTAURANT ? 'restaurantId' : 'userId';
 
     const orders = await this.orderModel.find({ [key]: userId });
     if (!orders) return [];
-    return orders.map((order) => this.getOrderInfo(order));
+    return Promise.all(
+      orders.map(
+        async (order) => await this.getDetailedOrderInfo(order, userInfo.type),
+      ),
+    );
   }
 
   async placeOrder(order: OrderDTO) {
@@ -140,6 +145,31 @@ export class OrderService {
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
+    };
+  }
+
+  private async getDetailedOrderInfo(
+    order: OrderDocument,
+    userType: UserType,
+  ): Promise<DetailedOrderInfo> {
+    const receiverData = await this.userService.findById(
+      userType === UserType.RESTAURANT ? order.restaurantId : order.userId,
+    );
+    const receiverName =
+      `${receiverData.name}` + userType === UserType.RESTAURANT
+        ? ''
+        : ` ${receiverData.name}`;
+    return {
+      orderId: order.id,
+      userId: order.userId,
+      restaurantId: order.restaurantId,
+      date: order.date,
+      time: order.time,
+      tableId: order.tableId,
+      tableSize: order.tableSize,
+      phone: receiverData.phone,
+      name: receiverName,
+      address: receiverData?.details.address,
     };
   }
 

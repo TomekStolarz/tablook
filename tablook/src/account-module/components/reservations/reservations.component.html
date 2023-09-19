@@ -1,1 +1,11 @@
-<p>reservations works!</p>
+<ng-container *ngIf="orders | async as orders; else noOrders">
+	<ng-container *ngIf="orders.length; else noOrders">
+		<app-order-tile
+			*ngFor="let order of orders"
+			[order]="order"
+		></app-order-tile>
+	</ng-container>
+</ng-container>
+<ng-template #noOrders>
+	<p class="h3">You don't gave any reservations yet</p>
+</ng-template>
