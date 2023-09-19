@@ -22,6 +22,7 @@ import { TbDatePipe } from './pipes/tb-date.pipe';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { AddressFormatPipe } from './pipes/address-format.pipe';
 import { DateToTimePipe } from './pipes/date-to-time.pipe';
+import { IsoStringDatePipe } from './pipes/iso-string-date.pipe';
 
 @NgModule({
 	imports: [
@@ -49,6 +50,7 @@ import { DateToTimePipe } from './pipes/date-to-time.pipe';
 		SafeUrlPipe,
 		AddressFormatPipe,
   		DateToTimePipe,
+    	IsoStringDatePipe,
 	],
 	providers: [CustomSnackbarService, DatePipe],
 	exports: [
@@ -61,7 +63,8 @@ import { DateToTimePipe } from './pipes/date-to-time.pipe';
 		TbDatePipe,
 		SafeUrlPipe,
 		AddressFormatPipe,
-		DateToTimePipe
+		DateToTimePipe,
+		IsoStringDatePipe,
 	],
 })
 export class SharedModule {}

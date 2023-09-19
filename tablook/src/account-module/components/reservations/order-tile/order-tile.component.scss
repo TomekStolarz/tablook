@@ -1,0 +1,34 @@
+@import '../../../../variables';
+
+:host {
+	border-radius: 24px;
+	display: grid;
+	background: $lightgreen;
+	padding: 12px;
+	color: $primary-white;
+	position: relative;
+}
+
+.row {
+	.h6 {
+		display: flex;
+		gap: 1ch;
+	}
+}
+
+.confirmation-icon {
+	position: absolute;
+	top: 0.5rem;
+	right: 1rem;
+	color: $primary-lightgray-1;
+	width: unset;
+	height: unset;
+
+	&.rejected {
+		color: $secondary-error-text;
+	}
+
+	&.confirmed {
+		color: $darkgreen;
+	}
+}

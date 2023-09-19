@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, switchMap, tap } from 'rxjs';
+import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { selectUser } from 'src/app/store/user.selector';
 import { OrderDetails } from 'src/home/restaurant-details/components/order/order-details.type';
-import { Order } from 'src/home/restaurant-details/components/order/order.interface';
 import { OrderService } from 'src/home/restaurant-details/services/order.service';
 
 @Component({
@@ -16,8 +16,11 @@ export class ReservationsComponent {
 
   private readonly store = inject(Store);
 
+  protected user?: UserInfo;
+
   protected orders: Observable<OrderDetails[]> = this.store.pipe(
     select(selectUser),
+    tap((x) => this.user = x),
     map((user) => user?.id || ''),
     switchMap((id) => this.orderService.getOrders(id))
   );

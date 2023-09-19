@@ -21,6 +21,7 @@ import { TableResult } from 'src/search/models/table-result.interface';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 import { lastValueFrom } from 'rxjs';
 import { DetailedOrderInfo } from './models/detailed-order-info.type';
+import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 
 @Injectable()
 export class OrderService {
@@ -118,6 +119,7 @@ export class OrderService {
             },
           ],
         },
+        confirmation: ConfirmationStatus.CONFIRMED,
       })
       .exec();
     console.log(order);
@@ -125,6 +127,8 @@ export class OrderService {
     if (orderExits.length) {
       throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
     }
+
+    order.confirmation = ConfirmationStatus.UNCONFIRMED;
 
     try {
       newOrder = new this.orderModel({ ...order });
@@ -145,6 +149,7 @@ export class OrderService {
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
+      confirmation: order.confirmation,
     };
   }
 
@@ -153,12 +158,11 @@ export class OrderService {
     userType: UserType,
   ): Promise<DetailedOrderInfo> {
     const receiverData = await this.userService.findById(
-      userType === UserType.RESTAURANT ? order.restaurantId : order.userId,
+      userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
     );
     const receiverName =
-      `${receiverData.name}` + userType === UserType.RESTAURANT
-        ? ''
-        : ` ${receiverData.name}`;
+      `${receiverData.name}` +
+      (userType === UserType.RESTAURANT ? ` ${receiverData.surname}` : '');
     return {
       orderId: order.id,
       userId: order.userId,
@@ -169,7 +173,8 @@ export class OrderService {
       tableSize: order.tableSize,
       phone: receiverData.phone,
       name: receiverName,
-      address: receiverData?.details.address,
+      address: receiverData?.details?.address,
+      confirmation: order.confirmation,
     };
   }
 
@@ -207,6 +212,7 @@ export class OrderService {
         date: { $gte: dateStart, $lte: dateEnd },
         tableSize: { $gte: request.size },
         'time.startTime': { $gte: _arrival },
+        confirmation: ConfirmationStatus.CONFIRMED,
       })
       .exec();
 
