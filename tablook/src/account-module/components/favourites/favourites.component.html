@@ -1,4 +1,11 @@
-<app-fav-tile
-	*ngFor="let tile of favouriteData$ | async"
-	[restaurantInfo]="tile"
-></app-fav-tile>
+<ng-container *ngIf="favouriteData$ | async as favs; else noFav">
+	<ng-container *ngIf="favs?.length; else noFav">
+		<app-fav-tile
+			*ngFor="let tile of favs"
+			[restaurantInfo]="tile"
+		></app-fav-tile>
+	</ng-container>
+</ng-container>
+<ng-template #noFav>
+	<p class="h3">You don't any favourite restaurant yet</p>
+</ng-template>

@@ -2,5 +2,12 @@
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
+	justify-items: center;
 	gap: 12px;
+	height: 100%;
+}
+
+p {
+	align-self: center;
+	justify-self: center;
 }
