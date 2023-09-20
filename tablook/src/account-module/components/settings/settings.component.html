@@ -1,0 +1,46 @@
+<ng-container *ngIf="settingsForm">
+	<form [formGroup]="settingsForm">
+		<div class="filter">
+			<label>Email</label>
+			<mat-form-field>
+				<mat-label>Email</mat-label>
+				<input
+					readonly
+					disabled
+					type="email"
+					matInput
+					[value]="email"
+				/>
+			</mat-form-field>
+		</div>
+
+		<app-setting
+			*ngFor="let setting of settingFields"
+			[setting]="setting"
+			[form]="settingsForm"
+			[userId]="userId"
+			(editingStateChange)="checkEditingStates()"
+		></app-setting>
+		<app-setting
+			*ngIf="settingFields[settingFields.length - 1].editing"
+			[setting]="passwordRepeatField"
+			[actionVisible]="false"
+		></app-setting>
+
+		<div class="actions">
+			<button mat-stroked-button color="dark" (click)="onDeleteAccount()">
+				<mat-icon class="icon-danger">delete_outline</mat-icon>
+				<span>Delete account</span>
+			</button>
+			<button
+				*ngIf="isEditable"
+				mat-raised-button
+				color="dark"
+				(click)="onSaveAll()"
+			>
+				<mat-icon>save_outline</mat-icon>
+				<span>Save all</span>
+			</button>
+		</div>
+	</form>
+</ng-container>

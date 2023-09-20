@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { BookingTime } from './booking-time.interface';
+import { ConfirmationStatus } from './confirmatiom-status.enum';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -23,6 +24,9 @@ export class Order {
 
   @Prop({ required: true })
   tableSize: number;
+
+  @Prop({ required: true })
+  confirmation: ConfirmationStatus;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

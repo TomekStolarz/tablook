@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, connectable, first, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Response } from 'src/shared/interfaces/response.interface';
 import { UserInfo } from '../interfaces/user-info.interface';
@@ -49,7 +49,8 @@ export class AuthService {
 	}
 
 	isAuth() {
-		return this.httpClient.get(`${this.apiPath}/auth`).pipe(
+		return this.httpClient.get<UserInfo>(`${this.apiPath}/auth`).pipe(
+			first(),
 			map((data: UserInfo) => {
 				if (data) {
 					this.store.dispatch(UserActions.addUser({ user: data }));

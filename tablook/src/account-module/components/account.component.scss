@@ -1,0 +1,35 @@
+@import '../../variables';
+
+:host {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	gap: 12px;
+	height: 100%;
+}
+
+nav {
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	position: sticky;
+	top: 70px;
+	height: calc(100svh - 70px);
+	background-color: $primary-white;
+
+	button {
+		background-color: $primary-gray-1;
+		border-radius: 20px;
+
+		&.active-tab {
+			background-color: $primary-darkgray-1;
+			color: $primary-white;
+			border: 1px solid $primary-white;
+		}
+	}
+}
+
+aside {
+	background-color: $primary-white;
+	padding-top: 24px;
+}

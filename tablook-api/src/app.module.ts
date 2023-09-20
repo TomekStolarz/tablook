@@ -11,6 +11,9 @@ import { FavouriteModule } from './favourite/favourite.module';
 import { OrderModule } from './order/order.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { FastFilterModule } from './fast-filters/fast-filter.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { emailData } from 'email.data';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -25,6 +28,16 @@ import { FastFilterModule } from './fast-filters/fast-filter.module';
     RestaurantModule,
     FastFilterModule,
     SearchModule,
+    MailerModule.forRoot({
+      transport: {
+        host: emailData.host,
+        auth: {
+          user: emailData.email,
+          pass: emailData.pass,
+        },
+      },
+    }),
+    MailModule,
   ],
   controllers: [],
   providers: [

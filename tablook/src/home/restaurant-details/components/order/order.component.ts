@@ -8,6 +8,7 @@ import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 import { Order } from './order.interface';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
+import { ConfirmationStatus } from './confirmatiom-status.enum';
 
 @Component({
 	selector: 'app-order',
@@ -114,7 +115,8 @@ export class OrderComponent implements OnInit {
 			time: {
 				startTime: new Date(startTime),
 				endTime: endTime || this.orderForm.get('leave')?.value
-			}
+			},
+			confirmation: ConfirmationStatus.UNCONFIRMED,
 		}
 		if (Object.values(order).find((val) => val === undefined))
 		{

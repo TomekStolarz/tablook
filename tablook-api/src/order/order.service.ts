@@ -20,6 +20,8 @@ import { FreeTable } from 'src/search/models/free-table.interface';
 import { TableResult } from 'src/search/models/table-result.interface';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
 import { lastValueFrom } from 'rxjs';
+import { DetailedOrderInfo } from './models/detailed-order-info.type';
+import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 
 @Injectable()
 export class OrderService {
@@ -30,6 +32,35 @@ export class OrderService {
     private userService: UserService,
     private restaurantService: RestaurantService,
   ) {}
+
+  async confirmRejectOrder(
+    orderConfirm: Pick<OrderInfo, 'orderId' | 'confirmation'>,
+    restaurantId: string,
+  ) {
+    try {
+      const order = await this.orderModel.findById(orderConfirm.orderId).exec();
+
+      if (!order) return null;
+
+      if (order.restaurantId !== restaurantId) {
+        throw new ForbiddenException();
+      }
+      const updatedOder = await this.orderModel
+        .findByIdAndUpdate(orderConfirm.orderId, {
+          ...order,
+          confirmation: orderConfirm.confirmation,
+        })
+        .exec();
+      this.logger.log('Order confirmation successfully changed');
+      return this.getOrderInfo(updatedOder);
+    } catch (error: any) {
+      if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
 
   async getOrderDetails(userId: string, orderId: string): Promise<OrderInfo> {
     try {
@@ -45,14 +76,18 @@ export class OrderService {
     }
   }
 
-  async getOrders(userId: string): Promise<OrderInfo[]> {
+  async getOrders(userId: string): Promise<DetailedOrderInfo[]> {
     const userInfo = await this.userService.findById(userId);
     const key =
       userInfo.type === UserType.RESTAURANT ? 'restaurantId' : 'userId';
 
     const orders = await this.orderModel.find({ [key]: userId });
     if (!orders) return [];
-    return orders.map((order) => this.getOrderInfo(order));
+    return Promise.all(
+      orders.map(
+        async (order) => await this.getDetailedOrderInfo(order, userInfo.type),
+      ),
+    );
   }
 
   async placeOrder(order: OrderDTO) {
@@ -113,6 +148,7 @@ export class OrderService {
             },
           ],
         },
+        confirmation: ConfirmationStatus.CONFIRMED,
       })
       .exec();
     console.log(order);
@@ -120,6 +156,8 @@ export class OrderService {
     if (orderExits.length) {
       throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
     }
+
+    order.confirmation = ConfirmationStatus.UNCONFIRMED;
 
     try {
       newOrder = new this.orderModel({ ...order });
@@ -140,6 +178,32 @@ export class OrderService {
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
+      confirmation: order.confirmation,
+    };
+  }
+
+  private async getDetailedOrderInfo(
+    order: OrderDocument,
+    userType: UserType,
+  ): Promise<DetailedOrderInfo> {
+    const receiverData = await this.userService.findById(
+      userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
+    );
+    const receiverName =
+      `${receiverData.name}` +
+      (userType === UserType.RESTAURANT ? ` ${receiverData.surname}` : '');
+    return {
+      orderId: order.id,
+      userId: order.userId,
+      restaurantId: order.restaurantId,
+      date: order.date,
+      time: order.time,
+      tableId: order.tableId,
+      tableSize: order.tableSize,
+      phone: receiverData.phone,
+      name: receiverName,
+      address: receiverData?.details?.address,
+      confirmation: order.confirmation,
     };
   }
 
@@ -177,6 +241,7 @@ export class OrderService {
         date: { $gte: dateStart, $lte: dateEnd },
         tableSize: { $gte: request.size },
         'time.startTime': { $gte: _arrival },
+        confirmation: ConfirmationStatus.CONFIRMED,
       })
       .exec();
 

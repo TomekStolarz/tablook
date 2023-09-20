@@ -1,0 +1,54 @@
+@import '../../../../variables';
+
+:host {
+	border-radius: 24px;
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	overflow: hidden;
+	background: $primary-white-hover;
+	cursor: pointer;
+
+	.image {
+		display: grid;
+		place-items: center;
+	}
+
+	.details {
+		.small-details {
+			color: $primary-darkgray-1;
+		}
+
+		.tags {
+			display: flex;
+			gap: 12px;
+			padding-bottom: 8px;
+			flex-wrap: wrap;
+
+			app-tag {
+				min-width: 125px;
+			}
+		}
+
+		display: grid;
+		padding: 0 1%;
+		position: relative;
+
+		.favorite-icon {
+			position: absolute;
+			top: 0.5rem;
+			right: 1rem;
+			color: black;
+			width: unset;
+			height: unset;
+		}
+
+		.in-favourite {
+			color: $favorite-icon;
+		}
+	}
+
+	&:hover {
+		background-color: #fff;
+		outline: $primary-gray-1 solid 1px;
+	}
+}

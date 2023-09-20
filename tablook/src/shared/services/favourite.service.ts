@@ -1,8 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, catchError, of, Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { map, catchError, of, Observable, forkJoin, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CustomSnackbarService } from './custom-snackbar.service';
+import { FavouriteResponse } from '../interfaces/favourites-respone.model';
+import { RestaurantDetailsService } from 'src/home/restaurant-details/services/restaurant-details.service';
+import { RestaurantFavouriteTile } from 'src/account-module/models/restaurant-favourite-tile';
 
 @Injectable({
 	providedIn: 'root',
@@ -10,10 +13,12 @@ import { CustomSnackbarService } from './custom-snackbar.service';
 export class FavouriteService {
 	apiPath = environment.apiPath;
 
-	constructor(
-		private http: HttpClient,
-		private snackbarService: CustomSnackbarService
-	) {}
+	private readonly detailsService = inject(RestaurantDetailsService);
+
+	private readonly http = inject(HttpClient);
+
+	private readonly snackbarService = inject(CustomSnackbarService);
+
 
 	postFavourite(userId: string, favourite: string): Observable<boolean> {
 		return this.http
@@ -54,6 +59,32 @@ export class FavouriteService {
 					return of(false);
 				})
 			);
+	}
+
+	getFavourites(userid: string): Observable<RestaurantFavouriteTile[]> {
+		return this.http.get<FavouriteResponse>(`${this.apiPath}/favourite/${userid}`).pipe(
+			map((favourites) =>
+				favourites.favourite.map((fav) => this.detailsService.getRestaurantDetails(fav, false))
+		  	),
+			switchMap((favs) => forkJoin(favs)),
+			map((restaurantInfo) => 
+				restaurantInfo.map((restaurant) => {
+					return {
+						...restaurant,
+						address: restaurant.details?.address || {
+							city: 'string',
+							country: '',
+							zip: '',
+							street: '',
+							flat: '',
+						},
+						isFavourite: true,
+						tags: restaurant.details?.tags || [],
+						image: restaurant.details?.images[0] || ''
+					}		
+				})
+			)
+		);
 	}
 
 	isRestaurantFavourite(

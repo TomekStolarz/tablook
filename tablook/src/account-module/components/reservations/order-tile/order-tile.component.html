@@ -1,0 +1,71 @@
+<div class="row">
+	<p class="h4">
+		<span
+			>Reservation
+			<span>{{ user?.type === 'customer' ? 'in ' : 'by client ' }}</span>
+			<span>{{ order.name }}</span></span
+		>
+		<span
+			>{{ ' table: ' }}{{ order.tableId }}{{ ' size: '
+			}}{{ order.tableSize }}</span
+		>
+	</p>
+</div>
+<div class="row">
+	<p class="h6">
+		<span>At:</span>
+		<span>{{ order.date | isoStringDate }}</span>
+		<span>
+			<span>{{ order.time.startTime }}</span>
+			<span *ngIf="order.time.endTime">{{
+				' - ' + order.time.endTime
+			}}</span>
+		</span>
+	</p>
+</div>
+<div class="row">
+	<p class="h6">
+		<span>Phone:</span>
+		<span>{{ order.phone }}</span>
+	</p>
+</div>
+<div class="row" *ngIf="order.address">
+	<p class="h6">
+		<span>{{ order.address | addressFormat }}</span>
+	</p>
+</div>
+<div class="buttons" *ngIf="user?.type === 'restaurant'">
+	<button
+		mat-raised-button
+		(click)="onConfirmClick()"
+		[disabled]="order.confirmation"
+	>
+		<mat-icon>check_circle_outline</mat-icon>
+		Confirm
+	</button>
+	<button
+		mat-raised-button
+		(click)="onRejectClick()"
+		[disabled]="order.confirmation"
+	>
+		<mat-icon>cancel_outline</mat-icon>
+		Reject
+	</button>
+</div>
+
+<mat-icon
+	*ngIf="order.confirmation != 2; else rejected"
+	class="confirmation-icon h1 pointer"
+	[ngClass]="order.confirmation ? 'confirmed' : ''"
+	[matTooltipPosition]="'right'"
+	[matTooltip]="iconTooltip"
+	>check_circle_outline
+</mat-icon>
+<ng-template #rejected>
+	<mat-icon
+		class="confirmation-icon rejected h1"
+		[matTooltipPosition]="'right'"
+		[matTooltip]="iconTooltip"
+		>cancel_outline
+	</mat-icon>
+</ng-template>
