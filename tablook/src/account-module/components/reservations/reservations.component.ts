@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, map, switchMap, tap } from 'rxjs';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
@@ -9,7 +9,8 @@ import { OrderService } from 'src/home/restaurant-details/services/order.service
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
-  styleUrls: ['./reservations.component.scss']
+  styleUrls: ['./reservations.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReservationsComponent {
   private readonly orderService = inject(OrderService);

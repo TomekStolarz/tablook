@@ -8,6 +8,7 @@ import {
   Param,
   UseGuards,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -52,5 +53,15 @@ export class OrderController {
   @UseGuards(JwtGuard, AdminCurrentUserGuard)
   getAllOrder(@Param('id') userId: string): Promise<OrderInfo[]> {
     return this.orderService.getOrders(userId);
+  }
+
+  @Patch('confirm/:id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  confirmOrder(
+    @Param('id') restaurantId: string,
+    @Body() order: Pick<OrderInfo, 'orderId' | 'confirmation'>,
+  ) {
+    return this.orderService.confirmRejectOrder(order, restaurantId);
   }
 }

@@ -21,8 +21,6 @@ import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.comp
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderTileComponent } from './components/reservations/order-tile/order-tile.component';
 
-
-
 @NgModule({
   declarations: [
     AccountComponent,
@@ -32,7 +30,7 @@ import { OrderTileComponent } from './components/reservations/order-tile/order-t
     ContactComponent,
     SettingComponent,
     FavTileComponent,
-    OrderTileComponent
+    OrderTileComponent,
   ],
   providers: [
 		{

@@ -34,6 +34,24 @@
 		<span>{{ order.address | addressFormat }}</span>
 	</p>
 </div>
+<div class="buttons" *ngIf="user?.type === 'restaurant'">
+	<button
+		mat-raised-button
+		(click)="onConfirmClick()"
+		[disabled]="order.confirmation"
+	>
+		<mat-icon>check_circle_outline</mat-icon>
+		Confirm
+	</button>
+	<button
+		mat-raised-button
+		(click)="onRejectClick()"
+		[disabled]="order.confirmation"
+	>
+		<mat-icon>cancel_outline</mat-icon>
+		Reject
+	</button>
+</div>
 
 <mat-icon
 	*ngIf="order.confirmation != 2; else rejected"

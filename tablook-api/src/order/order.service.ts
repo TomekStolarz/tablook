@@ -33,6 +33,35 @@ export class OrderService {
     private restaurantService: RestaurantService,
   ) {}
 
+  async confirmRejectOrder(
+    orderConfirm: Pick<OrderInfo, 'orderId' | 'confirmation'>,
+    restaurantId: string,
+  ) {
+    try {
+      const order = await this.orderModel.findById(orderConfirm.orderId).exec();
+
+      if (!order) return null;
+
+      if (order.restaurantId !== restaurantId) {
+        throw new ForbiddenException();
+      }
+      const updatedOder = await this.orderModel
+        .findByIdAndUpdate(orderConfirm.orderId, {
+          ...order,
+          confirmation: orderConfirm.confirmation,
+        })
+        .exec();
+      this.logger.log('Order confirmation successfully changed');
+      return this.getOrderInfo(updatedOder);
+    } catch (error: any) {
+      if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
+
   async getOrderDetails(userId: string, orderId: string): Promise<OrderInfo> {
     try {
       const order = await this.orderModel.findById(orderId).exec();

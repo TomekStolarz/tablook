@@ -4,5 +4,6 @@ import { Order } from "./order.interface";
 export type OrderDetails = {
     name: string;
     phone: string;
+    orderId: string;
     address?: Address;
 } & Order;
