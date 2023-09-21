@@ -1,15 +1,19 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { selectUser } from 'src/app/store/user.selector';
 
 @Component({
 	selector: 'app-main',
 	templateUrl: './main.component.html',
 })
 export class MainComponent implements OnInit, OnDestroy{
-	constructor(private router: Router,
-		private responsive: BreakpointObserver) { }
+	private readonly router = inject(Router);
+	private readonly responsive = inject(BreakpointObserver);
+	protected readonly user = inject(Store).pipe(select(selectUser));
+
 	isMobile = false;
 	responsiveSubscription?: Subscription;
 	
