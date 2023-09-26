@@ -5,4 +5,5 @@ export type DetailedOrderInfo = {
   name: string;
   phone: string;
   address?: Address;
+  finished: boolean;
 } & OrderInfo;

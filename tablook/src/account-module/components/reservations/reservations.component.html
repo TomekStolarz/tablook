@@ -1,7 +1,14 @@
 <ng-container *ngIf="orders | async as orders; else noOrders">
-	<ng-container *ngIf="orders.length; else noOrders">
+	<ng-container
+		*ngIf="orders.future.length || orders.finished.length; else noOrders"
+	>
 		<app-order-tile
-			*ngFor="let order of orders"
+			*ngFor="let order of orders.future"
+			[order]="order"
+			[user]="user"
+		></app-order-tile>
+		<app-order-tile
+			*ngFor="let order of orders.finished"
 			[order]="order"
 			[user]="user"
 		></app-order-tile>

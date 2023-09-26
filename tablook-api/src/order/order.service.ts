@@ -81,7 +81,9 @@ export class OrderService {
     const key =
       userInfo.type === UserType.RESTAURANT ? 'restaurantId' : 'userId';
 
-    const orders = await this.orderModel.find({ [key]: userId });
+    const orders = await this.orderModel
+      .find({ [key]: userId })
+      .sort({ date: 1 });
     if (!orders) return [];
     return Promise.all(
       orders.map(
@@ -192,6 +194,7 @@ export class OrderService {
     const receiverName =
       `${receiverData.name}` +
       (userType === UserType.RESTAURANT ? ` ${receiverData.surname}` : '');
+    const currentDate = new Date();
     return {
       orderId: order.id,
       userId: order.userId,
@@ -204,6 +207,7 @@ export class OrderService {
       name: receiverName,
       address: receiverData?.details?.address,
       confirmation: order.confirmation,
+      finished: order.date.getTime() < currentDate.getTime(),
     };
   }
 

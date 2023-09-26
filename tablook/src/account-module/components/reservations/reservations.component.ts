@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, map, switchMap, tap } from 'rxjs';
+import { Observable, of, map, partition, reduce, switchMap, tap } from 'rxjs';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { selectUser } from 'src/app/store/user.selector';
 import { OrderDetails } from 'src/home/restaurant-details/components/order/order-details.type';
@@ -19,10 +19,16 @@ export class ReservationsComponent {
 
   protected user?: UserInfo;
 
-  protected orders: Observable<OrderDetails[]> = this.store.pipe(
+  protected orders: Observable<{ finished: OrderDetails[], future: OrderDetails[] }> = this.store.pipe(
     select(selectUser),
     tap((x) => this.user = x),
     map((user) => user?.id || ''),
-    switchMap((id) => this.orderService.getOrders(id))
+    switchMap((id) => this.orderService.getOrders(id)),
+    map((orders) => {
+      return {
+        finished: orders.filter((order) => order.finished),
+        future: orders.filter((order) => !order.finished)
+      }
+    }),
   );
 }

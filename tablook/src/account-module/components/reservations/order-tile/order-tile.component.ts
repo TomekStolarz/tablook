@@ -39,6 +39,8 @@ export class OrderTileComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     const date = Number(new Date(this.order.date));
     const currentDate = Number(new Date());
+    this.iconTooltip = this.tootltipMap[this.order.confirmation];
+
     if (currentDate > date && this.order.confirmation === ConfirmationStatus.CONFIRMED) {
       this.backgroud = '#0e8d7e';
     }
@@ -46,8 +48,6 @@ export class OrderTileComponent implements OnInit, OnDestroy{
     if (this.order.confirmation === ConfirmationStatus.REJECTED) {
       this.backgroud = '#ffe1dd';
     }
-
-    this.iconTooltip = this.tootltipMap[this.order.confirmation];
   }
 
   onConfirmClick() {

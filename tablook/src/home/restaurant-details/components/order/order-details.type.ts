@@ -5,5 +5,6 @@ export type OrderDetails = {
     name: string;
     phone: string;
     orderId: string;
+    finished: boolean;
     address?: Address;
 } & Order;
