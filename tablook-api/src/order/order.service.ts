@@ -222,10 +222,14 @@ export class OrderService {
       weekday: 'long',
     });
     const dateStart = new Date(request.date.split('T')[0]);
-    const dateEnd = new Date(dateStart.setHours(24));
+    const dateEnd = new Date(dateStart);
+    dateEnd.setHours(24);
     const arrival = request.arrival || currentTime.toTimeString().slice(0, 5);
     const arrivalPart = arrival.split(':').map((x) => parseInt(x));
-    const _arrival = currentTime.setHours(arrivalPart[0], arrivalPart[1]);
+    const _arrival = new Date(currentTime).setHours(
+      arrivalPart[0],
+      arrivalPart[1],
+    );
 
     if (_arrival < currentTime.getTime()) {
       return [];
@@ -234,7 +238,7 @@ export class OrderService {
     let _leaving = 0;
     if (request.leave) {
       const leavingPart = request.leave.split(':').map((x) => parseInt(x));
-      _leaving = currentTime.setHours(leavingPart[0], leavingPart[1]);
+      _leaving = new Date(currentTime).setHours(leavingPart[0], leavingPart[1]);
 
       if (_leaving < currentTime.getTime()) {
         return [];
@@ -267,6 +271,10 @@ export class OrderService {
     }
     const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
     const closing = new Date().setHours(hours[2], hours[3]);
+
+    if (closing < _arrival) {
+      return [];
+    }
 
     const tables = parsedOrders.reduce((acc, curr) => {
       if (acc[curr.tableId]) {
