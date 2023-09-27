@@ -51,6 +51,9 @@ import { OrderTileComponent } from './components/reservations/order-tile/order-t
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+  ],
+  exports: [
+    ReservationsComponent,
   ]
 })
 export class AccountModule { }
