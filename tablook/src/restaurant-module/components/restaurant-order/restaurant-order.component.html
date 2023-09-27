@@ -1,0 +1,4 @@
+<p>restaurant-order works!</p>
+<ng-container *ngIf="restaurant | async as restaurantInfo">
+	<app-order [restaurant]="restaurantInfo"></app-order>
+</ng-container>

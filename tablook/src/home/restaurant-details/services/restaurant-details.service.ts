@@ -48,6 +48,29 @@ export class RestaurantDetailsService {
 		return this.http.get<UserInfo>(`${this.apiPath}/restaurant/${id}`);
 	}
 
+	getRestaurantOrderDetails(id: string): Observable<RestaurantInfo> {
+		return this.http.get<UserInfo>(`${this.apiPath}/restaurant/${id}`)
+			.pipe(
+				combineLatestWith(this.getFreeTables(id)),
+				map(([resData, freeTables]) => {
+					const properFreeTables: TableResult[] = freeTables.map((table) => {
+						const _table = resData.details?.tables.find(
+						  (tb) => (tb.id = table.tableId),
+						);
+						return {
+						  id: _table?.id || '',
+						  seats: _table?.seats || 1,
+						  available: table.available,
+						};
+					  });
+					return {
+						...resData,
+						freeTables: properFreeTables
+					}
+				})
+				);
+	}
+
 	private getDetailsFromGoogle(
 		userData: UserInfo
 	): Observable<RestaurantInfo> {

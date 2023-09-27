@@ -2,17 +2,41 @@ import { Component, Input, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SearchService } from 'src/home/search-module/services/search.service';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Control } from 'src/filters-module/models/control.interface';
 import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 import { Order } from './order.interface';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 import { ConfirmationStatus } from './confirmatiom-status.enum';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgImageSliderModule } from 'ng-image-slider';
+import { FilterModule } from 'src/filters-module/filters.module';
+import { SharedModule } from 'src/shared/shared.module';
+import { RestaurantDetailsRoutingModule } from '../../restaurant-details-routing.module';
+import { FreeTableComponent } from '../free-table/free-table.component';
 
 @Component({
 	selector: 'app-order',
 	templateUrl: './order.component.html',
+	standalone: true,
+	imports: [
+		SharedModule,
+		CommonModule,
+		RestaurantDetailsRoutingModule,
+		NgImageSliderModule,
+		MatIconModule,
+		MatTooltipModule,
+		FilterModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		MatSelectModule,
+		FreeTableComponent
+	]
 })
 export class OrderComponent implements OnInit {
 	@Input()
