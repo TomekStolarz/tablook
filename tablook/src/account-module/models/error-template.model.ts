@@ -1,0 +1,1 @@
+export type ErrorTemplate = 'required' | 'phone' | 'password' | 'passwordRepeat';

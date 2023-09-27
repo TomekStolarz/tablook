@@ -11,6 +11,7 @@ import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.servi
 import { Subject, Subscription, switchMap } from 'rxjs';
 import { TableResult } from 'src/home/search-module/interfaces/table-result.interface';
 import { RestaurantDetailsService } from '../../services/restaurant-details.service';
+import { ConfirmationStatus } from './confirmatiom-status.enum';
 
 @Component({
 	selector: 'app-order',
@@ -169,7 +170,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 			time: {
 				startTime: new Date(startTime),
 				endTime: new Date(endTime),
-			}
+			},
+			confirmation: ConfirmationStatus.UNCONFIRMED,
 		}
 		if (Object.values(order).find((val) => val === undefined))
 		{

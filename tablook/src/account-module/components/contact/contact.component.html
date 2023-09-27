@@ -1,0 +1,22 @@
+<form [formGroup]="contactForm">
+	<mat-form-field>
+		<mat-label>Topics</mat-label>
+		<mat-select formControlName="topics">
+			<mat-option *ngFor="let topic of topics" [value]="topic">
+				{{ topic }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Topic</mat-label>
+		<input matInput formControlName="topic" />
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Message</mat-label>
+		<textarea matInput formControlName="message"></textarea>
+	</mat-form-field>
+
+	<button mat-raised-button color="dark" (click)="sendEmail()">
+		Send message
+	</button>
+</form>

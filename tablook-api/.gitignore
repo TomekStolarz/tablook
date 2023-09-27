@@ -40,3 +40,4 @@ lerna-debug.log*
 
 # secure data
 api-key.ts
+email.data.ts

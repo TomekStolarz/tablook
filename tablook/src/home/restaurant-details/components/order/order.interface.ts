@@ -1,4 +1,5 @@
 import { BookingTime } from "src/home/search-module/interfaces/booking-time.interface";
+import { ConfirmationStatus } from "./confirmatiom-status.enum";
 
 export interface Order {
   userId: string;
@@ -7,4 +8,5 @@ export interface Order {
   time: BookingTime;
   tableId: string;
   tableSize: number;
+  confirmation: ConfirmationStatus;
 }

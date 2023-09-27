@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authCantMatch } from './guards/auth-cant-match.guard';
+import { authResolver } from './guards/auth.resolver';
 
 const routes: Routes = [
 	{
 		path: 'home',
 		loadChildren: () =>
 			import('../home/home.module').then((m) => m.HomeModule),
+		resolve: [authResolver]
 	},
 	{
 		path: 'login',

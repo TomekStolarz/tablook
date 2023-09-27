@@ -1,2 +1,2 @@
-<app-header [username]="user?.name"></app-header>
+<app-header [username]="(user$ | async)?.name"></app-header>
 <router-outlet></router-outlet>

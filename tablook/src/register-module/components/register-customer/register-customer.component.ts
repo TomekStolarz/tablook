@@ -83,7 +83,7 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
 		const { phonePrefix, passwordRepeat, ...registerData } = {
 			...this.registerForm.getRawValue(),
 		};
-		registerData.phone = `+${phonePrefix}${registerData.phone}`;
+		registerData.phone = `+${phonePrefix} ${registerData.phone}`;
 		this.registerService
 			.register(registerData, UserType.CUSTOMER)
 			.subscribe((response) => {
