@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of, map, partition, reduce, switchMap, tap } from 'rxjs';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { selectUser } from 'src/app/store/user.selector';
+import { ConfirmationStatus } from 'src/home/restaurant-details/components/order/confirmatiom-status.enum';
 import { OrderDetails } from 'src/home/restaurant-details/components/order/order-details.type';
 import { OrderService } from 'src/home/restaurant-details/services/order.service';
 
@@ -26,8 +27,8 @@ export class ReservationsComponent {
     switchMap((id) => this.orderService.getOrders(id)),
     map((orders) => {
       return {
-        finished: orders.filter((order) => order.finished),
-        future: orders.filter((order) => !order.finished)
+        finished: orders.filter((order) => order.finished || order.confirmation === ConfirmationStatus.REJECTED),
+        future: orders.filter((order) => !order.finished && order.confirmation !== ConfirmationStatus.REJECTED)
       }
     }),
   );

@@ -47,7 +47,6 @@ export class OrderService {
       }
       const updatedOder = await this.orderModel
         .findByIdAndUpdate(orderConfirm.orderId, {
-          ...order,
           confirmation: orderConfirm.confirmation,
         })
         .exec();
@@ -191,9 +190,12 @@ export class OrderService {
     const receiverData = await this.userService.findById(
       userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
     );
+    const name = receiverData?.name ?? 'guest';
     const receiverName =
-      `${receiverData.name}` +
-      (userType === UserType.RESTAURANT ? ` ${receiverData.surname}` : '');
+      `${name}` +
+      (userType === UserType.RESTAURANT
+        ? ` ${receiverData?.surname ?? ''}`
+        : '');
     const currentDate = new Date();
     return {
       orderId: order.id,
@@ -203,7 +205,7 @@ export class OrderService {
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
-      phone: receiverData.phone,
+      phone: receiverData?.phone ?? '',
       name: receiverName,
       address: receiverData?.details?.address,
       confirmation: order.confirmation,

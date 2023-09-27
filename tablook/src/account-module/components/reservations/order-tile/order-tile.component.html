@@ -3,7 +3,9 @@
 		<span
 			>Reservation
 			<span>{{ user?.type === 'customer' ? 'in ' : 'by client ' }}</span>
-			<span>{{ order.name }}</span></span
+			<span
+				><strong>{{ order.name }}</strong></span
+			></span
 		>
 		<span
 			>{{ ' table: ' }}{{ order.tableId }}{{ ' size: '
@@ -23,7 +25,7 @@
 		</span>
 	</p>
 </div>
-<div class="row">
+<div class="row" *ngIf="order.phone">
 	<p class="h6">
 		<span>Phone:</span>
 		<span>{{ order.phone }}</span>
@@ -38,7 +40,7 @@
 	<button
 		mat-raised-button
 		(click)="onConfirmClick()"
-		[disabled]="order.confirmation"
+		[disabled]="order.confirmation !== 0 || order.finished"
 	>
 		<mat-icon>check_circle_outline</mat-icon>
 		Confirm
@@ -46,7 +48,7 @@
 	<button
 		mat-raised-button
 		(click)="onRejectClick()"
-		[disabled]="order.confirmation"
+		[disabled]="order.confirmation !== 0 || order.finished"
 	>
 		<mat-icon>cancel_outline</mat-icon>
 		Reject
