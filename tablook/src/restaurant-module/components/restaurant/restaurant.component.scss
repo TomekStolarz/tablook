@@ -1,5 +1,9 @@
 @import '../../../variables';
 
+:host {
+	overflow-y: auto;
+}
+
 nav {
 	display: flex;
 	gap: 24px;
