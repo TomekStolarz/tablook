@@ -12,15 +12,12 @@
 	<mat-form-field class="table-id-select">
 		<mat-label>Table id</mat-label>
 		<mat-select formControlName="tableId">
-			<mat-option
-				*ngFor="let table of restaurant.freeTables"
-				[value]="table.id"
-			>
+			<mat-option *ngFor="let table of freeTables" [value]="table.id">
 				{{ table.id }}
 			</mat-option>
 		</mat-select>
-		<mat-error *ngIf="tableId && tableId.hasError('toSmallTable')"
-			>This table is to small to picked size</mat-error
+		<mat-error *ngIf="orderForm.errors?.['notEnaughSeats']"
+			><span>This table is to small to picked size</span></mat-error
 		>
 	</mat-form-field>
 </form>
@@ -31,9 +28,9 @@
 <div class="freetables">
 	<span class="h5">{{ 'Tables availability' }}</span>
 	<div class="tables">
-		<ng-container *ngIf="restaurant.freeTables?.length; else zeroTables">
+		<ng-container *ngIf="freeTables?.length; else zeroTables">
 			<app-free-table
-				*ngFor="let table of restaurant?.freeTables"
+				*ngFor="let table of freeTables"
 				[freeTableDate]="table"
 			></app-free-table>
 		</ng-container>

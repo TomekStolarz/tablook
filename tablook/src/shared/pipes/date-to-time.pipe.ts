@@ -6,7 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateToTimePipe implements PipeTransform {
 
   transform(date: Date): string {
-    return new Date(date).toISOString().split('T')[1]?.split(':').slice(0, 2).join(':');
+    const properDate = new Date(date);
+    const minutes = properDate.getMinutes();
+    return `${properDate.getHours()}:${minutes < 10 ? `0${minutes}`: minutes}`;
   }
 
 }

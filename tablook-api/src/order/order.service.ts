@@ -221,15 +221,19 @@ export class OrderService {
     const day = new Date(request.date).toLocaleDateString('en-US', {
       weekday: 'long',
     });
-    const dateStart = new Date(request.date.split('T')[0]);
+    const dateStart = new Date(request.date);
     const dateEnd = new Date(dateStart);
     dateEnd.setHours(24);
-    const arrival = request.arrival || currentTime.toTimeString().slice(0, 5);
+
+    let arrival = request.arrival || currentTime.toTimeString().slice(0, 5);
+    if (
+      dateStart.toDateString() !== currentTime.toDateString() &&
+      !request.arrival
+    ) {
+      arrival = dateStart.toTimeString().slice(0, 5);
+    }
     const arrivalPart = arrival.split(':').map((x) => parseInt(x));
-    const _arrival = new Date(currentTime).setHours(
-      arrivalPart[0],
-      arrivalPart[1],
-    );
+    let _arrival = new Date(dateStart).setHours(arrivalPart[0], arrivalPart[1]);
 
     if (_arrival < currentTime.getTime()) {
       return [];
@@ -238,7 +242,7 @@ export class OrderService {
     let _leaving = 0;
     if (request.leave) {
       const leavingPart = request.leave.split(':').map((x) => parseInt(x));
-      _leaving = new Date(currentTime).setHours(leavingPart[0], leavingPart[1]);
+      _leaving = new Date(dateStart).setHours(leavingPart[0], leavingPart[1]);
 
       if (_leaving < currentTime.getTime()) {
         return [];
@@ -270,7 +274,15 @@ export class OrderService {
       return [];
     }
     const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
-    const closing = new Date().setHours(hours[2], hours[3]);
+    const opening = new Date(dateStart).setHours(hours[0], hours[1]);
+    const closing = new Date(dateStart).setHours(hours[2], hours[3]);
+
+    if (
+      _arrival < opening &&
+      dateStart.toDateString() !== currentTime.toDateString()
+    ) {
+      _arrival = opening;
+    }
 
     if (closing < _arrival) {
       return [];
@@ -308,7 +320,7 @@ export class OrderService {
     });
 
     restaurantData.details.tables.forEach((table) => {
-      if (!tables[table.id]) {
+      if (!tables[table.id] && table.seats >= request.size) {
         freeTables.push({
           tableId: table.id,
           available: [{ startTime: new Date(_arrival), endTime: last }],

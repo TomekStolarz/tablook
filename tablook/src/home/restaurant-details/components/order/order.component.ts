@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SearchService } from 'src/home/search-module/services/search.service';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
@@ -22,6 +22,7 @@ import { FilterModule } from 'src/filters-module/filters.module';
 import { SharedModule } from 'src/shared/shared.module';
 import { RestaurantDetailsRoutingModule } from '../../restaurant-details-routing.module';
 import { FreeTableComponent } from '../free-table/free-table.component';
+import { tableSizeValidator } from './table-size.validator.function';
 
 @Component({
 	selector: 'app-order',
@@ -81,11 +82,13 @@ export class OrderComponent implements OnInit, OnDestroy {
 		tableId: ['', Validators.required],
 	});
 
-	private subscription: Subscription[] = []
-
+	private subscription: Subscription[] = [];
 
 	ngOnInit(): void {
-		this.freeTables = [ ...this.restaurant.freeTables ?? [] ];
+		this.freeTables = [...this.restaurant.freeTables ?? []];
+		if (this.restaurant.details?.tables) {
+			this.orderForm.addValidators(tableSizeValidator(this.restaurant.details?.tables));
+		} 
 
 		this.searchRequest = this.searchService.lastSearchedQuery || {date: new Date().toDateString(), size: 1};
 		if (this.searchRequest) {
@@ -104,11 +107,6 @@ export class OrderComponent implements OnInit, OnDestroy {
 				disablabed: key === 'leave',
 			};
 		});
-
-		this.subscription.push(this.orderForm.valueChanges.subscribe((x) => {
-			this.orderForm.controls.size.setErrors(null);
-			this.tableId?.setErrors(null);
-		}));
 
 		this.subscription.push(
 			this.getFreeTables$.pipe(
@@ -139,11 +137,6 @@ export class OrderComponent implements OnInit, OnDestroy {
 			this.orderForm.markAllAsTouched();
 			return;
 		}
-		const selectedTable = this.restaurant.details?.tables.find((table) => table.id === this.tableId?.value)!;
-		if (selectedTable?.seats && selectedTable.seats < this.orderForm.value.size!) {
-			this.orderForm.controls.size.setErrors({ toSmallTable: true });
-			this.tableId.setErrors({ toSmallTable: true });
-		}
 
 		const request = this.prepareOrderRequest();
 
@@ -161,7 +154,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 	private formParsedValue(): SearchRequest {
 		const formData = this.orderForm.getRawValue();
 		const request: SearchRequest  = {
-			date: formData.date.toISOString() ?? new Date().toISOString(),
+			date: formData.date ?
+				`${formData.date.getFullYear()}-${formData.date.getMonth() + 1 < 10 ? `0${formData.date.getMonth() + 1}` : formData.date.getMonth() + 1}-${formData.date.getDate() < 10 ? `0${formData.date.getDate()}` : formData.date.getDate()}T00:00:00.000Z`
+				: new Date().toISOString(),
 			size: formData.size,
 			arrival: formData.arrival.trim(),
 			leave: formData.leave?.trim(),
