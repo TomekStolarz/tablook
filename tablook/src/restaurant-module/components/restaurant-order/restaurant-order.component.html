@@ -1,4 +1,14 @@
-<p>restaurant-order works!</p>
 <ng-container *ngIf="restaurant | async as restaurantInfo">
+	<section>
+		<span class="h4">Tables plan:</span>
+		<img
+			*ngIf="restaurantInfo.details?.tablesMap"
+			[src]="
+				'http://localhost:3000/file/' +
+				restaurantInfo.details?.tablesMap
+			"
+			[alt]="'Plan of tables'"
+		/>
+	</section>
 	<app-order [restaurant]="restaurantInfo"></app-order>
 </ng-container>

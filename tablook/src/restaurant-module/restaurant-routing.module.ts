@@ -8,9 +8,10 @@ const routes: Route[] = [{
     path: '',
     component: RestaurantComponent,
     children: [
-        {path: '', component: ReservationsComponent},
+        {path: '', redirectTo: 'reservations', pathMatch: 'full'},
+        {path: 'reservations', component: ReservationsComponent},
         {path: 'order', component: RestaurantOrderComponent}
-    ]
+    ],
 }   
 ]
 
