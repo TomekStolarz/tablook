@@ -2,11 +2,13 @@
 	<ng-container
 		*ngIf="orders.future.length || orders.finished.length; else noOrders"
 	>
+		<span>Upcoming:</span>
 		<app-order-tile
 			*ngFor="let order of orders.future"
 			[order]="order"
 			[user]="user"
 		></app-order-tile>
+		<span>Finished:</span>
 		<app-order-tile
 			*ngFor="let order of orders.finished"
 			[order]="order"
