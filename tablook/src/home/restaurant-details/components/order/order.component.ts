@@ -186,21 +186,24 @@ export class OrderComponent implements OnInit, OnDestroy {
 	}
 
 	prepareOrderRequest(): Order | undefined {
+		const dateParts = this.orderForm.controls.date.value.toLocaleDateString().split('.').reverse().map((x) => parseInt(x));
+		const properDate = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
+
 		const startTimeParts = this.orderForm.controls.arrival.value.split(":").map((x: string) => parseInt(x));
-		const startTime = new Date().setHours(startTimeParts[0], startTimeParts[1]);
+		const startTime = new Date(properDate).setHours(startTimeParts[0], startTimeParts[1]);
+
 		let endTime = 0;
 		if (this.orderForm.controls.leave.value) {
 			const endTimeParts = this.orderForm.controls.leave.value.split(":").map((x: string) => parseInt(x));
-			endTime = endTimeParts ? new Date().setHours(endTimeParts[0], endTimeParts[1]) : new Date().getTime();
+			endTime = endTimeParts ? new Date(properDate).setHours(endTimeParts[0], endTimeParts[1]) : new Date(properDate).getTime();
 		}
-		
 
 		const order: Order = {
 			userId: this.user?.id || '',
 			restaurantId: this.restaurant.id || '',
 			tableId: this.orderForm.controls.tableId.value,
 			tableSize: this.orderForm.controls.size.value,
-			date: new Date(this.orderForm.controls.date.value),
+			date: new Date(properDate),
 			time: {
 				startTime: new Date(startTime),
 				endTime: endTime ? new Date(endTime) : undefined,

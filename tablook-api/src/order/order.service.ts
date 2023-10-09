@@ -152,13 +152,13 @@ export class OrderService {
         confirmation: ConfirmationStatus.CONFIRMED,
       })
       .exec();
-    console.log(order);
-    console.log(orderExits);
+
     if (orderExits.length) {
       throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
     }
 
     order.confirmation = ConfirmationStatus.UNCONFIRMED;
+    order.userId = order.userId ? order.userId : '100';
 
     try {
       newOrder = new this.orderModel({ ...order });
@@ -189,9 +189,14 @@ export class OrderService {
     order: OrderDocument,
     userType: UserType,
   ): Promise<DetailedOrderInfo> {
-    const receiverData = await this.userService.findById(
-      userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
-    );
+    let receiverData;
+    try {
+      receiverData = await this.userService.findById(
+        userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
+      );
+    } catch (error) {
+      receiverData = null;
+    }
     const name = (receiverData?.name || order.clientName) ?? 'guest';
     const receiverName =
       `${name}` +
