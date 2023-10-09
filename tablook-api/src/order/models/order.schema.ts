@@ -27,6 +27,12 @@ export class Order {
 
   @Prop({ required: true })
   confirmation: ConfirmationStatus;
+
+  @Prop({ required: true })
+  clientName: string;
+
+  @Prop({ required: true })
+  phone: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

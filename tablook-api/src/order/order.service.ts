@@ -174,12 +174,14 @@ export class OrderService {
     return {
       orderId: order.id,
       userId: order.userId,
+      clientName: order.clientName,
       restaurantId: order.restaurantId,
       date: order.date,
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
       confirmation: order.confirmation,
+      phone: order.phone,
     };
   }
 
@@ -190,7 +192,7 @@ export class OrderService {
     const receiverData = await this.userService.findById(
       userType === UserType.RESTAURANT ? order.userId : order.restaurantId,
     );
-    const name = receiverData?.name ?? 'guest';
+    const name = (receiverData?.name || order.clientName) ?? 'guest';
     const receiverName =
       `${name}` +
       (userType === UserType.RESTAURANT
@@ -205,8 +207,8 @@ export class OrderService {
       time: order.time,
       tableId: order.tableId,
       tableSize: order.tableSize,
-      phone: receiverData?.phone ?? '',
-      name: receiverName,
+      phone: receiverData?.phone ?? (order?.phone || ''),
+      clientName: receiverName,
       address: receiverData?.details?.address,
       confirmation: order.confirmation,
       finished: order.date.getTime() < currentDate.getTime(),

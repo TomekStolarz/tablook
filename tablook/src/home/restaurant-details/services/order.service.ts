@@ -15,7 +15,7 @@ export class OrderService {
   constructor(private http: HttpClient, private customSnackbar: CustomSnackbarService) { }
 
   postOrder(order: Order) {
-    if (!order.userId) {
+    if (!order.userId && !order.clientName) {
       this.customSnackbar.error(`You must be logged to place order`, 'Error');
       return;
     }

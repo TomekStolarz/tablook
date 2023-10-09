@@ -6,9 +6,21 @@ import { RestaurantComponent } from './components/restaurant/restaurant.componen
 import { AccountModule } from "src/account-module/account.module";
 import { RestaurantOrderComponent } from './components/restaurant-order/restaurant-order.component';
 import { OrderComponent } from "src/home/restaurant-details/components/order/order.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatInputModule } from "@angular/material/input";
 
 @NgModule({
-    imports: [CommonModule, SharedModule, RestaurantRouterModule, AccountModule, OrderComponent],
+    imports: [
+      CommonModule,
+      SharedModule,
+      RestaurantRouterModule,
+      AccountModule,
+      OrderComponent,
+      MatFormFieldModule,
+      ReactiveFormsModule,
+      MatInputModule,
+    ],
     declarations: [
       RestaurantComponent,
       RestaurantOrderComponent

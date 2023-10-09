@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SearchService } from 'src/home/search-module/services/search.service';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
@@ -48,6 +48,15 @@ export class OrderComponent implements OnInit, OnDestroy {
 
 	@Input()
 	user?: UserInfo;
+
+	@Input()
+	clientName!: string;
+
+	@Input()
+	phone?: string;
+
+	@Output()
+	onReserveClick = new EventEmitter<void>();
 
 	private readonly orderService = inject(OrderService);
 	private readonly searchService = inject(SearchService);
@@ -133,6 +142,12 @@ export class OrderComponent implements OnInit, OnDestroy {
 	}
 
 	reserve() {
+		this.onReserveClick.emit();
+
+		if (!this.user && !this.clientName && !this.phone) {
+			this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+		}
+
 		if (this.orderForm.invalid) {
 			this.orderForm.markAllAsTouched();
 			return;
@@ -188,9 +203,11 @@ export class OrderComponent implements OnInit, OnDestroy {
 			date: new Date(this.orderForm.controls.date.value),
 			time: {
 				startTime: new Date(startTime),
-				endTime: new Date(endTime),
+				endTime: endTime ? new Date(endTime) : undefined,
 			},
 			confirmation: ConfirmationStatus.UNCONFIRMED,
+			clientName: this.user?.name ? `${this.user.name} ${this.user.surname}` : `${this.clientName}`,
+			phone: this.phone ?? ''
 		}
 		if (Object.values(order).find((val) => val === undefined))
 		{

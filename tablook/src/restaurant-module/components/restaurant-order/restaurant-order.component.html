@@ -10,5 +10,20 @@
 			[alt]="'Plan of tables'"
 		/>
 	</section>
-	<app-order [restaurant]="restaurantInfo"></app-order>
+	<section class="client-form" [formGroup]="guestClientForm">
+		<mat-form-field>
+			<mat-label>Client name</mat-label>
+			<input matInput formControlName="name" />
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Client phone number</mat-label>
+			<input matInput formControlName="phone" />
+		</mat-form-field>
+	</section>
+	<app-order
+		[restaurant]="restaurantInfo"
+		[clientName]="(name | async)!"
+		[phone]="(phone | async)!"
+		(onReserveClick)="reserveClick()"
+	></app-order>
 </ng-container>
