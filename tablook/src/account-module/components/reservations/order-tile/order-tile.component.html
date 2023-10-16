@@ -18,9 +18,9 @@
 		<span>At:</span>
 		<span>{{ order.date | isoStringDate }}</span>
 		<span>
-			<span>{{ order.time.startTime }}</span>
+			<span>{{ order.time.startTime | dateToTime }}</span>
 			<span *ngIf="order.time.endTime">{{
-				' - ' + order.time.endTime
+				' - ' + (order.time.endTime | dateToTime)
 			}}</span>
 		</span>
 	</p>
