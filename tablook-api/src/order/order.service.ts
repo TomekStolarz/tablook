@@ -261,8 +261,16 @@ export class OrderService {
         restaurantId: restaurantId,
         date: { $gte: dateStart, $lte: dateEnd },
         tableSize: { $gte: request.size },
-        'time.startTime': { $gte: _arrival },
         confirmation: ConfirmationStatus.CONFIRMED,
+        $or: [
+          { 'time.startTime': { $gte: new Date(_arrival) } },
+          {
+            $and: [
+              { 'time.startTime': { $lte: new Date(_arrival) } },
+              { 'time.endTime': { $gte: new Date(_arrival) } },
+            ],
+          },
+        ],
       })
       .exec();
 
@@ -312,12 +320,18 @@ export class OrderService {
       time
         .sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
         .forEach((orderTime, index) => {
-          if (index === time.length - 1) {
-            freeTime.push({ startTime: _op, endTime: last });
-          } else {
+          if (_op < orderTime.startTime) {
             freeTime.push({ startTime: _op, endTime: orderTime.startTime });
-            _op = orderTime.endTime;
           }
+
+          if (
+            index === time.length - 1 &&
+            orderTime.endTime.getTime() !== last.getTime()
+          ) {
+            freeTime.push({ startTime: orderTime.endTime, endTime: last });
+          }
+
+          _op = new Date(orderTime.endTime);
         });
 
       return {
@@ -335,7 +349,7 @@ export class OrderService {
       }
     });
 
-    return freeTables;
+    return freeTables.filter((table) => table.available.length);
   }
 
   async getFreeTables(
