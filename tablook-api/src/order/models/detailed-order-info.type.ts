@@ -4,4 +4,5 @@ import { OrderInfo } from './order-info.interface';
 export type DetailedOrderInfo = {
   address?: Address;
   finished: boolean;
+  active: boolean;
 } & OrderInfo;

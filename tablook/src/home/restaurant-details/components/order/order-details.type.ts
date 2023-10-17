@@ -4,5 +4,6 @@ import { Order } from "./order.interface";
 export type OrderDetails = {
     orderId: string;
     finished: boolean;
+    active: boolean;
     address?: Address;
 } & Order;

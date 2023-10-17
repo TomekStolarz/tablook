@@ -20,6 +20,7 @@ import { SettingComponent } from './components/settings/setting/setting.componen
 import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderTileComponent } from './components/reservations/order-tile/order-tile.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { OrderTileComponent } from './components/reservations/order-tile/order-t
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatPaginatorModule,
   ],
   exports: [
     ReservationsComponent,

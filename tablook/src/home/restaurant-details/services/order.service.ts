@@ -28,7 +28,7 @@ export class OrderService {
     );
   }
 
-  getOrders(userId: string) {
-    return this.http.get<OrderDetails[]>(`${this.apiPath}/order/${userId}`);
+  getOrders(userId: string, pageIndex: number, pageSize: number) {
+    return this.http.get<{orders: OrderDetails[], total: number}>(`${this.apiPath}/order/${userId}?pageSize=${pageSize}&pageIndex=${pageIndex}`);
   }
 }

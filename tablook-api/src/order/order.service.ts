@@ -75,20 +75,39 @@ export class OrderService {
     }
   }
 
-  async getOrders(userId: string): Promise<DetailedOrderInfo[]> {
+  async getOrders(
+    userId: string,
+    pageIndex: number,
+    pageSize: number,
+  ): Promise<{ orders: DetailedOrderInfo[]; total: number }> {
     const userInfo = await this.userService.findById(userId);
     const key =
       userInfo.type === UserType.RESTAURANT ? 'restaurantId' : 'userId';
+    const currentDate = new Date();
+
+    const total = await this.orderModel.find({ [key]: userId }).count();
 
     const orders = await this.orderModel
-      .find({ [key]: userId })
-      .sort({ date: 1 });
-    if (!orders) return [];
-    return Promise.all(
-      orders.map(
-        async (order) => await this.getDetailedOrderInfo(order, userInfo.type),
+      .aggregate([{ $match: { [key]: userId } }])
+      .project({
+        finished: new Date('$time.endTime').getTime() < currentDate.getTime(),
+        active:
+          new Date('$time.startTime').getTime() < currentDate.getTime() &&
+          new Date('$time.endTime').getTime() > currentDate.getTime(),
+      })
+      .sort({ active: 1, finished: 1, date: -1 })
+      .skip(pageIndex * pageSize)
+      .limit(pageSize);
+    if (!orders) return { orders: [], total: 0 };
+    return {
+      total: total,
+      orders: await Promise.all(
+        orders.map(
+          async (order) =>
+            await this.getDetailedOrderInfo(order, userInfo.type),
+        ),
       ),
-    );
+    };
   }
 
   async placeOrder(order: OrderDTO) {
@@ -216,7 +235,10 @@ export class OrderService {
       clientName: receiverName,
       address: receiverData?.details?.address,
       confirmation: order.confirmation,
-      finished: order.date.getTime() < currentDate.getTime(),
+      finished: new Date(order.time.endTime).getTime() < currentDate.getTime(),
+      active:
+        new Date(order.time.startTime).getTime() < currentDate.getTime() &&
+        new Date(order.time.endTime).getTime() > currentDate.getTime(),
     };
   }
 
