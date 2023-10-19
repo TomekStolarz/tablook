@@ -56,7 +56,7 @@ export class RestaurantDetailsService {
 				map(([resData, freeTables]) => {
 					const properFreeTables: TableResult[] = freeTables.map((table) => {
 						const _table = resData.details?.tables.find(
-						  (tb) => (tb.id = table.tableId),
+						  (tb) => (tb.id === table.tableId),
 						);
 						return {
 						  id: _table?.id || '',

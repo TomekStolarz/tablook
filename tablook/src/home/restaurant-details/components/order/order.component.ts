@@ -94,9 +94,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 	private subscription: Subscription[] = [];
 
 	ngOnInit(): void {
-		this.freeTables = [...this.restaurant.freeTables ?? []];
+		this.freeTables = [...this.restaurant.freeTables ?? []].map((elem) => ({...elem}));
 		if (this.restaurant.details?.tables) {
-			this.orderForm.addValidators(tableSizeValidator(this.restaurant.details?.tables));
+			this.orderForm.addValidators(tableSizeValidator([...this.restaurant.details?.tables]));
 		} 
 
 		this.searchRequest = this.searchService.lastSearchedQuery || {date: new Date().toDateString(), size: 1};
