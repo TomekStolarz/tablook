@@ -191,7 +191,7 @@ export class OrderService {
 
   private getOrderInfo(order: OrderDocument): OrderInfo {
     return {
-      orderId: order.id,
+      orderId: order._id,
       userId: order.userId,
       clientName: order.clientName,
       restaurantId: order.restaurantId,
@@ -224,7 +224,7 @@ export class OrderService {
         : '');
     const currentDate = new Date();
     return {
-      orderId: order.id,
+      orderId: order._id,
       userId: order.userId,
       restaurantId: order.restaurantId,
       date: order.date,
@@ -246,7 +246,7 @@ export class OrderService {
     restaurantId: string,
     request: SearchRequest,
   ): Promise<FreeTable[]> {
-    const currentTime = new Date();
+    const currentTime = new Date(new Date().setSeconds(0, 0));
     const day = new Date(request.date).toLocaleDateString('en-US', {
       weekday: 'long',
     });
@@ -378,24 +378,6 @@ export class OrderService {
     restaurant: UserInfo[],
     request: SearchRequest,
   ): Promise<RestaurantSearchInfo[]> {
-    const currentTime = new Date();
-    const arrival = request.arrival || currentTime.toTimeString().slice(0, 5);
-    const arrivalPart = arrival.split(':').map((x) => parseInt(x));
-    const _arrival = currentTime.setHours(arrivalPart[0], arrivalPart[1]);
-
-    if (_arrival < currentTime.getTime()) {
-      return [];
-    }
-
-    if (request.leave) {
-      const leavingPart = request.leave.split(':').map((x) => parseInt(x));
-      const _leaving = currentTime.setHours(leavingPart[0], leavingPart[1]);
-
-      if (_leaving < currentTime.getTime()) {
-        return [];
-      }
-    }
-
     return Promise.all(
       restaurant.map(async (restaurant) => {
         const freeTables = await this.getFreeTableInRestaurant(
