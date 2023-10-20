@@ -202,13 +202,33 @@ export class UserService {
       })
       .exec();
 
-    const arrivalCp = arrival || new Date().toTimeString().slice(0, 5);
-    const arrivalPart = arrivalCp.split(':').map((x) => parseInt(x));
-    const _arrival = new Date().setHours(arrivalPart[0], arrivalPart[1]);
+    const currentTime = new Date();
+    const dateStart = new Date(date);
+    const dateEnd = new Date(dateStart);
+    dateEnd.setHours(24);
+
+    let arrivalTime = arrival || currentTime.toTimeString().slice(0, 5);
+    if (dateStart.toDateString() !== currentTime.toDateString() && !arrival) {
+      arrivalTime = dateStart.toTimeString().slice(0, 5);
+    }
+    const arrivalPart = arrivalTime.split(':').map((x) => parseInt(x));
+    const _arrival = new Date(dateStart).setHours(
+      arrivalPart[0],
+      arrivalPart[1],
+    );
+
+    if (_arrival < currentTime.getTime()) {
+      return [];
+    }
+
     let _leaving = 0;
     if (leave) {
       const leavingPart = leave.split(':').map((x) => parseInt(x));
-      _leaving = new Date().setHours(leavingPart[0], leavingPart[1]);
+      _leaving = new Date(dateStart).setHours(leavingPart[0], leavingPart[1]);
+
+      if (_leaving < currentTime.getTime()) {
+        return [];
+      }
     }
 
     return matchedRestaurants
@@ -223,7 +243,7 @@ export class UserService {
         const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
         const opening = new Date().setHours(hours[0], hours[1]);
         const closing = new Date().setHours(hours[2], hours[3]);
-        return opening <= _arrival && closing >= _leaving;
+        return opening <= _arrival && _arrival < closing && closing >= _leaving;
       });
   }
 }

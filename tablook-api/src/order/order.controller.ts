@@ -71,4 +71,14 @@ export class OrderController {
   ) {
     return this.orderService.confirmRejectOrder(order, restaurantId);
   }
+
+  @Patch('finish/:id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  finishOrder(
+    @Param('id') restaurantId: string,
+    @Body() order: Pick<OrderInfo, 'orderId'>,
+  ) {
+    return this.orderService.finishOrder(order, restaurantId);
+  }
 }

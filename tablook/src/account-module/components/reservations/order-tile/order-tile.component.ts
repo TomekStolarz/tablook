@@ -4,6 +4,8 @@ import { OrderActionService } from 'src/account-module/services/order-action.ser
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { ConfirmationStatus } from 'src/home/restaurant-details/components/order/confirmatiom-status.enum';
 import { OrderDetails } from 'src/home/restaurant-details/components/order/order-details.type';
+import { FinishOrderDialogComponent } from '../finish-order-dialog/finish-order-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-order-tile',
@@ -17,8 +19,9 @@ export class OrderTileComponent implements OnDestroy{
 
   private readonly cdRef = inject(ChangeDetectorRef);
 
-  private _order!: OrderDetails;
+  private readonly dialog = inject(MatDialog);
 
+  private _order!: OrderDetails;
 
   @Input()
   set order(order: OrderDetails) {
@@ -87,6 +90,22 @@ export class OrderTileComponent implements OnDestroy{
     this.subscriptions.push(this.orderActionService.confirmationOrderUpdate(this.order.orderId, `${this.user?.id}`, ConfirmationStatus.REJECTED).subscribe(() => {
       this.order = { ...this.order, confirmation: ConfirmationStatus.REJECTED };
       this.cdRef.detectChanges();
+    }));
+  }
+
+  onFinishClick() {
+    this.openFinishDialog();
+  }
+
+  openFinishDialog(): void {
+    const dialogRef = this.dialog.open(FinishOrderDialogComponent);
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.orderActionService.finishOrder(this.order.orderId, `${this.user?.id}`);
+      window.location.reload();
     }));
   }
 

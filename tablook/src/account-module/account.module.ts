@@ -21,6 +21,8 @@ import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.comp
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderTileComponent } from './components/reservations/order-tile/order-tile.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FinishOrderDialogComponent } from './components/reservations/finish-order-dialog/finish-order-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     SettingComponent,
     FavTileComponent,
     OrderTileComponent,
+    FinishOrderDialogComponent,
   ],
   providers: [
 		{
@@ -53,6 +56,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTooltipModule,
     FormsModule,
     MatPaginatorModule,
+    MatDialogModule,
   ],
   exports: [
     ReservationsComponent,

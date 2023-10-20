@@ -37,6 +37,10 @@
 	</p>
 </div>
 <div class="buttons" *ngIf="user?.type === 'restaurant'">
+	<button mat-raised-button (click)="onFinishClick()" *ngIf="order.active">
+		<mat-icon>check_circle_outline</mat-icon>
+		Finish now
+	</button>
 	<button
 		mat-raised-button
 		(click)="onConfirmClick()"

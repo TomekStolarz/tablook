@@ -33,6 +33,31 @@ export class OrderService {
     private restaurantService: RestaurantService,
   ) {}
 
+  async finishOrder(orderId: Pick<OrderInfo, 'orderId'>, restaurantId: string) {
+    const date = new Date();
+    try {
+      const order = await this.orderModel.findById(orderId.orderId).exec();
+
+      if (!order) return null;
+
+      if (order.restaurantId !== restaurantId) {
+        throw new ForbiddenException();
+      }
+
+      const updated = this.orderModel
+        .findByIdAndUpdate(orderId.orderId, { 'time.dateEnd': date })
+        .exec();
+      this.logger.log('Order finished date changed');
+      return true;
+    } catch (error: any) {
+      if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
+
   async confirmRejectOrder(
     orderConfirm: Pick<OrderInfo, 'orderId' | 'confirmation'>,
     restaurantId: string,
@@ -191,7 +216,7 @@ export class OrderService {
 
   private getOrderInfo(order: OrderDocument): OrderInfo {
     return {
-      orderId: order._id,
+      orderId: order._id.toString(),
       userId: order.userId,
       clientName: order.clientName,
       restaurantId: order.restaurantId,
@@ -224,7 +249,7 @@ export class OrderService {
         : '');
     const currentDate = new Date();
     return {
-      orderId: order._id,
+      orderId: order._id.toString(),
       userId: order.userId,
       restaurantId: order.restaurantId,
       date: order.date,
