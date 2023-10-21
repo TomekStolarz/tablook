@@ -51,6 +51,8 @@ export class OrderTileComponent implements OnDestroy{
 
   protected iconTooltip!: string;
 
+  protected confirmation = ConfirmationStatus;
+
   private subscriptions: Subscription[] = [];
 
   setColors() {

@@ -45,7 +45,7 @@ export class OrderService {
       }
 
       const updated = this.orderModel
-        .findByIdAndUpdate(orderId.orderId, { 'time.dateEnd': date })
+        .findByIdAndUpdate(orderId.orderId, { 'time.endTime': date })
         .exec();
       this.logger.log('Order finished date changed');
       return true;
