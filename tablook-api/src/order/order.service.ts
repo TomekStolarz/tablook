@@ -22,6 +22,8 @@ import { RestaurantService } from 'src/restaurant/restaurant.service';
 import { lastValueFrom } from 'rxjs';
 import { DetailedOrderInfo } from './models/detailed-order-info.type';
 import { ConfirmationStatus } from './models/confirmatiom-status.enum';
+import { calculateArrivalandLeaving } from 'src/utils';
+import { RestaurantFind } from 'src/search/models/restaurant-find.model';
 
 @Injectable()
 export class OrderService {
@@ -271,34 +273,23 @@ export class OrderService {
     restaurantId: string,
     request: SearchRequest,
   ): Promise<FreeTable[]> {
-    const currentTime = new Date(new Date().setSeconds(0, 0));
-    const day = new Date(request.date).toLocaleDateString('en-US', {
-      weekday: 'long',
-    });
-    const dateStart = new Date(request.date);
-    const dateEnd = new Date(dateStart);
-    dateEnd.setHours(24);
+    const day = new Date(request.date)
+      .toLocaleDateString('en-US', {
+        weekday: 'long',
+      })
+      .toLowerCase();
 
-    let arrival = request.arrival || currentTime.toTimeString().slice(0, 5);
-    if (
-      dateStart.toDateString() !== currentTime.toDateString() &&
-      !request.arrival
-    ) {
-      arrival = dateStart.toTimeString().slice(0, 5);
-    }
-    const arrivalPart = arrival.split(':').map((x) => parseInt(x));
-    let _arrival = new Date(dateStart).setHours(arrivalPart[0], arrivalPart[1]);
+    const { arrival, leaving, dateEnd, dateStart, currentTime } =
+      calculateArrivalandLeaving(request.date, request.arrival, request.leave);
+
+    let _arrival = arrival;
 
     if (_arrival < currentTime.getTime()) {
       return [];
     }
 
-    let _leaving = 0;
     if (request.leave) {
-      const leavingPart = request.leave.split(':').map((x) => parseInt(x));
-      _leaving = new Date(dateStart).setHours(leavingPart[0], leavingPart[1]);
-
-      if (_leaving < currentTime.getTime()) {
+      if (leaving < currentTime.getTime()) {
         return [];
       }
     }
@@ -330,7 +321,7 @@ export class OrderService {
     );
 
     const dayHours = restaurantData.details.openingHours.find(
-      (d) => d.day === day,
+      (d) => d.day.toLowerCase() === day.toLowerCase(),
     );
     if (!dayHours) {
       return [];
@@ -359,7 +350,7 @@ export class OrderService {
       return acc;
     }, {} as { [key: string]: BookingTime[] });
 
-    const last = _leaving ? new Date(_leaving) : new Date(closing);
+    const last = leaving ? new Date(leaving) : new Date(closing);
 
     const freeTables = Object.entries(tables).map(([tableId, time]) => {
       let _op = new Date(_arrival);
@@ -400,7 +391,7 @@ export class OrderService {
   }
 
   async getFreeTables(
-    restaurant: UserInfo[],
+    restaurant: RestaurantFind[],
     request: SearchRequest,
   ): Promise<RestaurantSearchInfo[]> {
     return Promise.all(
@@ -442,6 +433,7 @@ export class OrderService {
           image: restaurant.details.images[0],
           rating: googleData.rating,
           totalOpinions: googleData.user_ratings_total,
+          todayHours: restaurant.todayHours,
         };
       }),
     );

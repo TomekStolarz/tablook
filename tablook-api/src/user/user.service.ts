@@ -12,6 +12,8 @@ import { UserType } from './models/user-type.enum';
 import { UserDocument } from './models/user.schema';
 import { UserInfo } from './models/user-info.interface';
 import { NewUserDTO } from './dtos/new-user.dto';
+import { calculateArrivalandLeaving } from 'src/utils';
+import { RestaurantFind } from 'src/search/models/restaurant-find.model';
 
 @Injectable()
 export class UserService {
@@ -173,11 +175,11 @@ export class UserService {
   async findRestaurants(
     tableSize: number,
     date: string,
-    arrival: string,
-    leave?: string,
+    arrivalTime: string,
+    leaveTime?: string,
     query?: string,
     location?: string,
-  ): Promise<UserInfo[]> {
+  ): Promise<RestaurantFind[]> {
     let queryRegex = new RegExp('.*'),
       locationRegex = new RegExp('.*');
     if (query) {
@@ -187,7 +189,6 @@ export class UserService {
       locationRegex = new RegExp(location.trim(), 'i');
     }
 
-    const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
     const size = parseInt(new Number(tableSize).toString());
 
     const matchedRestaurants = await this.userModel
@@ -202,48 +203,45 @@ export class UserService {
       })
       .exec();
 
-    const currentTime = new Date();
-    const dateStart = new Date(date);
-    const dateEnd = new Date(dateStart);
-    dateEnd.setHours(24);
+    const { arrival, leaving, dateEnd, dateStart, currentTime, futureDate } =
+      calculateArrivalandLeaving(date, arrivalTime, leaveTime);
 
-    let arrivalTime = arrival || currentTime.toTimeString().slice(0, 5);
-    if (dateStart.toDateString() !== currentTime.toDateString() && !arrival) {
-      arrivalTime = dateStart.toTimeString().slice(0, 5);
-    }
-    const arrivalPart = arrivalTime.split(':').map((x) => parseInt(x));
-    const _arrival = new Date(dateStart).setHours(
-      arrivalPart[0],
-      arrivalPart[1],
-    );
+    const day = new Date(dateStart).toLocaleDateString('en-US', {
+      weekday: 'long',
+    });
 
-    if (_arrival < currentTime.getTime()) {
+    if (arrival < currentTime.getTime()) {
       return [];
     }
 
-    let _leaving = 0;
-    if (leave) {
-      const leavingPart = leave.split(':').map((x) => parseInt(x));
-      _leaving = new Date(dateStart).setHours(leavingPart[0], leavingPart[1]);
-
-      if (_leaving < currentTime.getTime()) {
-        return [];
-      }
+    if (leaveTime && leaving < currentTime.getTime()) {
+      return [];
     }
 
     return matchedRestaurants
       .map((rest) => this.getUserInfo(rest))
       .filter((restaurant) => {
         const dayHours = restaurant.details.openingHours.find(
-          (d) => d.day === day,
+          (d) => d.day.toLowerCase() === day.toLowerCase(),
         );
         if (!dayHours) {
           return false;
         }
+
+        if (futureDate && !arrivalTime) {
+          return true;
+        }
         const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
-        const opening = new Date().setHours(hours[0], hours[1]);
-        const closing = new Date().setHours(hours[2], hours[3]);
-        return opening <= _arrival && _arrival < closing && closing >= _leaving;
+        const opening = new Date(dateStart).setHours(hours[0], hours[1]);
+        const closing = new Date(dateStart).setHours(hours[2], hours[3]);
+        const closeCondition = leaving ? closing >= leaving : true;
+        return opening <= arrival && arrival < closing && closeCondition;
+      })
+      .map((restaurant) => {
+        const dayHours = restaurant.details.openingHours.find(
+          (d) => d.day.toLowerCase() === day.toLowerCase(),
+        );
+        return { ...restaurant, todayHours: dayHours };
       });
   }
 }

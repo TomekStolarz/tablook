@@ -1,5 +1,6 @@
 import { Address } from 'src/app/interfaces/address.interface';
 import { TableResult } from './table-result.interface';
+import { OpeningHours } from 'src/register-restaurant/models/opening-hours.interface';
 
 export interface RestaurantSearchInfo {
 	id: string;
@@ -13,4 +14,5 @@ export interface RestaurantSearchInfo {
 	tags: string[];
 	image: string;
 	isFavourite?: boolean;
+	todayHours: OpeningHours;
 }
