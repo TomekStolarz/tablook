@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, combineLatestWith, map, switchMap } from 'rxjs';
+import { Observable, catchError, combineLatestWith, map, of, switchMap } from 'rxjs';
 import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { environment } from 'src/environments/environment';
@@ -89,6 +89,9 @@ export class RestaurantDetailsService {
 						totalOpinions: googleData.user_ratings_total,
 						place_id: googleData.place_id
 					};
+				}),
+				catchError(() => {
+					return of({ ...userData, reviews: [], ratings: 0, totalOpinions: 0 });
 				})
 			);
 	}
