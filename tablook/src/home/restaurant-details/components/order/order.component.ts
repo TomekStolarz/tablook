@@ -99,6 +99,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 			this.orderForm.addValidators(tableSizeValidator([...this.restaurant.details?.tables]));
 		} 
 
+		this.phone =  this.user ? `${this.user.phone}` : '';
+
 		this.searchRequest = this.searchService.lastSearchedQuery || {date: new Date().toDateString(), size: 1};
 		if (this.searchRequest) {
 			this.orderForm.controls.date.setValue(new Date(this.searchRequest.date));
