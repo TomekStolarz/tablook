@@ -30,7 +30,8 @@ app-order {
 				}
 			}
 
-			mat-icon {
+			mat-icon,
+			mat-datepicker-toggle {
 				color: $primary-black;
 
 				&:hover {
@@ -40,11 +41,13 @@ app-order {
 		}
 	}
 
-	button {
-		justify-self: end;
-		width: 25%;
-		border-radius: 24px !important;
-		margin-right: 24px;
+	.action-buttons {
+		button {
+			justify-self: end;
+			width: 25%;
+			border-radius: 24px !important;
+			margin-right: 24px;
+		}
 	}
 
 	.freetables {
