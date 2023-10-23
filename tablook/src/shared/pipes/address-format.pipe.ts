@@ -5,7 +5,8 @@ import { Address } from 'src/app/interfaces/address.interface';
 	name: 'addressFormat',
 })
 export class AddressFormatPipe implements PipeTransform {
-	transform(value: Address): string {
-		return `Address: ${value.street} ${value.flat}, ${value.city}, ${value.country}`;
+	transform(value: Address, withPrefix = true): string {
+		const addressParts = `${ value.street } ${ value.flat }, ${ value.city }, ${ value.country }`;
+		return  withPrefix ? `Address: ${addressParts}` : addressParts;
 	}
 }

@@ -36,6 +36,9 @@
 		<div class="h2" *ngIf="restaurantDetails.name">
 			{{ restaurantDetails.name | upperFirst }}
 		</div>
+		<span class="small-details h6" *ngIf="!!restaurantDetails.details">
+			{{ restaurantDetails.details.address | addressFormat : false }}
+		</span>
 		<div class="ratings">
 			<mat-icon class="h4">star_outline</mat-icon>
 			<span class="h4"
