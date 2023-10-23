@@ -56,6 +56,7 @@
 			<app-order
 				[user]="user"
 				[restaurant]="restaurantDetails"
+				(onDateChange)="handleDateChange($event)"
 			></app-order>
 		</div>
 		<div class="section">
@@ -63,6 +64,9 @@
 			<div
 				class="row"
 				*ngFor="let day of restaurantDetails.details?.openingHours"
+				[ngClass]="{
+					'selected-day': day.day.toLowerCase() === selectedDay
+				}"
 			>
 				<span class="col-3"
 					>{{ day.day | lowercase | upperFirst }}<span>:</span></span

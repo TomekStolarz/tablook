@@ -58,6 +58,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 	@Output()
 	onReserveClick = new EventEmitter<void>();
 
+	@Output()
+	onDateChange = new EventEmitter<Date>();
+
 	private readonly orderService = inject(OrderService);
 	private readonly searchService = inject(SearchService);
 	private readonly fb = inject(FormBuilder);
@@ -109,6 +112,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 			this.orderForm.controls.leave.setValue(this.searchRequest.leave ?? '');
 		}
 
+		this.onDateChange.emit(this.orderForm.controls.date.value);
+
 		this.controls = Object.keys(this.types).map((key) => {
 			return {
 				name: key,
@@ -123,20 +128,21 @@ export class OrderComponent implements OnInit, OnDestroy {
 			this.getFreeTables$.pipe(
 				switchMap(() =>
 					this.detailsService.getFreeTables(this.restaurant.id, this.formParsedValue())
-					)
-			).subscribe((tables) =>{
+				)
+			).subscribe((tables) => {
 				this.freeTables = tables.map((table) => {
 					const _table = this.restaurant.details?.tables.find(
-					  (tb) => (tb.id === table.tableId),
+						(tb) => (tb.id === table.tableId),
 					);
 					return {
-					  id: _table?.id || '',
-					  seats: _table?.seats || 1,
-					  available: table.available,
+						id: _table?.id || '',
+						seats: _table?.seats || 1,
+						available: table.available,
 					};
 				});
 			})
-		)
+		);
+		this.subscription.push(this.orderForm.controls.date.valueChanges.subscribe((val) => this.onDateChange.emit(val)))
 	}
 
 	refresh() {
