@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { RestaurantSearchInfo } from '../interfaces/restaurant-search-info.interface';
-import { BehaviorSubject, catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, connectable, finalize, of, take, tap } from 'rxjs';
 import { SearchRequest } from '../interfaces/search-request.interface';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
 
@@ -23,6 +23,7 @@ export class SearchService {
 	) {}
 
 	search(searchQuery: SearchRequest) {
+		this.isSearching$.next(true);
 		if (
 			this.lastSearchedQuery &&
 			Object.entries(searchQuery).join('') ===
@@ -32,24 +33,25 @@ export class SearchService {
 			return;
 		}
 		this.lastSearchedQuery = searchQuery;
-		this.isSearching$.next(true);
-		this.http
+		connectable(this.http
 			.post<RestaurantSearchInfo[]>(`${this.apiPath}/search`, searchQuery)
 			.pipe(
 				tap((results) => {
 					this.searchResults = results;
 					this.searchResults$.next(this.searchResults);
-					this.isSearching$.next(false);
 				}),
+				take(1),
 				catchError((error: HttpErrorResponse) => {
 					this.customSnackbarService.error(
 						`Error occured on search ${error.message}`,
 						`Cannot search table`
 					);
 					return of([]);
+				}),
+				finalize(() => {
+					this.isSearching$.next(false);
 				})
-			)
-			.subscribe();
+			)).connect();
 	}
 
 	filterResults(filterKey: string) {

@@ -6,6 +6,7 @@ import { SharedModule } from 'src/shared/shared.module';
 import { SearchTileComponent } from './components/search-tile/search-tile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { FilterModule } from 'src/filters-module/filters.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
 	declarations: [SearchComponent, SearchTileComponent],
@@ -15,6 +16,7 @@ import { FilterModule } from 'src/filters-module/filters.module';
 		SearchRoutingModule,
 		MatIconModule,
 		FilterModule,
+		MatProgressSpinnerModule
 	],
 	exports: [],
 })
