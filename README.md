@@ -28,11 +28,11 @@ List the ready features here:
 - Searching tables with dynamic filtration
 - Viewing restaurant/bar details
 - Regitster in app as a customer or restaurant
---- For logged customers
+- --- For logged customers
 - Book table in restaurant
 - Add restaurant to favourites
 - Deletion of account
---- For logged restaurant
+- --- For logged restaurant
 - Confirm booking
 - Mark table as reserved
 
