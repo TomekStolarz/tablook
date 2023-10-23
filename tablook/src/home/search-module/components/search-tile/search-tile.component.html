@@ -22,6 +22,9 @@
 				>{{ restaurantInfo.rating }}{{ ' '
 				}}{{ restaurantInfo.totalOpinions }} opinions</span
 			>
+			<span class="h4 hours">
+				{{ restaurantInfo.todayHours.hours }}
+			</span>
 		</div>
 		<span class="small-details h6">
 			{{ restaurantInfo.address | addressFormat }}

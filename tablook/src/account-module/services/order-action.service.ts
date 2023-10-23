@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, connectable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ConfirmationStatus } from 'src/home/restaurant-details/components/order/confirmatiom-status.enum';
 import { OrderDetails } from 'src/home/restaurant-details/components/order/order-details.type';
@@ -22,4 +22,7 @@ export class OrderActionService {
     return this.http.patch<Order>(`${this.apiPath}/order/confirm/${userId}`, body);
   }
 
+  finishOrder(orderId: string, userId: string) {
+    connectable(this.http.patch(`${this.apiPath}/order/finish/${userId}`, { orderId }).pipe(take(1))).connect();
+  }
 }

@@ -37,8 +37,8 @@ export class FileController {
       tablePlan?: Express.Multer.File[];
     },
   ) {
-    const imagesNames = pictures.images.map((image) => image.filename);
-    const tablePlanName = pictures.tablePlan.map(
+    const imagesNames = pictures.images?.map((image) => image.filename);
+    const tablePlanName = pictures.tablePlan?.map(
       (tablePlan) => tablePlan.filename,
     );
     return { images: imagesNames, tablePlanName: tablePlanName };

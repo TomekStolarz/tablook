@@ -9,6 +9,7 @@ import { userReducer } from './store/user.reducer';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { HomeModule } from 'src/home/home.module';
 import { MatNativeDateModule } from '@angular/material/core';
+import { orderPaginatorReducer } from './store/order-paginator/order-paginator.reducer';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -17,7 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 		AppRoutingModule,
 		BrowserAnimationsModule,
 		HttpClientModule,
-		StoreModule.forRoot({ user: userReducer }),
+		StoreModule.forRoot({ user: userReducer, ordersPaginator: orderPaginatorReducer }),
 		HomeModule,
 		MatNativeDateModule,
 	],

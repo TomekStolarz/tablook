@@ -5,8 +5,10 @@
 	>
 	<span class="hours">
 		<span *ngFor="let freeTime of freeTableDate.available">
-			{{ freeTime.startTime | dateToTime }}{{ '-'
-			}}{{ freeTime.endTime | dateToTime }}
+			{{ freeTime.startTime | dateToTime
+			}}<ng-container *ngIf="freeTime.endTime"
+				>{{ '-' }}{{ freeTime.endTime | dateToTime }}</ng-container
+			>
 		</span>
 	</span>
 </div>

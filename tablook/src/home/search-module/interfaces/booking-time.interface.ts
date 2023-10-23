@@ -1,4 +1,4 @@
 export interface BookingTime {
 	startTime: Date;
-	endTime: Date;
+	endTime?: Date;
 }

@@ -1,0 +1,29 @@
+<ng-container *ngIf="restaurant | async as restaurantInfo">
+	<section>
+		<span class="h4">Tables plan:</span>
+		<img
+			*ngIf="restaurantInfo.details?.tablesMap"
+			[src]="
+				'http://localhost:3000/file/' +
+				restaurantInfo.details?.tablesMap
+			"
+			[alt]="'Plan of tables'"
+		/>
+	</section>
+	<section class="client-form" [formGroup]="guestClientForm">
+		<mat-form-field>
+			<mat-label>Client name</mat-label>
+			<input matInput formControlName="name" />
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Client phone number</mat-label>
+			<input matInput formControlName="phone" />
+		</mat-form-field>
+	</section>
+	<app-order
+		[restaurant]="restaurantInfo"
+		[clientName]="(name | async)!"
+		[phone]="(phone | async)!"
+		(onReserveClick)="reserveClick()"
+	></app-order>
+</ng-container>

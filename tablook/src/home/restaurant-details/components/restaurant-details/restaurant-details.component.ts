@@ -25,12 +25,14 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 
 	imagesData: ImageData[] = [];
 
+	selectedDay: string = '';
+
 	constructor(
 		private route: ActivatedRoute,
 		private restaurantService: RestaurantDetailsService,
 		private store: Store,
 		private favouriteService: FavouriteService,
-		private responsive: BreakpointObserver
+		private responsive: BreakpointObserver,
 	) {}
 
 	ngOnInit(): void {
@@ -122,5 +124,13 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 		} else {
 			this.deleteFromFav();
 		}
+	}
+
+	handleDateChange(date: Date) {
+		this.selectedDay = new Date(date)
+		.toLocaleDateString('en-US', {
+		  weekday: 'long',
+		})
+			.toLowerCase();
 	}
 }

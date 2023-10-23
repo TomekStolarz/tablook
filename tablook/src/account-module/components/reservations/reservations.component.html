@@ -1,12 +1,51 @@
 <ng-container *ngIf="orders | async as orders; else noOrders">
-	<ng-container *ngIf="orders.length; else noOrders">
-		<app-order-tile
-			*ngFor="let order of orders"
-			[order]="order"
-			[user]="user"
-		></app-order-tile>
+	<ng-container
+		*ngIf="
+			orders.future.length ||
+				orders.finished.length ||
+				orders.active.length;
+			else noOrders
+		"
+	>
+		<ng-container *ngIf="orders.active.length">
+			<span>Actual:</span>
+			<app-order-tile
+				*ngFor="let order of orders.active"
+				[order]="order"
+				[user]="user"
+			></app-order-tile>
+		</ng-container>
+		<ng-container *ngIf="orders.future.length">
+			<span>Upcoming:</span>
+			<app-order-tile
+				*ngFor="let order of orders.future"
+				[order]="order"
+				[user]="user"
+			></app-order-tile>
+		</ng-container>
+		<ng-container *ngIf="orders.finished.length">
+			<span>Finished:</span>
+			<app-order-tile
+				*ngFor="let order of orders.finished"
+				[order]="order"
+				[user]="user"
+			></app-order-tile>
+		</ng-container>
+		<ng-container *ngIf="paginatorData | async as paginatorData">
+			<mat-paginator
+				#paginator
+				(page)="handlePageEvent($event)"
+				[length]="orders.total"
+				[pageSize]="paginatorData.pageSize"
+				[showFirstLastButtons]="true"
+				[pageSizeOptions]="[10, 20, 50]"
+				[pageIndex]="paginatorData.pageIndex"
+				aria-label="Select page"
+			>
+			</mat-paginator>
+		</ng-container>
 	</ng-container>
 </ng-container>
 <ng-template #noOrders>
-	<p class="h3">You don't gave any reservations yet</p>
+	<p class="h3">You don't have any reservations yet</p>
 </ng-template>

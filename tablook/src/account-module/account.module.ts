@@ -20,6 +20,9 @@ import { SettingComponent } from './components/settings/setting/setting.componen
 import { FavTileComponent } from './components/favourites/fav-tile/fav-tile.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderTileComponent } from './components/reservations/order-tile/order-tile.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { FinishOrderDialogComponent } from './components/reservations/finish-order-dialog/finish-order-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ import { OrderTileComponent } from './components/reservations/order-tile/order-t
     SettingComponent,
     FavTileComponent,
     OrderTileComponent,
+    FinishOrderDialogComponent,
   ],
   providers: [
 		{
@@ -51,6 +55,11 @@ import { OrderTileComponent } from './components/reservations/order-tile/order-t
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatPaginatorModule,
+    MatDialogModule,
+  ],
+  exports: [
+    ReservationsComponent,
   ]
 })
 export class AccountModule { }

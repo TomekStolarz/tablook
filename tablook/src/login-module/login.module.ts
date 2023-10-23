@@ -10,8 +10,7 @@ import {
 } from '@angular/material/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { SharedModule } from 'src/shared/shared.module';
-import { StoreModule } from '@ngrx/store';
-import { userReducer } from 'src/app/store/user.reducer';
+
 
 @NgModule({
 	declarations: [LoginComponent],
@@ -23,7 +22,6 @@ import { userReducer } from 'src/app/store/user.reducer';
 		CommonModule,
 		SharedModule,
 		NgOptimizedImage,
-		// StoreModule.forRoot({ user: userReducer }),
 	],
 	providers: [
 		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

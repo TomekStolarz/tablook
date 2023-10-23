@@ -14,19 +14,24 @@ app-restaurant-details {
 			display: flex;
 			flex-direction: column;
 			gap: 24px;
+			max-height: 75svh;
+			overflow-y: auto;
 
 			a.icons {
 				color: $secondary-button-wo;
 				text-decoration: none;
 				font-family: 'Arial';
 			}
+
+			img {
+				max-width: 100%;
+			}
 		}
 
 		.details-side {
 			display: grid;
-			row-gap: 12px;
 			overflow-y: auto;
-			max-height: 75vh;
+			max-height: 75svh;
 			position: relative;
 
 			.ratings {
@@ -40,6 +45,12 @@ app-restaurant-details {
 				gap: 24px;
 				app-tag {
 					flex: 0 1 22%;
+				}
+			}
+
+			.selected-day {
+				span {
+					font-weight: 700;
 				}
 			}
 		}

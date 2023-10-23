@@ -1,8 +1,8 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SearchService } from 'src/home/search-module/services/search.service';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Control } from 'src/filters-module/models/control.interface';
 import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 import { Order } from './order.interface';
@@ -12,10 +12,35 @@ import { Subject, Subscription, switchMap } from 'rxjs';
 import { TableResult } from 'src/home/search-module/interfaces/table-result.interface';
 import { RestaurantDetailsService } from '../../services/restaurant-details.service';
 import { ConfirmationStatus } from './confirmatiom-status.enum';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgImageSliderModule } from 'ng-image-slider';
+import { FilterModule } from 'src/filters-module/filters.module';
+import { SharedModule } from 'src/shared/shared.module';
+import { RestaurantDetailsRoutingModule } from '../../restaurant-details-routing.module';
+import { FreeTableComponent } from '../free-table/free-table.component';
+import { tableSizeValidator } from './table-size.validator.function';
 
 @Component({
 	selector: 'app-order',
 	templateUrl: './order.component.html',
+	standalone: true,
+	imports: [
+		SharedModule,
+		CommonModule,
+		RestaurantDetailsRoutingModule,
+		NgImageSliderModule,
+		MatIconModule,
+		MatTooltipModule,
+		FilterModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		MatSelectModule,
+		FreeTableComponent
+	]
 })
 export class OrderComponent implements OnInit, OnDestroy {
 	@Input()
@@ -23,6 +48,18 @@ export class OrderComponent implements OnInit, OnDestroy {
 
 	@Input()
 	user?: UserInfo;
+
+	@Input()
+	clientName!: string;
+
+	@Input()
+	phone?: string;
+
+	@Output()
+	onReserveClick = new EventEmitter<void>();
+
+	@Output()
+	onDateChange = new EventEmitter<Date>();
 
 	private readonly orderService = inject(OrderService);
 	private readonly searchService = inject(SearchService);
@@ -57,11 +94,15 @@ export class OrderComponent implements OnInit, OnDestroy {
 		tableId: ['', Validators.required],
 	});
 
-	private subscription: Subscription[] = []
-
+	private subscription: Subscription[] = [];
 
 	ngOnInit(): void {
-		this.freeTables = [ ...this.restaurant.freeTables ?? [] ];
+		this.freeTables = [...this.restaurant.freeTables ?? []].map((elem) => ({...elem}));
+		if (this.restaurant.details?.tables) {
+			this.orderForm.addValidators(tableSizeValidator([...this.restaurant.details?.tables]));
+		} 
+
+		this.phone =  this.user ? `${this.user.phone}` : '';
 
 		this.searchRequest = this.searchService.lastSearchedQuery || {date: new Date().toDateString(), size: 1};
 		if (this.searchRequest) {
@@ -70,6 +111,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 			this.orderForm.controls.arrival.setValue(this.searchRequest.arrival ?? '');
 			this.orderForm.controls.leave.setValue(this.searchRequest.leave ?? '');
 		}
+
+		this.onDateChange.emit(this.orderForm.controls.date.value);
 
 		this.controls = Object.keys(this.types).map((key) => {
 			return {
@@ -81,29 +124,25 @@ export class OrderComponent implements OnInit, OnDestroy {
 			};
 		});
 
-		this.subscription.push(this.orderForm.valueChanges.subscribe((x) => {
-			this.orderForm.controls.size.setErrors(null);
-			this.tableId?.setErrors(null);
-		}));
-
 		this.subscription.push(
 			this.getFreeTables$.pipe(
 				switchMap(() =>
 					this.detailsService.getFreeTables(this.restaurant.id, this.formParsedValue())
-					)
-			).subscribe((tables) =>{
+				)
+			).subscribe((tables) => {
 				this.freeTables = tables.map((table) => {
 					const _table = this.restaurant.details?.tables.find(
-					  (tb) => (tb.id === table.tableId),
+						(tb) => (tb.id === table.tableId),
 					);
 					return {
-					  id: _table?.id || '',
-					  seats: _table?.seats || 1,
-					  available: table.available,
+						id: _table?.id || '',
+						seats: _table?.seats || 1,
+						available: table.available,
 					};
 				});
 			})
-		)
+		);
+		this.subscription.push(this.orderForm.controls.date.valueChanges.subscribe((val) => this.onDateChange.emit(val)))
 	}
 
 	refresh() {
@@ -111,14 +150,15 @@ export class OrderComponent implements OnInit, OnDestroy {
 	}
 
 	reserve() {
+		this.onReserveClick.emit();
+
+		if (!this.user && !this.clientName && !this.phone) {
+			this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+		}
+
 		if (this.orderForm.invalid) {
 			this.orderForm.markAllAsTouched();
 			return;
-		}
-		const selectedTable = this.restaurant.details?.tables.find((table) => table.id === this.tableId?.value)!;
-		if (selectedTable?.seats && selectedTable.seats < this.orderForm.value.size!) {
-			this.orderForm.controls.size.setErrors({ toSmallTable: true });
-			this.tableId.setErrors({ toSmallTable: true });
 		}
 
 		const request = this.prepareOrderRequest();
@@ -137,7 +177,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 	private formParsedValue(): SearchRequest {
 		const formData = this.orderForm.getRawValue();
 		const request: SearchRequest  = {
-			date: formData.date.toISOString() ?? new Date().toISOString(),
+			date: formData.date ?
+				`${formData.date.getFullYear()}-${formData.date.getMonth() + 1 < 10 ? `0${formData.date.getMonth() + 1}` : formData.date.getMonth() + 1}-${formData.date.getDate() < 10 ? `0${formData.date.getDate()}` : formData.date.getDate()}T00:00:00.000Z`
+				: new Date().toISOString(),
 			size: formData.size,
 			arrival: formData.arrival.trim(),
 			leave: formData.leave?.trim(),
@@ -152,26 +194,31 @@ export class OrderComponent implements OnInit, OnDestroy {
 	}
 
 	prepareOrderRequest(): Order | undefined {
+		const dateParts = this.orderForm.controls.date.value.toLocaleDateString().split('.').reverse().map((x) => parseInt(x));
+		const properDate = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
+
 		const startTimeParts = this.orderForm.controls.arrival.value.split(":").map((x: string) => parseInt(x));
-		const startTime = new Date().setHours(startTimeParts[0], startTimeParts[1]);
+		const startTime = new Date(properDate).setHours(startTimeParts[0], startTimeParts[1]);
+
 		let endTime = 0;
 		if (this.orderForm.controls.leave.value) {
 			const endTimeParts = this.orderForm.controls.leave.value.split(":").map((x: string) => parseInt(x));
-			endTime = endTimeParts ? new Date().setHours(endTimeParts[0], endTimeParts[1]) : new Date().getTime();
+			endTime = endTimeParts ? new Date(properDate).setHours(endTimeParts[0], endTimeParts[1]) : new Date(properDate).getTime();
 		}
-		
 
 		const order: Order = {
 			userId: this.user?.id || '',
 			restaurantId: this.restaurant.id || '',
 			tableId: this.orderForm.controls.tableId.value,
 			tableSize: this.orderForm.controls.size.value,
-			date: new Date(this.orderForm.controls.date.value),
+			date: new Date(properDate),
 			time: {
 				startTime: new Date(startTime),
-				endTime: new Date(endTime),
+				endTime: endTime ? new Date(endTime) : undefined,
 			},
 			confirmation: ConfirmationStatus.UNCONFIRMED,
+			clientName: this.user?.name ? `${this.user.name} ${this.user.surname}` : `${this.clientName}`,
+			phone: this.phone ?? ''
 		}
 		if (Object.values(order).find((val) => val === undefined))
 		{

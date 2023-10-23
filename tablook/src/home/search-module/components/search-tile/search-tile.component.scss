@@ -2,13 +2,18 @@ app-search-tile {
 	.search-tile-wrapper {
 		border-radius: 24px;
 		display: grid;
-		grid-template-columns: 1fr 3fr;
+		grid-template-columns: minmax(250px, 25%) 3fr;
 		overflow: hidden;
 		background: $primary-white;
 
 		.image {
 			display: grid;
 			place-items: center;
+			img {
+				max-height: 165px;
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 
 		.details {
@@ -50,6 +55,10 @@ app-search-tile {
 			.in-favourite {
 				color: $favorite-icon;
 			}
+		}
+
+		.hours {
+			padding-left: 8px;
 		}
 
 		&:hover {

@@ -3,10 +3,12 @@ import { ConfirmationStatus } from "./confirmatiom-status.enum";
 
 export interface Order {
   userId: string;
+  clientName: string;
   restaurantId: string;
   date: Date;
   time: BookingTime;
   tableId: string;
   tableSize: number;
   confirmation: ConfirmationStatus;
+  phone: string;
 }

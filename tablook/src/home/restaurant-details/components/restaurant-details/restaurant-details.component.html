@@ -36,6 +36,9 @@
 		<div class="h2" *ngIf="restaurantDetails.name">
 			{{ restaurantDetails.name | upperFirst }}
 		</div>
+		<span class="small-details h6" *ngIf="!!restaurantDetails.details">
+			{{ restaurantDetails.details.address | addressFormat : false }}
+		</span>
 		<div class="ratings">
 			<mat-icon class="h4">star_outline</mat-icon>
 			<span class="h4"
@@ -53,6 +56,7 @@
 			<app-order
 				[user]="user"
 				[restaurant]="restaurantDetails"
+				(onDateChange)="handleDateChange($event)"
 			></app-order>
 		</div>
 		<div class="section">
@@ -60,6 +64,9 @@
 			<div
 				class="row"
 				*ngFor="let day of restaurantDetails.details?.openingHours"
+				[ngClass]="{
+					'selected-day': day.day.toLowerCase() === selectedDay
+				}"
 			>
 				<span class="col-3"
 					>{{ day.day | lowercase | upperFirst }}<span>:</span></span

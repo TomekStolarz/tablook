@@ -11,7 +11,7 @@
 	<div class="quick-search" [ngClass]="isMobile ? 'wrap' : ''">
 		<app-fast-filters></app-fast-filters>
 	</div>
-	<div class="company-section">
+	<div class="company-section" *ngIf="!(user | async)">
 		<button mat-raised-button [routerLink]="'/register/restaurant'">
 			Do you lead your restaurant? Join to us here
 		</button>

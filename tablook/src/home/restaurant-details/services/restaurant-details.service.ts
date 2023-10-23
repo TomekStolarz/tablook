@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, combineLatestWith, map, switchMap } from 'rxjs';
+import { Observable, catchError, combineLatestWith, map, of, switchMap } from 'rxjs';
 import { RestaurantInfo } from 'src/app/interfaces/restaurant-info.interface';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { environment } from 'src/environments/environment';
@@ -49,6 +49,29 @@ export class RestaurantDetailsService {
 		return this.http.get<UserInfo>(`${this.apiPath}/restaurant/${id}`);
 	}
 
+	getRestaurantOrderDetails(id: string): Observable<RestaurantInfo> {
+		return this.http.get<UserInfo>(`${this.apiPath}/restaurant/${id}`)
+			.pipe(
+				combineLatestWith(this.getFreeTables(id)),
+				map(([resData, freeTables]) => {
+					const properFreeTables: TableResult[] = freeTables.map((table) => {
+						const _table = resData.details?.tables.find(
+						  (tb) => (tb.id === table.tableId),
+						);
+						return {
+						  id: _table?.id || '',
+						  seats: _table?.seats || 1,
+						  available: table.available,
+						};
+					  });
+					return {
+						...resData,
+						freeTables: properFreeTables
+					}
+				})
+				);
+	}
+
 	private getDetailsFromGoogle(
 		userData: UserInfo
 	): Observable<RestaurantInfo> {
@@ -66,6 +89,9 @@ export class RestaurantDetailsService {
 						totalOpinions: googleData.user_ratings_total,
 						place_id: googleData.place_id
 					};
+				}),
+				catchError(() => {
+					return of({ ...userData, reviews: [], ratings: 0, totalOpinions: 0 });
 				})
 			);
 	}

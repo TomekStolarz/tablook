@@ -7,12 +7,15 @@
 	</div>
 
 	<div class="results" *ngIf="searchResults$ | async as searchResults">
-		<ng-container *ngIf="searchResults.length; else empty">
+		<ng-container *ngIf="searchResults.length && !isSearching; else empty">
 			<app-search-tile
 				*ngFor="let tile of searchResults"
 				[restaurantInfo]="tile"
 				[userInfo]="user"
 			></app-search-tile>
+		</ng-container>
+		<ng-container *ngIf="isSearching">
+			<mat-spinner class="spinner"></mat-spinner>
 		</ng-container>
 	</div>
 </div>

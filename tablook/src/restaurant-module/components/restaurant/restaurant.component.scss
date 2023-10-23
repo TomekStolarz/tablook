@@ -1,0 +1,24 @@
+@import '../../../variables';
+
+:host {
+	overflow-y: auto;
+}
+
+nav {
+	display: flex;
+	gap: 24px;
+	justify-content: flex-start;
+	padding: 12px;
+
+	button {
+		background-color: $primary-gray-1;
+		border-radius: 20px;
+		padding: 8px 24px;
+
+		&.active-tab {
+			background-color: $primary-darkgray-1;
+			color: $primary-white;
+			border: 1px solid $primary-white;
+		}
+	}
+}
