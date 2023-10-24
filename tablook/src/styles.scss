@@ -44,6 +44,11 @@ body {
 	cursor: pointer;
 }
 
+.sorting-icon {
+	display: grid;
+	grid-template-columns: 1fr auto;
+}
+
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 8px;

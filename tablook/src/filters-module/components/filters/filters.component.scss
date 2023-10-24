@@ -31,4 +31,26 @@ app-filters {
 		flex-direction: column;
 		align-items: normal;
 	}
+
+	.sorting-icon {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		color: $primary-white;
+	}
+
+	form mat-form-field .mdc-text-field--filled.mat-mdc-text-field-wrapper {
+		background-color: $primary-darkgray-2;
+		border-radius: 12px;
+
+		&.mdc-text-field--disabled {
+			background-color: $primary-darkgray-1;
+		}
+
+		input,
+		input::placeholder,
+		.mat-mdc-form-field-required-marker,
+		mat-label {
+			color: $primary-white !important;
+		}
+	}
 }

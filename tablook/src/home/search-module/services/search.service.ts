@@ -5,6 +5,7 @@ import { RestaurantSearchInfo } from '../interfaces/restaurant-search-info.inter
 import { BehaviorSubject, catchError, connectable, finalize, of, take, tap } from 'rxjs';
 import { SearchRequest } from '../interfaces/search-request.interface';
 import { CustomSnackbarService } from 'src/shared/services/custom-snackbar.service';
+import { Sorting } from '../interfaces/sorting.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,15 +24,15 @@ export class SearchService {
 	) {}
 
 	search(searchQuery: SearchRequest) {
-		this.isSearching$.next(true);
 		if (
 			this.lastSearchedQuery &&
-			Object.entries(searchQuery).join('') ===
-				Object.entries(this.lastSearchedQuery).join('')
+			this.searchRequestToString(searchQuery) ===
+			this.searchRequestToString(this.lastSearchedQuery)
 		) {
 			this.searchResults$.next(this.searchResults);
 			return;
 		}
+		this.isSearching$.next(true);
 		this.lastSearchedQuery = searchQuery;
 		connectable(this.http
 			.post<RestaurantSearchInfo[]>(`${this.apiPath}/search`, searchQuery)
@@ -63,5 +64,15 @@ export class SearchService {
 			query: filterKey,
 		};
 		this.search(request);
+	}
+
+	private searchRequestToString(searchQuery: SearchRequest): string {
+		return Object.entries(searchQuery).map(([key, value]) => {
+			if (key !== 'sortBy') {
+				return `${key}: ${value}`
+			} else {
+				return `${key}: ${Object.entries(value).join('')}`
+			}
+		}).join('')
 	}
 }
