@@ -32,12 +32,14 @@
 	font-weight: 400;
 	margin: 0;
 	padding: 0;
+	scroll-behavior: smooth;
 }
 
 html,
 body {
 	height: 100%;
 	color: $primary-black;
+	scroll-behavior: smooth;
 }
 
 .pointer {

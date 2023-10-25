@@ -7,6 +7,7 @@ import { SearchTileComponent } from './components/search-tile/search-tile.compon
 import { MatIconModule } from '@angular/material/icon';
 import { FilterModule } from 'src/filters-module/filters.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
 	declarations: [SearchComponent, SearchTileComponent],
@@ -16,7 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 		SearchRoutingModule,
 		MatIconModule,
 		FilterModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		MatButtonModule,
 	],
 	exports: [],
 })

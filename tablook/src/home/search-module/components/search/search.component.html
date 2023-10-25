@@ -6,7 +6,12 @@
 		></app-filters>
 	</div>
 
-	<div class="results" *ngIf="searchResults$ | async as searchResults">
+	<div
+		#resultDiv
+		(scroll)="onResultScroll(resultDiv)"
+		class="results"
+		*ngIf="searchResults$ | async as searchResults"
+	>
 		<ng-container *ngIf="searchResults.length && !isSearching; else empty">
 			<app-search-tile
 				*ngFor="let tile of searchResults"
@@ -17,6 +22,15 @@
 		<ng-container *ngIf="isSearching">
 			<mat-spinner class="spinner"></mat-spinner>
 		</ng-container>
+		<button
+			mat-mini-fab
+			(click)="goToTop()"
+			color="dark"
+			class="top"
+			*ngIf="goToTopVisible"
+		>
+			<mat-icon>arrow_upward</mat-icon>
+		</button>
 	</div>
 </div>
 
