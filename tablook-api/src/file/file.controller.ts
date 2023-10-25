@@ -17,6 +17,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { imageOptions } from './interceptors/image-multer-options';
 import { createReadStream, unlink } from 'fs';
 import { join } from 'path';
+import { PicturesNames, SharpPipe } from './sharp.pipe';
 
 @Controller('file')
 export class FileController {
@@ -31,17 +32,10 @@ export class FileController {
     ),
   )
   async uploadFile(
-    @UploadedFiles()
-    pictures: {
-      images?: Express.Multer.File[];
-      tablePlan?: Express.Multer.File[];
-    },
+    @UploadedFiles(SharpPipe)
+    pictures: PicturesNames,
   ) {
-    const imagesNames = pictures.images?.map((image) => image.filename);
-    const tablePlanName = pictures.tablePlan?.map(
-      (tablePlan) => tablePlan.filename,
-    );
-    return { images: imagesNames, tablePlanName: tablePlanName };
+    return { images: pictures.images, tablePlanName: pictures.tablePlan };
   }
 
   @Get(':id')
