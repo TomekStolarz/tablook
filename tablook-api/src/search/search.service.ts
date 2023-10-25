@@ -29,7 +29,11 @@ export class SearchService {
 
     let results = await this.orderService.getFreeTables(restaurants, request);
     if (request.sortBy) {
-      results = await this.sortRestaurant(results, request.sortBy);
+      results = await this.sortRestaurant(
+        results,
+        request.sortBy,
+        request.userId,
+      );
     }
     if (request.rating) {
       return results.filter((res) => res.rating >= request.rating);
@@ -60,7 +64,11 @@ export class SearchService {
         }),
       );
       const sorted = [...restIsFav].sort((a, b) => {
-        return Number(a.isfavourite) - Number(b.isfavourite);
+        return (
+          (Number(a.isfavourite.isFavourite) -
+            Number(b.isfavourite.isFavourite)) *
+          -1
+        );
       });
       return sorted.map((rest) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
