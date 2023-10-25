@@ -52,5 +52,11 @@ app-filters {
 		mat-label {
 			color: $primary-white !important;
 		}
+
+		mat-select {
+			svg {
+				color: $primary-white;
+			}
+		}
 	}
 }
