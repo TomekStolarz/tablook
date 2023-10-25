@@ -14,4 +14,5 @@ export interface RestaurantSearchInfo {
   tags: string[];
   image: string;
   todayHours: OpeningHour;
+  totalPages?: number;
 }

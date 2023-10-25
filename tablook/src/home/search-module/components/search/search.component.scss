@@ -1,7 +1,7 @@
 app-search {
 	.search-wrapper {
 		display: grid;
-		grid-template-columns: 1fr 4fr;
+		grid-template-columns: auto 1fr;
 
 		& > div {
 			max-height: 89vh;
@@ -33,6 +33,15 @@ app-search {
 				justify-content: center;
 				gap: 10px;
 			}
+		}
+
+		.top {
+			position: absolute;
+			bottom: 10px;
+			right: 20px;
+
+			color: $primary-white;
+			background: $primary-black;
 		}
 	}
 

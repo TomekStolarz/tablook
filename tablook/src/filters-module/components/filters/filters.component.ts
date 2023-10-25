@@ -1,16 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Subscription, debounceTime, distinctUntilChanged, map } from 'rxjs';
+import { selectUser } from 'src/app/store/user.selector';
 import { Alignment } from 'src/filters-module/models/alignment.enum';
 import { Control } from 'src/filters-module/models/control.interface';
 import { SearchRequest } from 'src/home/search-module/interfaces/search-request.interface';
+import { Sorting } from 'src/home/search-module/interfaces/sorting.model';
 import { SearchService } from 'src/home/search-module/services/search.service';
 
 @Component({
 	selector: 'app-filters',
 	templateUrl: './filters.component.html',
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent implements OnInit, OnDestroy {
 	@Input()
 	alignment: Alignment = Alignment.HORIZONTAL;
 
@@ -20,6 +23,12 @@ export class FiltersComponent implements OnInit {
 	@Input()
 	isExchancedForm = false;
 
+	private readonly fb = inject(FormBuilder);
+	
+	private readonly searchService = inject(SearchService);
+
+	private readonly store = inject(Store);
+	
 	controls: Control[] = [];
 	labels: { [key: string]: string } = {
 		query: 'Search query',
@@ -41,10 +50,20 @@ export class FiltersComponent implements OnInit {
 		leave: ['', [Validators.pattern(/\d\d:\d\d/)]],
 	});
 
-	constructor(
-		private fb: FormBuilder,
-		private searchService: SearchService
-	) {}
+	protected sortingData: Sorting[] = [
+		{key: 'Total opinions', direction: 1},
+		{key: 'Total opinions', direction: -1},
+		{key: 'Rating', direction: 1},
+		{key: 'Rating', direction: -1},
+		{key: 'Free tables', direction: 1},
+		{key: 'Free tables', direction: -1},
+		{key: 'Restaurant name', direction: 1},
+		{key: 'Restaurant name', direction: -1},
+	]
+
+	private subscription: Subscription[] = [];
+
+	private userId?: string;
 
 	ngOnInit(): void {
 		if (this.isExchancedForm) {
@@ -66,10 +85,6 @@ export class FiltersComponent implements OnInit {
 					}
 				);
 			}
-
-			this.searchForm.valueChanges
-				.pipe(debounceTime(400), distinctUntilChanged())
-				.subscribe(() => this.search());
 		}
 
 		this.controls = Object.keys(this.searchForm.controls).map((key) => {
@@ -81,6 +96,32 @@ export class FiltersComponent implements OnInit {
 				disablabed: key === 'leave',
 			};
 		});
+
+		if (this.isExchancedForm) { 
+			this.searchForm.addControl(
+				'sortBy',
+				this.fb.control('',)
+			);
+			
+			this.subscription.push(
+				this.searchForm.valueChanges
+					.pipe(
+						debounceTime(400),
+						distinctUntilChanged())
+					.subscribe(() => this.search()));
+		}
+
+		this.subscription.push(
+			this.store.pipe(
+				select(selectUser),
+				map((user => user?.id))
+			).subscribe((userId) => {
+				this.userId = userId;
+				if (userId) {
+					this.sortingData.unshift({ key: 'Favourite', direction: 1 });
+				}
+			})
+		)
 	}
 
 	search(): void {
@@ -106,6 +147,9 @@ export class FiltersComponent implements OnInit {
 			query: formData.query.trim(),
 			leave: formData.leave?.trim(),
 			rating: formData.rating,
+			sortBy: formData.sortBy,
+			userId: this.userId,
+			pageIndex: 1,
 		};
 		Object.entries(request).forEach(([key, value]) => {
 			if (!value) {
@@ -114,5 +158,13 @@ export class FiltersComponent implements OnInit {
 		});
 
 		return request;
+	}
+
+	get sortBy() {
+		return this.searchForm.controls['sortBy'].value;
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.forEach((sb) => sb.unsubscribe());
 	}
 }

@@ -13,6 +13,28 @@ export class SearchTileComponent implements OnInit {
 
 	@Input()
 	userInfo?: UserInfo;
+	
+	protected _isMobile!: boolean;
+
+	@Input()
+	set isMobile(isMobile: boolean) {
+		this._isMobile = isMobile;
+	};
+
+	get isMobile() {
+		return this._isMobile;
+	}
+
+	protected _isTablet!: boolean;
+
+	@Input()
+	set isTablet(isTablet: boolean) {
+		this._isTablet = isTablet;
+	};
+
+	get isTablet() {
+		return this._isTablet;
+	}
 
 	constructor(private favService: FavouriteService) {}
 

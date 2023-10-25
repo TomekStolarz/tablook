@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ControlComponent } from './components/control/control.component';
 import { FiltersComponent } from './components/filters/filters.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
 	declarations: [
@@ -33,6 +34,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 		FormsModule,
 		NgxMatTimepickerModule,
 		MatDatepickerModule,
+		MatSelectModule,
 	],
 	providers: [],
 	exports: [FastFiltersComponent, FiltersComponent, ControlComponent],

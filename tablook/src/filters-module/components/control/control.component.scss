@@ -33,7 +33,8 @@ app-control {
 			padding: 0 8px;
 		}
 
-		mat-icon {
+		mat-icon,
+		mat-datepicker-toggle {
 			color: $primary-white;
 
 			&:hover {

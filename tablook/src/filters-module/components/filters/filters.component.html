@@ -1,4 +1,25 @@
 <form [formGroup]="searchForm" class="filter-container" [ngClass]="alignment">
+	<mat-form-field *ngIf="isExchancedForm" class="filter">
+		<mat-label>Sort by</mat-label>
+		<mat-select formControlName="sortBy">
+			<mat-select-trigger *ngIf="!!sortBy">
+				<ng-container
+					*ngIf="!!sortBy"
+					[ngTemplateOutlet]="sortingTemplate"
+					[ngTemplateOutletContext]="{ $implicit: sortBy }"
+				>
+				</ng-container>
+			</mat-select-trigger>
+			<mat-option>None</mat-option>
+			<mat-option *ngFor="let sorting of sortingData" [value]="sorting">
+				<ng-container
+					[ngTemplateOutlet]="sortingTemplate"
+					[ngTemplateOutletContext]="{ $implicit: sorting }"
+				>
+				</ng-container>
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
 	<app-control
 		class="filter"
 		*ngFor="let control of controls"
@@ -13,3 +34,15 @@
 <button *ngIf="!isExchancedForm" mat-raised-button (click)="search()">
 	Search
 </button>
+
+<ng-template #sortingTemplate let-sorting>
+	<span class="sorting-icon">
+		<span>{{ sorting.key }} </span>
+		<mat-icon *ngIf="sorting.direction === 1; else desc"
+			>keyboard_arrow_up</mat-icon
+		>
+		<ng-template #desc>
+			<mat-icon>keyboard_arrow_down</mat-icon>
+		</ng-template>
+	</span>
+</ng-template>
