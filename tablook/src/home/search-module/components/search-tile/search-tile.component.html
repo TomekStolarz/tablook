@@ -1,8 +1,9 @@
 <div
 	class="search-tile-wrapper pointer"
 	[routerLink]="'/home/restaurant/' + restaurantInfo.id"
+	[ngClass]="{ mobile: isMobile, tablet: isTablet }"
 >
-	<div class="image">
+	<div class="image" *ngIf="!isMobile">
 		<img
 			[src]="'http://localhost:3000/file/' + restaurantInfo.image"
 			[alt]="'Restaurant profile image'"
@@ -17,11 +18,18 @@
 		>
 		<div class="h4 title-row">
 			<span>{{ restaurantInfo.name }}</span>
-			<mat-icon class="h4">star_outline</mat-icon>
-			<span class="h4"
-				>{{ restaurantInfo.rating }}{{ ' '
-				}}{{ restaurantInfo.totalOpinions }} opinions</span
-			>
+			<span class="ratings">
+				<mat-icon class="h4">star_outline</mat-icon>
+				<span class="h4"
+					>{{ restaurantInfo.rating }}{{ ' '
+					}}{{
+						restaurantInfo.totalOpinions
+							? restaurantInfo.totalOpinions
+							: 'No'
+					}}
+					opinions</span
+				>
+			</span>
 			<span class="h4 hours">
 				{{ restaurantInfo.todayHours.hours }}
 			</span>

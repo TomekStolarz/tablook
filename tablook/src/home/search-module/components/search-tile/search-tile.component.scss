@@ -6,6 +6,14 @@ app-search-tile {
 		overflow: hidden;
 		background: $primary-white;
 
+		&.mobile {
+			grid-template-columns: 1fr;
+		}
+
+		&.tablet {
+			grid-template-columns: 1fr;
+		}
+
 		.image {
 			display: grid;
 			place-items: center;
@@ -17,10 +25,15 @@ app-search-tile {
 		}
 
 		.details {
+			padding-top: 3px;
 			.title-row {
 				display: flex;
-				span:first-child {
-					margin-right: 24px;
+				flex-wrap: wrap;
+				column-gap: 1ch;
+
+				.ratings {
+					display: flex;
+					align-items: center;
 				}
 			}
 

@@ -17,6 +17,8 @@
 				*ngFor="let tile of searchResults"
 				[restaurantInfo]="tile"
 				[userInfo]="user"
+				[isMobile]="isMobile"
+				[isTablet]="isTablet"
 			></app-search-tile>
 		</ng-container>
 		<ng-container *ngIf="isSearching">

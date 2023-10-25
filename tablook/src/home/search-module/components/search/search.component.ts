@@ -36,6 +36,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 	user$ = this.store.select(selectUser);
 	isSearching = true;
 	isMobile = false;
+	isTablet = false;
 
 	ngOnInit(): void {
 		this.searchResults$ = this.searchService.searchResults$;
@@ -48,7 +49,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 		this.subscriptions.push(userSub);
 		this.subscriptions.push(searchSub);
 
-		const respSub = this.responsive.observe([Breakpoints.TabletPortrait, Breakpoints.HandsetPortrait])
+		const respSub = this.responsive.observe([Breakpoints.HandsetPortrait])
 			.subscribe((result) => {
 				if (result.matches) {
 					this.isMobile = true;
@@ -56,8 +57,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 					this.isMobile = false;
 				}
 			});
+		const tabletSub = this.responsive.observe(Breakpoints.Tablet).subscribe((res) => {
+			if (res.matches) {
+				this.isTablet = true;
+			} else {
+				this.isTablet = false;
+			}
+		})
 			
 		this.subscriptions.push(respSub);
+		this.subscriptions.push(tabletSub);
 	}
 
 	protected goToTop() {
