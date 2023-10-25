@@ -77,6 +77,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	elementVisible(restaurant: RestaurantSearchInfo, index: number) {
+		const currentPage = Math.ceil((index + 1) / 10);
+		if (restaurant.totalPages === currentPage) {
+			return;
+		}
+		this.searchService.loadNextChunk(currentPage + 1);
+	}
+
 	ngOnDestroy(): void {
 		this.subscriptions.forEach((sub) => sub.unsubscribe());
 	}

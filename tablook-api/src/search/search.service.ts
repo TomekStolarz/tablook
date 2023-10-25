@@ -36,10 +36,10 @@ export class SearchService {
       );
     }
     if (request.rating) {
-      return results.filter((res) => res.rating >= request.rating);
-    } else {
-      return results;
+      results = results.filter((res) => res.rating >= request.rating);
     }
+    const pageCount = Math.ceil(results.length / 10);
+    return results.map((elem) => ({ ...elem, totalPages: pageCount }));
   }
 
   private sortingKeys: { [key: string]: string } = {

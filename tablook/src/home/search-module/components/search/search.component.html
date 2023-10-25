@@ -14,11 +14,14 @@
 	>
 		<ng-container *ngIf="searchResults.length && !isSearching; else empty">
 			<app-search-tile
-				*ngFor="let tile of searchResults"
+				*ngFor="let tile of searchResults; index as index"
 				[restaurantInfo]="tile"
 				[userInfo]="user"
 				[isMobile]="isMobile"
 				[isTablet]="isTablet"
+				appElementVisible
+				[isTargetElement]="searchResults.length === index + 1"
+				(elementVisible)="elementVisible(tile, index)"
 			></app-search-tile>
 		</ng-container>
 		<ng-container *ngIf="isSearching">

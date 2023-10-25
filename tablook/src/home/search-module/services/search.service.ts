@@ -33,7 +33,7 @@ export class SearchService {
 			return;
 		}
 		this.isSearching$.next(true);
-		this.lastSearchedQuery = searchQuery;
+		this.lastSearchedQuery = searchQuery;;
 		connectable(this.http
 			.post<RestaurantSearchInfo[]>(`${this.apiPath}/search`, searchQuery)
 			.pipe(
@@ -55,10 +55,31 @@ export class SearchService {
 			)).connect();
 	}
 
+	loadNextChunk(pageIndex: number) {
+		const searchQuery = {...this.lastSearchedQuery, pageIndex: pageIndex}
+		connectable(this.http
+			.post<RestaurantSearchInfo[]>(`${this.apiPath}/search`, searchQuery)
+			.pipe(
+				tap((results) => {
+					this.searchResults = this.searchResults.concat(results);
+					this.searchResults$.next(this.searchResults);
+				}),
+				take(1),
+				catchError((error: HttpErrorResponse) => {
+					this.customSnackbarService.error(
+						`Error occured on search ${error.message}`,
+						`Cannot search table`
+					);
+					return of([]);
+				}),
+			)).connect();
+	}
+
 	filterResults(filterKey: string) {
 		const date = new Date();
 		const request = {
 			date: date.toISOString(),
+			pageIndex: 1,
 			size: 1,
 			arrival: `${date.getHours()}:${date.getMinutes()}`,
 			query: filterKey,

@@ -2,7 +2,8 @@ import { Sorting } from "./sorting.model";
 
 export interface SearchRequest {
 	date: string;
-	size: number;    
+	size: number;
+	pageIndex?: number;
     location?: string;
 	arrival?: string;
 	query?: string;

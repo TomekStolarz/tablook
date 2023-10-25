@@ -7,8 +7,22 @@ import { SearchService } from './search.service';
 export class SearchController {
   constructor(private searchService: SearchService) {}
 
+  private lastesResult: RestaurantSearchInfo[];
+
   @Post()
-  getSearch(@Body() request: SearchRequest): Promise<RestaurantSearchInfo[]> {
-    return this.searchService.getAvailableRestaurant(request);
+  async getSearch(
+    @Body() request: SearchRequest,
+  ): Promise<RestaurantSearchInfo[]> {
+    if (request.pageIndex === 1) {
+      this.lastesResult = await this.searchService.getAvailableRestaurant(
+        request,
+      );
+      return this.lastesResult.slice(0, 10 * request.pageIndex - 1);
+    } else {
+      return this.lastesResult.slice(
+        10 * request.pageIndex,
+        10 * request.pageIndex - 1,
+      );
+    }
   }
 }

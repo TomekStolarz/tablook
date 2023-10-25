@@ -15,4 +15,5 @@ export interface RestaurantSearchInfo {
 	image: string;
 	isFavourite?: boolean;
 	todayHours: OpeningHours;
+	totalPages: number;
 }

@@ -8,9 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { FilterModule } from 'src/filters-module/filters.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { ElementVisibleDirective } from './directives/element-visible.directive';
 
 @NgModule({
-	declarations: [SearchComponent, SearchTileComponent],
+	declarations: [SearchComponent, SearchTileComponent, ElementVisibleDirective],
 	imports: [
 		CommonModule,
 		SharedModule,

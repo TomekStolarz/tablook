@@ -148,7 +148,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
 			leave: formData.leave?.trim(),
 			rating: formData.rating,
 			sortBy: formData.sortBy,
-			userId: this.userId
+			userId: this.userId,
+			pageIndex: 1,
 		};
 		Object.entries(request).forEach(([key, value]) => {
 			if (!value) {
