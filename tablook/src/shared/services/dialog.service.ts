@@ -9,7 +9,7 @@ export class DialogService {
 
   private readonly dialog = inject(Dialog);
 
-  openDialog(cmp: ComponentType<unknown>, data: unknown) {
+  openDialog(cmp: ComponentType<unknown>, data?: unknown) {
     const dialogRef = this.dialog.open<string>(cmp, {
       data: data,
       autoFocus: 'i'

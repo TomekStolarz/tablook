@@ -24,6 +24,7 @@ import { AddressFormatPipe } from './pipes/address-format.pipe';
 import { DateToTimePipe } from './pipes/date-to-time.pipe';
 import { IsoStringDatePipe } from './pipes/iso-string-date.pipe';
 import { ImageDialogViewerComponent } from './components/image-dialog-viewer/image-dialog-viewer.component';
+import { ConfirmDeleteDialogComponent } from './components/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @NgModule({
 	imports: [
@@ -53,6 +54,7 @@ import { ImageDialogViewerComponent } from './components/image-dialog-viewer/ima
   		DateToTimePipe,
     	IsoStringDatePipe,
      ImageDialogViewerComponent,
+     ConfirmDeleteDialogComponent,
 	],
 	providers: [CustomSnackbarService, DatePipe],
 	exports: [

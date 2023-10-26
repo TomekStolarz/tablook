@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, connectable, first, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import { SelectData, Setting } from 'src/account-module/models/setting.type';
 import { AccountService } from 'src/account-module/services/account.service';
-import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { selectUser } from 'src/app/store/user.selector';
 import { matchPasswordValidator } from 'src/register-module/directives/match-password-validator.directive';
 import { passwordValidator } from 'src/register-module/directives/password-validator.directive';
 import { phoneValidator } from 'src/register-module/directives/phone-validator.directive';
 import { RegisterData } from 'src/register-module/interfaces/register-data.interface';
 import { CountryPhoneCodeService } from 'src/register-module/services/country-phone-code.service.interface';
+import { ConfirmDeleteDialogComponent } from 'src/shared/components/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-settings',
@@ -28,6 +29,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private readonly cdRef = inject(ChangeDetectorRef);
 
   private readonly accountService = inject(AccountService);
+
+  private readonly dialogService = inject(MatDialog);
 
   user$ = this.store.select(selectUser);
 
@@ -130,7 +133,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onDeleteAccount()
   {
-    this.subscriptions.push(this.accountService.deleteAccount(this.userId));
+    const dialogRef = this.dialogService.open(ConfirmDeleteDialogComponent);
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.subscriptions.push(this.accountService.deleteAccount(this.userId));
+      window.location.reload();
+    }));
   }
 
   ngOnDestroy(): void {
