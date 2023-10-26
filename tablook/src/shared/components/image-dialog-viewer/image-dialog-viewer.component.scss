@@ -1,0 +1,21 @@
+@import '../../../variables';
+
+:host {
+	height: 100svh;
+	max-width: 100vw;
+	position: relative;
+	display: flex;
+	padding: 0px 60px;
+	background: white;
+}
+
+img {
+	height: 100%;
+}
+
+.close-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: $primary-black;
+}

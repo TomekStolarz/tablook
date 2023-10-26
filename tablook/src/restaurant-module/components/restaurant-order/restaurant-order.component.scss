@@ -2,16 +2,22 @@
 
 app-restaurant-order {
 	& {
-		padding: 12px;
+		padding: 0 12px;
 		align-items: center;
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 24px;
 	}
 
 	section {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
+		img {
+			max-height: 66svh;
+			cursor: pointer;
+		}
 	}
 
 	.client-form {

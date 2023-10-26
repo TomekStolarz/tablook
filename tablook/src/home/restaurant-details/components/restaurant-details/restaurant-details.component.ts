@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RestaurantDetailsService } from '../../services/restaurant-details.service';
@@ -10,6 +10,8 @@ import { selectUser } from 'src/app/store/user.selector';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
 import { FavouriteService } from 'src/shared/services/favourite.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { DialogService } from 'src/shared/services/dialog.service';
+import { ImageDialogViewerComponent } from 'src/shared/components/image-dialog-viewer/image-dialog-viewer.component';
 
 @Component({
 	selector: 'app-restaurant-details',
@@ -26,6 +28,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 	imagesData: ImageData[] = [];
 
 	selectedDay: string = '';
+
+	private readonly dialogService = inject(DialogService);
 
 	constructor(
 		private route: ActivatedRoute,
@@ -132,5 +136,9 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 		  weekday: 'long',
 		})
 			.toLowerCase();
+	}
+
+	openImageDialog(image?: string) {
+		this.dialogService.openDialog(ImageDialogViewerComponent, image);
 	}
 }

@@ -9,6 +9,8 @@ import { OrderComponent } from "src/home/restaurant-details/components/order/ord
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
+import { NgImageSliderModule } from "ng-image-slider";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
     imports: [
@@ -20,6 +22,8 @@ import { MatInputModule } from "@angular/material/input";
       MatFormFieldModule,
       ReactiveFormsModule,
       MatInputModule,
+      NgImageSliderModule,
+      MatDialogModule
     ],
     declarations: [
       RestaurantComponent,

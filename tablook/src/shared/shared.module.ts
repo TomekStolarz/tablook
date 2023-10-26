@@ -23,6 +23,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { AddressFormatPipe } from './pipes/address-format.pipe';
 import { DateToTimePipe } from './pipes/date-to-time.pipe';
 import { IsoStringDatePipe } from './pipes/iso-string-date.pipe';
+import { ImageDialogViewerComponent } from './components/image-dialog-viewer/image-dialog-viewer.component';
 
 @NgModule({
 	imports: [
@@ -51,6 +52,7 @@ import { IsoStringDatePipe } from './pipes/iso-string-date.pipe';
 		AddressFormatPipe,
   		DateToTimePipe,
     	IsoStringDatePipe,
+     ImageDialogViewerComponent,
 	],
 	providers: [CustomSnackbarService, DatePipe],
 	exports: [
