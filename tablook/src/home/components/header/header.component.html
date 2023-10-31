@@ -4,7 +4,7 @@
 	</div>
 	<h1>tablook</h1>
 	<div class="buttons">
-		<ng-content *ngTemplateOutlet="username ? loggedBar : guestBar">
+		<ng-content *ngTemplateOutlet="user ? loggedBar : guestBar">
 		</ng-content>
 	</div>
 </nav>
@@ -12,12 +12,16 @@
 <ng-template #loggedBar>
 	<button
 		mat-raised-button
-		[routerLink]="'/home/account-details'"
+		[routerLink]="
+			user?.type === 'restaurant'
+				? '/home/restaurant-account'
+				: '/home/account-details'
+		"
 		routerLinkActive="account-button-hidden"
 	>
 		<mat-icon>{{ 'account_circle' }}</mat-icon>
 		<span class="account">
-			{{ username }}
+			{{ user?.name }}
 		</span>
 	</button>
 	<button mat-raised-button (click)="logout()">
