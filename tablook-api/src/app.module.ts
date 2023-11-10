@@ -14,6 +14,8 @@ import { FastFilterModule } from './fast-filters/fast-filter.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { emailData } from 'email.data';
 import { MailModule } from './mail/mail.module';
+import { join } from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
@@ -34,6 +36,13 @@ import { MailModule } from './mail/mail.module';
         auth: {
           user: emailData.email,
           pass: emailData.pass,
+        },
+      },
+      template: {
+        dir: join(__dirname, '../mail/templates'),
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
         },
       },
     }),

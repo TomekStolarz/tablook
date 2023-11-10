@@ -7,12 +7,14 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { RestaurantModule } from 'src/restaurant/restaurant.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Order', schema: OrderSchema }]),
     UserModule,
     RestaurantModule,
+    MailModule,
   ],
   controllers: [OrderController],
   providers: [OrderService, AuthService, JwtService],

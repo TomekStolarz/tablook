@@ -13,7 +13,6 @@ import { OrderInfo } from './models/order-info.interface';
 import { UserService } from 'src/user/user.service';
 import { UserType } from 'src/user/models/user-type.enum';
 import { SearchRequest } from 'src/search/models/search-request.interface';
-import { UserInfo } from 'src/user/models/user-info.interface';
 import { RestaurantSearchInfo } from 'src/search/models/restaurant-search-info.interface';
 import { BookingTime } from './models/booking-time.interface';
 import { FreeTable } from 'src/search/models/free-table.interface';
@@ -24,6 +23,7 @@ import { DetailedOrderInfo } from './models/detailed-order-info.type';
 import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 import { calculateArrivalandLeaving } from 'src/utils';
 import { RestaurantFind } from 'src/search/models/restaurant-find.model';
+import { NotificationService } from 'src/mail/mail/notification.service';
 
 @Injectable()
 export class OrderService {
@@ -33,6 +33,7 @@ export class OrderService {
     @InjectModel('Order') private readonly orderModel: Model<OrderDocument>,
     private userService: UserService,
     private restaurantService: RestaurantService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async finishOrder(orderId: Pick<OrderInfo, 'orderId'>, restaurantId: string) {
@@ -72,11 +73,19 @@ export class OrderService {
       if (order.restaurantId !== restaurantId) {
         throw new ForbiddenException();
       }
+      const restaurant = await this.userService.findById(restaurantId);
       const updatedOder = await this.orderModel
         .findByIdAndUpdate(orderConfirm.orderId, {
           confirmation: orderConfirm.confirmation,
         })
         .exec();
+
+      this.notificationService.sendConfirmationStatusChange(
+        orderConfirm.confirmation,
+        order.userId,
+        restaurant,
+        order.date,
+      );
       this.logger.log('Order confirmation successfully changed');
       return this.getOrderInfo(updatedOder);
     } catch (error: any) {
