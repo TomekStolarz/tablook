@@ -361,6 +361,10 @@ export class OrderService {
 
     const last = leaving ? new Date(leaving) : new Date(closing);
 
+    if (leaving && new Date(leaving) > new Date(closing)) {
+      return [];
+    }
+
     const freeTables = Object.entries(tables).map(([tableId, time]) => {
       let _op = new Date(_arrival);
       const freeTime: BookingTime[] = [];
