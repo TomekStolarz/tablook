@@ -10,5 +10,7 @@ export class RestaurantComponent {
   protected tabs: Tab[] = [
     { name: 'Reservations in restaurant', route: 'reservations'},
     { name: 'Place order', route: 'order'},
+    { name: 'Contact', route: 'contact'},
+    { name: 'Settings', route: 'setting'},
   ] 
 }

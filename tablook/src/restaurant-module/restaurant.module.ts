@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { NgImageSliderModule } from "ng-image-slider";
 import { MatDialogModule } from "@angular/material/dialog";
+import { SettingComponent } from './components/setting/setting.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { MatDialogModule } from "@angular/material/dialog";
     ],
     declarations: [
       RestaurantComponent,
-      RestaurantOrderComponent
+      RestaurantOrderComponent,
+      SettingComponent
     ],
 })
 export class RestaurantModule { }
