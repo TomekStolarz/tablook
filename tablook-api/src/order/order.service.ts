@@ -168,7 +168,7 @@ export class OrderService {
     const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
     const closing = new Date(order.date).setHours(hours[2], hours[3]);
     const opening = new Date(order.date).setHours(hours[0], hours[1]);
-    const endTime = new Date(order.time.endTime || closing);
+    const endTime = new Date(order.time.endTime || closing); //TODO: closing should be restaurant closing time or next reservation start
     const startTime = new Date(order.time.startTime);
     order.time.endTime = endTime;
     order.time.startTime = startTime;
@@ -303,7 +303,7 @@ export class OrderService {
     }
 
     if (request.leave) {
-      if (leaving < currentTime.getTime()) {
+      if (leaving < currentTime.getTime() || leaving < _arrival) {
         return [];
       }
     }
