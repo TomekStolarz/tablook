@@ -68,10 +68,14 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.contactForm.markAsUntouched();
     this.contactForm.controls.message.markAsPristine();
     this.contactForm.controls.message.markAsUntouched();
+    this.contactForm.controls.message.setErrors(null);
     this.contactForm.controls.topic.markAsPristine();
     this.contactForm.controls.topic.markAsUntouched();
+    this.contactForm.controls.topic.setErrors(null);
     this.contactForm.controls.topics.markAsPristine();
     this.contactForm.controls.topics.markAsUntouched();
+    this.contactForm.controls.topics.setErrors(null);
+    this.contactForm.setErrors({});
   }
 
   ngOnDestroy(): void {
