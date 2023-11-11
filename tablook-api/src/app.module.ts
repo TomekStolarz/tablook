@@ -54,7 +54,6 @@ import { SafeString, escapeExpression } from 'handlebars';
           },
         }),
       },
-      preview: true,
     }),
     MailModule,
   ],
