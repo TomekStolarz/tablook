@@ -154,6 +154,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
 		if (!this.user && !this.clientName && !this.phone) {
 			this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+			return;
 		}
 
 		if (this.orderForm.invalid) {

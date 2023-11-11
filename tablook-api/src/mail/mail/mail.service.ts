@@ -22,7 +22,8 @@ export class MailService {
           template: mailData.template,
           context: mailData.templateContext,
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error(error);
           return true;
         });
     } catch {

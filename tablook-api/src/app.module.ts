@@ -16,6 +16,7 @@ import { emailData } from 'email.data';
 import { MailModule } from './mail/mail.module';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { SafeString, escapeExpression } from 'handlebars';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     MailerModule.forRoot({
       transport: {
         host: emailData.host,
+        port: 465,
+        secure: true,
         auth: {
           user: emailData.email,
           pass: emailData.pass,
@@ -40,11 +43,18 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       },
       template: {
         dir: join(__dirname, '../mail/templates'),
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
-        },
+        adapter: new HandlebarsAdapter({
+          link: (text, url) => {
+            const propurl = escapeExpression(url),
+              proptext = escapeExpression(text);
+
+            return new SafeString(
+              `<a href="${propurl}" target="_blank" class="btn btn-dark">${proptext}</a>`,
+            );
+          },
+        }),
       },
+      preview: true,
     }),
     MailModule,
   ],

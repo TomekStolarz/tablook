@@ -79,13 +79,14 @@ export class OrderService {
           confirmation: orderConfirm.confirmation,
         })
         .exec();
-
-      this.notificationService.sendConfirmationStatusChange(
-        orderConfirm.confirmation,
-        order.userId,
-        restaurant,
-        order.date,
-      );
+      if (order.userId !== '100') {
+        this.notificationService.sendConfirmationStatusChange(
+          orderConfirm.confirmation,
+          order.userId,
+          restaurant,
+          order.date,
+        );
+      }
       this.logger.log('Order confirmation successfully changed');
       return this.getOrderInfo(updatedOder);
     } catch (error: any) {
@@ -212,11 +213,15 @@ export class OrderService {
       throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
     }
 
-    order.confirmation = ConfirmationStatus.UNCONFIRMED;
     order.userId = order.userId ? order.userId : '100';
+    order.confirmation =
+      order.userId === '100'
+        ? ConfirmationStatus.CONFIRMED
+        : ConfirmationStatus.UNCONFIRMED;
 
     try {
       newOrder = new this.orderModel({ ...order });
+      this.notificationService.sendNewOrder(restaurant);
       this.logger.log('Order placed successfully');
     } catch (error: any) {
       this.logger.error(error.message);

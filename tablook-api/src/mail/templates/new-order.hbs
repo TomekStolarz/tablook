@@ -33,8 +33,15 @@
                 display: grid;
             }
 
-			.holder > * {
+            .holder > * {
                 text-align: center;
+            }
+
+            button {
+                padding: 5px;
+                border-radius: 10px;
+                background-color: #0e8d7e;
+                color: white;
             }
 
             footer {
@@ -44,10 +51,10 @@
         </style>
 	</head>
 	<body>
-		<div class="holder" >
-            <h2>Contact requested from: <strong>{{sender}}</strong></h2>
-            <h2>Topic: {{topic}}</h2>
-            <h5>{{message}}</h5>
+		<div class="holder">
+            <h2>Hello <strong>{{name}}</strong></h2>
+            <h3>Your have new reservation!</h3>
+            <h4>Check your  <button {{link panel panelLink}}></button>and make confirmation for it</h4>
             <footer >
                 <h2>tablook</h2>
             </footer>
