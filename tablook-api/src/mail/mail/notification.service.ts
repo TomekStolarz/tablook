@@ -5,6 +5,7 @@ import { UserService } from 'src/user/user.service';
 import { emailData } from 'email.data';
 import { UserInfo } from 'src/user/models/user-info.interface';
 import { config } from 'src/dev.config';
+import { OrderInfo } from 'src/order/models/order-info.interface';
 
 @Injectable()
 export class NotificationService {
@@ -52,6 +53,41 @@ export class NotificationService {
         name: restaurant.name,
         panelLink: `${config.front}/home/restaurant-account/reservations`,
         panel: 'panel',
+      },
+    });
+  }
+
+  async sendFinishOrder(restaurant: UserInfo, user: UserInfo) {
+    const receiver = emailData.email; //user.email;
+    this.mailService.sendEmail({
+      sender: emailData.email,
+      receiver: receiver,
+      subject: 'Make review about your visit!',
+      template: 'leave-opinion',
+      templateContext: {
+        place: restaurant.name,
+        name: `${user.name[0].toUpperCase}${user.name.slice(1)}`,
+        googleLink: restaurant.details.googleMapsLink,
+        reviewText: 'Add review ⭐',
+      },
+    });
+  }
+
+  async sendOrderNotification(
+    restaurant: UserInfo,
+    user: UserInfo,
+    order: OrderInfo,
+  ) {
+    const receiver = emailData.email; //user.email;
+    this.mailService.sendEmail({
+      sender: emailData.email,
+      receiver: receiver,
+      subject: 'Reservation reminder',
+      template: 'reservation-reminder',
+      templateContext: {
+        place: restaurant.name,
+        name: `${user.name[0].toUpperCase}${user.name.slice(1)}`,
+        order: order,
       },
     });
   }

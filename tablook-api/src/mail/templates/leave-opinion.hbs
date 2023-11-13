@@ -44,16 +44,9 @@
 	</head>
 	<body>
 		<div class="holder" >
-            <h2>Your reservation has been {{confirmed}}!</h2>
-            <h3>Your reservation on <strong>{{date}}</strong> at <strong>{{place}}</strong> has been {{confirmed}}</h3>
-            {{#if confirmationStatus}}
-                <h4>If you had any note about reservation please contact with <strong>{{place}}</strong>  via  <strong>{{email}}</strong> or <strong>{{phone}}</strong></h4>
-            {{else}}
-                <h4>
-                    <p>We are really sorry about that {{name}}</p>
-                    <p>You can still reserve other table in different place</p>
-                </h4>
-            {{/if}}
+            <h3>{{name}}, your reservation at <strong>{{place}}</strong> has been finished</h3>
+            <h3>Please leave your opinion to <strong>{{place}}</strong> on Google opininons</h3>
+            {{link reviewText googleLink}}
             <footer >
                 <h2>tablook</h2>
             </footer>

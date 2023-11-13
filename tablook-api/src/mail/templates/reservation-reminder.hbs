@@ -44,16 +44,11 @@
 	</head>
 	<body>
 		<div class="holder" >
-            <h2>Your reservation has been {{confirmed}}!</h2>
-            <h3>Your reservation on <strong>{{date}}</strong> at <strong>{{place}}</strong> has been {{confirmed}}</h3>
-            {{#if confirmationStatus}}
-                <h4>If you had any note about reservation please contact with <strong>{{place}}</strong>  via  <strong>{{email}}</strong> or <strong>{{phone}}</strong></h4>
-            {{else}}
-                <h4>
-                    <p>We are really sorry about that {{name}}</p>
-                    <p>You can still reserve other table in different place</p>
-                </h4>
-            {{/if}}
+            <h1>Good morning, {{name}}</h1>
+            <h2>We are remind you about your reservation at <strong>{{place}}</strong></h2>
+            <h3>Reservation start today at <strong>{{order.time.startTime}}</strong>. Please be on time.</h3>
+            <h3>Your table is {{order.tableId}} and you book {{order.tableSize}} places</h3>
+            <h4>Have a nice visit.</h4>
             <footer >
                 <h2>tablook</h2>
             </footer>
