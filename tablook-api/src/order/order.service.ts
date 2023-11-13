@@ -168,8 +168,10 @@ export class OrderService {
     const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
     const closing = new Date(order.date).setHours(hours[2], hours[3]);
     const opening = new Date(order.date).setHours(hours[0], hours[1]);
-    const endTime = new Date(order.time.endTime || closing); //TODO: closing should be restaurant closing time or next reservation start
     const startTime = new Date(order.time.startTime);
+    const endTime = order.time.endTime
+      ? new Date(order.time.endTime)
+      : await this.getOrderClosing(new Date(closing), startTime, order);
     order.time.endTime = endTime;
     order.time.startTime = startTime;
 
@@ -205,7 +207,9 @@ export class OrderService {
             },
           ],
         },
-        confirmation: ConfirmationStatus.CONFIRMED,
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
       })
       .exec();
 
@@ -221,13 +225,41 @@ export class OrderService {
 
     try {
       newOrder = new this.orderModel({ ...order });
-      this.notificationService.sendNewOrder(restaurant);
+      if (order.userId !== '100') {
+        this.notificationService.sendNewOrder(restaurant);
+      }
       this.logger.log('Order placed successfully');
     } catch (error: any) {
       this.logger.error(error.message);
       throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
     }
     newOrder.save();
+  }
+
+  private async getOrderClosing(
+    closing: Date,
+    startTime: Date,
+    order: OrderDTO,
+  ): Promise<Date> {
+    const orderExits = await this.orderModel
+      .find({
+        restaurantId: order.restaurantId,
+        date: order.date,
+        tableId: order.tableId,
+        'time.startTime': { $gte: startTime },
+        'time.endTime': { $lte: closing },
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
+      })
+      .sort({ 'time.startTime': 1 })
+      .limit(1)
+      .exec();
+    if (orderExits?.[0]) {
+      const order = this.getOrderInfo(orderExits[0]);
+      return order.time.startTime;
+    }
+    return closing;
   }
 
   private getOrderInfo(order: OrderDocument): OrderInfo {
@@ -313,7 +345,9 @@ export class OrderService {
         restaurantId: restaurantId,
         date: { $gte: dateStart, $lte: dateEnd },
         tableSize: { $gte: request.size },
-        confirmation: ConfirmationStatus.CONFIRMED,
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
         $or: [
           { 'time.startTime': { $gte: new Date(_arrival) } },
           {
