@@ -46,14 +46,22 @@ export class OrderService {
       if (order.restaurantId !== restaurantId) {
         throw new ForbiddenException();
       }
-
+      if (order.time.endTime.getTime() < date.getTime()) {
+        throw new HttpException(
+          'Order already finished',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       const updated = this.orderModel
         .findByIdAndUpdate(orderId.orderId, { 'time.endTime': date })
         .exec();
       this.logger.log('Order finished date changed');
       return true;
     } catch (error: any) {
-      if (error instanceof ForbiddenException) {
+      if (
+        error instanceof ForbiddenException ||
+        error instanceof HttpException
+      ) {
         throw error;
       } else {
         throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
