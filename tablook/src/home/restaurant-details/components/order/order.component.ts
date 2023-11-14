@@ -55,6 +55,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 	@Input()
 	phone?: string;
 
+	@Input()
+	restaurantOrder = false;
+
 	@Output()
 	onReserveClick = new EventEmitter<void>();
 
@@ -153,7 +156,11 @@ export class OrderComponent implements OnInit, OnDestroy {
 		this.onReserveClick.emit();
 
 		if (!this.user && !this.clientName && !this.phone) {
-			this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+			if (this.restaurantOrder) {
+				this.snackbarService.error("Form is not filled correctly", 'Cannot place order');
+			} else {
+				this.snackbarService.error("You must be log in to place order", 'Cannot place order');
+			}
 			return;
 		}
 
