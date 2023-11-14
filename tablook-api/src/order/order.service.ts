@@ -24,6 +24,7 @@ import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 import { calculateArrivalandLeaving } from 'src/utils';
 import { RestaurantFind } from 'src/search/models/restaurant-find.model';
 import { NotificationService } from 'src/mail/mail/notification.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class OrderService {
@@ -35,6 +36,55 @@ export class OrderService {
     private restaurantService: RestaurantService,
     private readonly notificationService: NotificationService,
   ) {}
+
+  @Cron('0 0 6 * * *')
+  async gatherTodayReservation() {
+    const parsedOrders = await this.getTodayReservations();
+
+    parsedOrders
+      .filter((order) => order.userId !== '100')
+      .forEach(async (order) => {
+        const user = await this.userService.findById(order.userId);
+        const restaurant = await this.userService.findById(order.restaurantId);
+        this.notificationService.sendOrderNotification(user, restaurant, order);
+      });
+  }
+
+  @Cron('0 0 23 * * *')
+  async gatherTodayFinishedReservation() {
+    const parsedOrders = await this.getTodayReservations();
+
+    parsedOrders
+      .filter((order) => order.userId !== '100')
+      .forEach(async (order) => {
+        const user = await this.userService.findById(order.userId);
+        const restaurant = await this.userService.findById(order.restaurantId);
+        this.notificationService.sendFinishOrder(user, restaurant);
+      });
+  }
+
+  private async getTodayReservations() {
+    const today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    const tommorow = new Date(today.getTime());
+    tommorow.setDate(tommorow.getDate() + 1);
+
+    const todayOrders = await this.orderModel.find({
+      date: { $gte: today, $lte: tommorow },
+      confirmation: ConfirmationStatus.CONFIRMED,
+    });
+
+    if (!todayOrders.length) {
+      return [];
+    }
+
+    const parsedOrders = await Promise.all(
+      todayOrders.map(async (order) => await this.getOrderInfo(order)),
+    );
+    return parsedOrders;
+  }
 
   async finishOrder(orderId: Pick<OrderInfo, 'orderId'>, restaurantId: string) {
     const date = new Date();
