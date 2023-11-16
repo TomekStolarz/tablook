@@ -17,7 +17,6 @@ import { MailModule } from './mail/mail.module';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { SafeString, escapeExpression } from 'handlebars';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -57,7 +56,6 @@ import { ScheduleModule } from '@nestjs/schedule';
       },
     }),
     MailModule,
-    ScheduleModule.forRoot(),
   ],
   controllers: [],
   providers: [

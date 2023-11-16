@@ -24,7 +24,8 @@ import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 import { calculateArrivalandLeaving } from 'src/utils';
 import { RestaurantFind } from 'src/search/models/restaurant-find.model';
 import { NotificationService } from 'src/mail/mail/notification.service';
-import { Cron } from '@nestjs/schedule';
+import { Cron } from 'src/mail/mail/utils';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class OrderService {
@@ -35,9 +36,12 @@ export class OrderService {
     private userService: UserService,
     private restaurantService: RestaurantService,
     private readonly notificationService: NotificationService,
-  ) {}
+    private readonly reflector: Reflector,
+  ) {
+    this.test();
+  }
 
-  @Cron('0 0 6 * * *')
+  @Cron('@daily 0 6')
   async gatherTodayReservation() {
     const parsedOrders = await this.getTodayReservations();
 
@@ -50,7 +54,12 @@ export class OrderService {
       });
   }
 
-  @Cron('0 0 23 * * *')
+  @Cron('@minutely')
+  async test() {
+    console.log('Runned');
+  }
+
+  @Cron('@daily 0 23')
   async gatherTodayFinishedReservation() {
     const parsedOrders = await this.getTodayReservations();
 
