@@ -45,6 +45,25 @@ import { ScheduleModule } from '@nestjs/schedule';
       template: {
         dir: join(__dirname, '../mail/templates'),
         adapter: new HandlebarsAdapter({
+          dayTime: () => {
+            const date = new Date();
+            const dayTime =
+              date.getHours() < 12
+                ? 'morning'
+                : date.getHours() < 18
+                ? 'afternoon'
+                : 'evening';
+            return new SafeString(`${dayTime}`);
+          },
+          time: (date: Date) => {
+            return new SafeString(
+              `${date.getHours()}:${
+                date.getMinutes() >= 10
+                  ? date.getMinutes()
+                  : '0' + date.getMinutes()
+              }`,
+            );
+          },
           link: (text, url) => {
             const propurl = escapeExpression(url),
               proptext = escapeExpression(text);

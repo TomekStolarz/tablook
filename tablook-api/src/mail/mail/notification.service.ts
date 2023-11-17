@@ -66,7 +66,7 @@ export class NotificationService {
       template: 'leave-opinion',
       templateContext: {
         place: restaurant.name,
-        name: `${user.name[0].toUpperCase}${user.name.slice(1)}`,
+        name: `${user.name[0].toUpperCase()}${user.name.slice(1)}`,
         googleLink: restaurant.details.googleMapsLink,
         reviewText: 'Add review ⭐',
       },
@@ -86,7 +86,7 @@ export class NotificationService {
       template: 'reservation-reminder',
       templateContext: {
         place: restaurant.name,
-        name: `${user.name[0].toUpperCase}${user.name.slice(1)}`,
+        name: `${user.name[0].toUpperCase()}${user.name.slice(1)}`,
         order: order,
       },
     });

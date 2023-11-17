@@ -45,8 +45,10 @@ export class OrderService {
       .filter((order) => order.userId !== '100')
       .forEach(async (order) => {
         const user = await this.userService.findById(order.userId);
-        const restaurant = await this.userService.findById(order.restaurantId);
-        this.notificationService.sendOrderNotification(user, restaurant, order);
+        const restaurant = await this.userService.findRestaurantById(
+          order.restaurantId,
+        );
+        this.notificationService.sendOrderNotification(restaurant, user, order);
       });
   }
 
@@ -58,8 +60,10 @@ export class OrderService {
       .filter((order) => order.userId !== '100')
       .forEach(async (order) => {
         const user = await this.userService.findById(order.userId);
-        const restaurant = await this.userService.findById(order.restaurantId);
-        this.notificationService.sendFinishOrder(user, restaurant);
+        const restaurant = await this.userService.findRestaurantById(
+          order.restaurantId,
+        );
+        this.notificationService.sendFinishOrder(restaurant, user);
       });
   }
 

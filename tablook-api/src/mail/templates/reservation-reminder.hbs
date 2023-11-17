@@ -44,9 +44,9 @@
 	</head>
 	<body>
 		<div class="holder" >
-            <h1>Good morning, {{name}}</h1>
+            <h1>Good {{dayTime}}, {{name}}</h1>
             <h2>We are remind you about your reservation at <strong>{{place}}</strong></h2>
-            <h3>Reservation start today at <strong>{{order.time.startTime}}</strong>. Please be on time.</h3>
+            <h3>Reservation start today at <strong>{{time order.time.startTime}}</strong>. Please be on time.</h3>
             <h3>Your table is {{order.tableId}} and you book {{order.tableSize}} places</h3>
             <h4>Have a nice visit.</h4>
             <footer >
