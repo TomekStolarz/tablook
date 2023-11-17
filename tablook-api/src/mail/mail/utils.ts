@@ -82,9 +82,17 @@ export const Cron = (cronPattern: string): MethodDecorator => {
               firstDate.setHours(Number(interval.value));
               break;
             case 2:
+              const td = firstDate.getDate();
+              if (Number(interval.value) < td) {
+                firstDate.setMonth(firstDate.getMonth() + 1);
+              }
               firstDate.setDate(Number(interval.value));
               break;
             case 3:
+              const tm = firstDate.getDate();
+              if (Number(interval.value) < tm) {
+                firstDate.setFullYear(firstDate.getFullYear() + 1);
+              }
               firstDate.setMonth(Number(interval.value));
               break;
             default:
