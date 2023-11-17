@@ -38,7 +38,9 @@ export class OrderService {
     private readonly notificationService: NotificationService,
     private readonly reflector: Reflector,
   ) {
-    this.test();
+    //this.test();
+    //this.gatherTodayReservation();
+    //this.gatherTodayFinishedReservation();
   }
 
   @Cron('@daily 0 6')
