@@ -1,4 +1,4 @@
-export type MailData = {
+export type ContactRequest = {
   subject: string;
   message: string;
   userId: string;

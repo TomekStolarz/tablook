@@ -13,7 +13,6 @@ import { OrderInfo } from './models/order-info.interface';
 import { UserService } from 'src/user/user.service';
 import { UserType } from 'src/user/models/user-type.enum';
 import { SearchRequest } from 'src/search/models/search-request.interface';
-import { UserInfo } from 'src/user/models/user-info.interface';
 import { RestaurantSearchInfo } from 'src/search/models/restaurant-search-info.interface';
 import { BookingTime } from './models/booking-time.interface';
 import { FreeTable } from 'src/search/models/free-table.interface';
@@ -24,6 +23,8 @@ import { DetailedOrderInfo } from './models/detailed-order-info.type';
 import { ConfirmationStatus } from './models/confirmatiom-status.enum';
 import { calculateArrivalandLeaving } from 'src/utils';
 import { RestaurantFind } from 'src/search/models/restaurant-find.model';
+import { NotificationService } from 'src/mail/mail/notification.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class OrderService {
@@ -33,7 +34,61 @@ export class OrderService {
     @InjectModel('Order') private readonly orderModel: Model<OrderDocument>,
     private userService: UserService,
     private restaurantService: RestaurantService,
+    private readonly notificationService: NotificationService,
   ) {}
+
+  @Cron('0 0 6 * * *')
+  async gatherTodayReservation() {
+    const parsedOrders = await this.getTodayReservations();
+
+    parsedOrders
+      .filter((order) => order.userId !== '100')
+      .forEach(async (order) => {
+        const user = await this.userService.findById(order.userId);
+        const restaurant = await this.userService.findRestaurantById(
+          order.restaurantId,
+        );
+        this.notificationService.sendOrderNotification(restaurant, user, order);
+      });
+  }
+
+  @Cron('0 0 23 * * *')
+  async gatherTodayFinishedReservation() {
+    const parsedOrders = await this.getTodayReservations();
+
+    parsedOrders
+      .filter((order) => order.userId !== '100')
+      .forEach(async (order) => {
+        const user = await this.userService.findById(order.userId);
+        const restaurant = await this.userService.findRestaurantById(
+          order.restaurantId,
+        );
+        this.notificationService.sendFinishOrder(restaurant, user);
+      });
+  }
+
+  private async getTodayReservations() {
+    const today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    const tommorow = new Date(today.getTime());
+    tommorow.setDate(tommorow.getDate() + 1);
+
+    const todayOrders = await this.orderModel.find({
+      date: { $gte: today, $lte: tommorow },
+      confirmation: ConfirmationStatus.CONFIRMED,
+    });
+
+    if (!todayOrders.length) {
+      return [];
+    }
+
+    const parsedOrders = await Promise.all(
+      todayOrders.map(async (order) => await this.getOrderInfo(order)),
+    );
+    return parsedOrders;
+  }
 
   async finishOrder(orderId: Pick<OrderInfo, 'orderId'>, restaurantId: string) {
     const date = new Date();
@@ -45,14 +100,22 @@ export class OrderService {
       if (order.restaurantId !== restaurantId) {
         throw new ForbiddenException();
       }
-
+      if (order.time.endTime.getTime() < date.getTime()) {
+        throw new HttpException(
+          'Order already finished',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       const updated = this.orderModel
         .findByIdAndUpdate(orderId.orderId, { 'time.endTime': date })
         .exec();
       this.logger.log('Order finished date changed');
       return true;
     } catch (error: any) {
-      if (error instanceof ForbiddenException) {
+      if (
+        error instanceof ForbiddenException ||
+        error instanceof HttpException
+      ) {
         throw error;
       } else {
         throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
@@ -72,11 +135,20 @@ export class OrderService {
       if (order.restaurantId !== restaurantId) {
         throw new ForbiddenException();
       }
+      const restaurant = await this.userService.findById(restaurantId);
       const updatedOder = await this.orderModel
         .findByIdAndUpdate(orderConfirm.orderId, {
           confirmation: orderConfirm.confirmation,
         })
         .exec();
+      if (order.userId !== '100') {
+        this.notificationService.sendConfirmationStatusChange(
+          orderConfirm.confirmation,
+          order.userId,
+          restaurant,
+          order.date,
+        );
+      }
       this.logger.log('Order confirmation successfully changed');
       return this.getOrderInfo(updatedOder);
     } catch (error: any) {
@@ -158,8 +230,10 @@ export class OrderService {
     const hours = dayHours.hours.split(/[:-]/).map((x) => parseInt(x));
     const closing = new Date(order.date).setHours(hours[2], hours[3]);
     const opening = new Date(order.date).setHours(hours[0], hours[1]);
-    const endTime = new Date(order.time.endTime || closing);
     const startTime = new Date(order.time.startTime);
+    const endTime = order.time.endTime
+      ? new Date(order.time.endTime)
+      : await this.getOrderClosing(new Date(closing), startTime, order);
     order.time.endTime = endTime;
     order.time.startTime = startTime;
 
@@ -195,7 +269,9 @@ export class OrderService {
             },
           ],
         },
-        confirmation: ConfirmationStatus.CONFIRMED,
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
       })
       .exec();
 
@@ -203,17 +279,49 @@ export class OrderService {
       throw new HttpException('Table already taken', HttpStatus.BAD_REQUEST);
     }
 
-    order.confirmation = ConfirmationStatus.UNCONFIRMED;
     order.userId = order.userId ? order.userId : '100';
+    order.confirmation =
+      order.userId === '100'
+        ? ConfirmationStatus.CONFIRMED
+        : ConfirmationStatus.UNCONFIRMED;
 
     try {
       newOrder = new this.orderModel({ ...order });
+      if (order.userId !== '100') {
+        this.notificationService.sendNewOrder(restaurant);
+      }
       this.logger.log('Order placed successfully');
     } catch (error: any) {
       this.logger.error(error.message);
       throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
     }
     newOrder.save();
+  }
+
+  private async getOrderClosing(
+    closing: Date,
+    startTime: Date,
+    order: OrderDTO,
+  ): Promise<Date> {
+    const orderExits = await this.orderModel
+      .find({
+        restaurantId: order.restaurantId,
+        date: order.date,
+        tableId: order.tableId,
+        'time.startTime': { $gte: startTime },
+        'time.endTime': { $lte: closing },
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
+      })
+      .sort({ 'time.startTime': 1 })
+      .limit(1)
+      .exec();
+    if (orderExits?.[0]) {
+      const order = this.getOrderInfo(orderExits[0]);
+      return order.time.startTime;
+    }
+    return closing;
   }
 
   private getOrderInfo(order: OrderDocument): OrderInfo {
@@ -289,7 +397,7 @@ export class OrderService {
     }
 
     if (request.leave) {
-      if (leaving < currentTime.getTime()) {
+      if (leaving < currentTime.getTime() || leaving < _arrival) {
         return [];
       }
     }
@@ -299,7 +407,9 @@ export class OrderService {
         restaurantId: restaurantId,
         date: { $gte: dateStart, $lte: dateEnd },
         tableSize: { $gte: request.size },
-        confirmation: ConfirmationStatus.CONFIRMED,
+        confirmation: {
+          $in: [ConfirmationStatus.CONFIRMED, ConfirmationStatus.UNCONFIRMED],
+        },
         $or: [
           { 'time.startTime': { $gte: new Date(_arrival) } },
           {
@@ -351,6 +461,10 @@ export class OrderService {
     }, {} as { [key: string]: BookingTime[] });
 
     const last = leaving ? new Date(leaving) : new Date(closing);
+
+    if (leaving && new Date(leaving) > new Date(closing)) {
+      return [];
+    }
 
     const freeTables = Object.entries(tables).map(([tableId, time]) => {
       let _op = new Date(_arrival);
