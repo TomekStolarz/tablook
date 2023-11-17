@@ -52,6 +52,25 @@ import { SafeString, escapeExpression } from 'handlebars';
               `<a style="${style}" href="${propurl}" target="_blank" class="btn btn-dark">${proptext}</a>`,
             );
           },
+          dayTime: () => {
+            const date = new Date();
+            const dayTime =
+              date.getHours() < 12
+                ? 'morning'
+                : date.getHours() < 18
+                ? 'afternoon'
+                : 'evening';
+            return new SafeString(`${dayTime}`);
+          },
+          time: (date: Date) => {
+            return new SafeString(
+              `${date.getHours()}:${
+                date.getMinutes() >= 10
+                  ? date.getMinutes()
+                  : '0' + date.getMinutes()
+              }`,
+            );
+          },
           styleResource: (url?) => {
             return new SafeString(
               `<link
