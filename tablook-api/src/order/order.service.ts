@@ -38,7 +38,7 @@ export class OrderService {
     private readonly notificationService: NotificationService,
     private readonly reflector: Reflector,
   ) {
-    //this.test();
+    this.test();
     //this.gatherTodayReservation();
     //this.gatherTodayFinishedReservation();
   }
@@ -58,7 +58,7 @@ export class OrderService {
       });
   }
 
-  @Cron('@minutely')
+  @Cron('@daily 20 8')
   async test() {
     console.log('Runned');
   }

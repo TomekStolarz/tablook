@@ -35,7 +35,7 @@ export const Cron = (cronPattern: string): MethodDecorator => {
         }
       } else {
         newCronPattern = cronNames[cronKey];
-        const passedParams = cronPattern.split(' ').slice(1).join(' ');
+        const passedParams = cronPattern.split(' ').slice(1);
         newCronPattern = newCronPattern
           .split(' ')
           .map((val, index) => {
@@ -51,6 +51,7 @@ export const Cron = (cronPattern: string): MethodDecorator => {
         return;
       }
       const firstDate = new Date();
+      firstDate.setSeconds(0);
       const firstInterval = newCronPattern
         .split(' ')
         .findIndex((val) => val === '*');
