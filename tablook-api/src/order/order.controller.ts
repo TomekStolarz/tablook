@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -70,6 +71,16 @@ export class OrderController {
     @Body() order: Pick<OrderInfo, 'orderId' | 'confirmation'>,
   ) {
     return this.orderService.confirmRejectOrder(order, restaurantId);
+  }
+
+  @Delete('cancel/:id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard, AdminCurrentUserGuard)
+  cancelOrder(
+    @Param('id') userId: string,
+    @Body() order: Pick<OrderInfo, 'orderId'>,
+  ) {
+    return this.orderService.cancelOrder(order.orderId, userId);
   }
 
   @Patch('finish/:id')

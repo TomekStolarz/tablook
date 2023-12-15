@@ -25,4 +25,8 @@ export class OrderActionService {
   finishOrder(orderId: string, userId: string) {
     connectable(this.http.patch(`${this.apiPath}/order/finish/${userId}`, { orderId }).pipe(take(1))).connect();
   }
+
+  cancelOrder(orderId: string, userId: string) {
+    return this.http.delete(`${this.apiPath}/order/cancel/${userId}`, {body: { orderId }}).pipe(take(1));
+  }
 }

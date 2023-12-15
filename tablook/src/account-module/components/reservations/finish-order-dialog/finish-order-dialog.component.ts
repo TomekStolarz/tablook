@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { YesNoDialogContext } from './yes-no-dialog-context.model';
 
 @Component({
   selector: 'app-finish-order-dialog',
@@ -8,6 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class FinishOrderDialogComponent {
   private dialogRef = inject(MatDialogRef<FinishOrderDialogComponent>);
+  protected dialogContext: YesNoDialogContext = inject(MAT_DIALOG_DATA);
 
   reject(): void {
     this.dialogRef.close();

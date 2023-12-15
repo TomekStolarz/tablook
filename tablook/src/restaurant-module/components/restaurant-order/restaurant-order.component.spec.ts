@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RestaurantOrderComponent } from './restaurant-order.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { RestaurantDetailsService } from 'src/home/restaurant-details/services/restaurant-details.service';
+import { Dialog } from '@angular/cdk/dialog';
 
 describe('RestaurantOrderComponent', () => {
   let component: RestaurantOrderComponent;
@@ -8,7 +11,11 @@ describe('RestaurantOrderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RestaurantOrderComponent ]
+      declarations: [RestaurantOrderComponent],
+      providers: [provideMockStore({}),
+        { provide: RestaurantDetailsService, useValue: '' },
+        { provide: Dialog, useValue: '' }
+      ],
     })
     .compileComponents();
 

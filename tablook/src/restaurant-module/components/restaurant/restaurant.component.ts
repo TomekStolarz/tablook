@@ -9,8 +9,8 @@ import { Tab } from 'src/account-module/models/tab.type';
 export class RestaurantComponent {
   protected tabs: Tab[] = [
     { name: 'Reservations in restaurant', route: 'reservations'},
-    { name: 'Place order', route: 'order'},
+    { name: 'Place reservation', route: 'order'},
     { name: 'Contact', route: 'contact'},
-    { name: 'Settings', route: 'setting'},
+    //{ name: 'Settings', route: 'setting'},
   ] 
 }

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FavouritesComponent } from './favourites.component';
+import { FavouriteService } from 'src/shared/services/favourite.service';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -8,7 +10,11 @@ describe('FavouritesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FavouritesComponent ]
+      declarations: [FavouritesComponent],
+      providers: [
+        { provide: FavouriteService, useValue: '' },
+        provideMockStore()
+      ]
     })
     .compileComponents();
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { ConfirmationStatus } from 'src/order/models/confirmatiom-status.enum';
 import { UserService } from 'src/user/user.service';
-import { emailData } from 'email.data';
+import { emailData } from '../../../email.data';
 import { UserInfo } from 'src/user/models/user-info.interface';
 import { config } from 'src/dev.config';
 import { OrderInfo } from 'src/order/models/order-info.interface';

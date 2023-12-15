@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 
 @Pipe({
 	name: 'tbDate',
 })
 export class TbDatePipe implements PipeTransform {
-	constructor(private datePipe: DatePipe) {}
+	private readonly datePipe = inject(DatePipe);
 
 	transform(value: number): string {
 		return (

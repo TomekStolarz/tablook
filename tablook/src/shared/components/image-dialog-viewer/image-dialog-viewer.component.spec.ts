@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImageDialogViewerComponent } from './image-dialog-viewer.component';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('ImageDialogViewerComponent', () => {
   let component: ImageDialogViewerComponent;
@@ -8,7 +11,14 @@ describe('ImageDialogViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageDialogViewerComponent ]
+      declarations: [ImageDialogViewerComponent],
+      imports: [MatDialogModule, MatIconModule],
+      providers: [
+        {provide: MatDialogRef, useValue: {}},
+        { provide: MAT_DIALOG_DATA, useValue: [] },
+        { provide: DialogRef, useValue: [] },
+        { provide: DIALOG_DATA, useValue: [] },
+      ]
     })
     .compileComponents();
 

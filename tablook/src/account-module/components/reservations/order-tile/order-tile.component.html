@@ -58,6 +58,16 @@
 		Reject
 	</button>
 </div>
+<div class="buttons" *ngIf="user?.type === 'customer'">
+	<button
+		mat-raised-button
+		(click)="onCancelClick()"
+		*ngIf="order.confirmation === 0 && !order.finished && !order.active"
+	>
+		<mat-icon>cancel_outline</mat-icon>
+		Cancel
+	</button>
+</div>
 
 <mat-icon
 	*ngIf="

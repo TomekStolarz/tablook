@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog.component';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('ConfirmDeleteDialogComponent', () => {
   let component: ConfirmDeleteDialogComponent;
@@ -8,7 +9,9 @@ describe('ConfirmDeleteDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmDeleteDialogComponent ]
+      declarations: [ConfirmDeleteDialogComponent],
+      imports: [MatDialogModule],
+      providers: [{provide: MatDialogRef, useValue: ''}]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { apiKey } from 'api-key';
+import { apiKey } from '../../api-key';
 import { AxiosError } from 'axios';
 import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 import { PlaceDetails } from './interfaces/place-details.interface';

@@ -21,7 +21,7 @@ import { RestaurantService } from 'src/restaurant/restaurant.service';
 import { lastValueFrom } from 'rxjs';
 import { DetailedOrderInfo } from './models/detailed-order-info.type';
 import { ConfirmationStatus } from './models/confirmatiom-status.enum';
-import { calculateArrivalandLeaving } from 'src/utils';
+import { calculateArrivalandLeaving } from '../../src/utils';
 import { RestaurantFind } from 'src/search/models/restaurant-find.model';
 import { NotificationService } from 'src/mail/mail/notification.service';
 import { Cron } from '@nestjs/schedule';
@@ -151,6 +151,32 @@ export class OrderService {
       }
       this.logger.log('Order confirmation successfully changed');
       return this.getOrderInfo(updatedOder);
+    } catch (error: any) {
+      if (error instanceof ForbiddenException) {
+        throw error;
+      } else {
+        throw new HttpException('Bad id provided', HttpStatus.BAD_REQUEST);
+      }
+    }
+  }
+
+  async cancelOrder(orderId: string, userId: string) {
+    try {
+      const order = await this.orderModel.findById(orderId).exec();
+
+      if (!order) return null;
+
+      if (
+        order.userId !== userId ||
+        order.confirmation !== ConfirmationStatus.UNCONFIRMED
+      ) {
+        throw new ForbiddenException();
+      }
+      const deletedOrder = await this.orderModel
+        .findByIdAndDelete(orderId)
+        .exec();
+      this.logger.log('Order successfully deleted');
+      return this.getOrderInfo(deletedOrder);
     } catch (error: any) {
       if (error instanceof ForbiddenException) {
         throw error;

@@ -11,6 +11,11 @@
 	.image {
 		display: grid;
 		place-items: center;
+		img {
+			max-height: 165px;
+			width: 100%;
+			object-fit: cover;
+		}
 	}
 
 	.details {

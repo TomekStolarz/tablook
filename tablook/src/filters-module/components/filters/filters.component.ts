@@ -51,14 +51,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
 	});
 
 	protected sortingData: Sorting[] = [
-		{key: 'Total opinions', direction: 1},
 		{key: 'Total opinions', direction: -1},
-		{key: 'Rating', direction: 1},
+		{key: 'Total opinions', direction: 1},
 		{key: 'Rating', direction: -1},
-		{key: 'Free tables', direction: 1},
+		{key: 'Rating', direction: 1},
 		{key: 'Free tables', direction: -1},
-		{key: 'Restaurant name', direction: 1},
+		{key: 'Free tables', direction: 1},
 		{key: 'Restaurant name', direction: -1},
+		{key: 'Restaurant name', direction: 1},
 	]
 
 	private subscription: Subscription[] = [];
@@ -118,7 +118,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 			).subscribe((userId) => {
 				this.userId = userId;
 				if (userId) {
-					this.sortingData.unshift({ key: 'Favourite', direction: 1 });
+					this.sortingData.unshift({ key: 'Favourite', direction: -1 });
 				}
 			})
 		)

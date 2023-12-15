@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OrderActionService } from 'src/account-module/services/order-action.service';
 import { UserInfo } from 'src/app/interfaces/user-info.interface';
@@ -20,6 +20,8 @@ export class OrderTileComponent implements OnDestroy{
   private readonly cdRef = inject(ChangeDetectorRef);
 
   private readonly dialog = inject(MatDialog);
+
+  private readonly elRef = inject(ElementRef);
 
   private _order!: OrderDetails;
 
@@ -79,20 +81,67 @@ export class OrderTileComponent implements OnDestroy{
     if (this.order.confirmation !== ConfirmationStatus.UNCONFIRMED) {
       return;
     }
-    this.subscriptions.push(this.orderActionService.confirmationOrderUpdate(this.order.orderId, `${this.user?.id}`, ConfirmationStatus.CONFIRMED).subscribe(() => {
-      this.order = { ...this.order, confirmation: ConfirmationStatus.CONFIRMED };
-      this.cdRef.detectChanges();
+    const dialogRef = this.dialog.open(FinishOrderDialogComponent, {
+      data: {
+        title: "Order status changing",
+        content: "This order will be confirmed",
+      }
+    });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.subscriptions.push(this.orderActionService.confirmationOrderUpdate(this.order.orderId, `${this.user?.id}`, ConfirmationStatus.CONFIRMED).subscribe(() => {
+        this.order = { ...this.order, confirmation: ConfirmationStatus.CONFIRMED };
+        this.cdRef.detectChanges();
+      }));
     }));
+
   }
 
   onRejectClick() {
     if (this.order.confirmation !== ConfirmationStatus.UNCONFIRMED) {
       return;
     }
-    this.subscriptions.push(this.orderActionService.confirmationOrderUpdate(this.order.orderId, `${this.user?.id}`, ConfirmationStatus.REJECTED).subscribe(() => {
-      this.order = { ...this.order, confirmation: ConfirmationStatus.REJECTED };
-      this.cdRef.detectChanges();
+    const dialogRef = this.dialog.open(FinishOrderDialogComponent, {
+      data: {
+        title: "Order status changing",
+        content: "This order will be rejected",
+      }
+    });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.subscriptions.push(this.orderActionService.confirmationOrderUpdate(this.order.orderId, `${this.user?.id}`, ConfirmationStatus.REJECTED).subscribe(() => {
+        this.order = { ...this.order, confirmation: ConfirmationStatus.REJECTED };
+        this.cdRef.detectChanges();
+      }));
     }));
+  }
+
+  onCancelClick() {
+    if (this.order.confirmation !== ConfirmationStatus.UNCONFIRMED) {
+      return;
+    }
+    const dialogRef = this.dialog.open(FinishOrderDialogComponent, {
+      data: {
+        title: "Cancel order",
+        content: "Are you really want to cancel this order?",
+      }
+    });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.subscriptions.push(this.orderActionService.cancelOrder(this._order.orderId, `${this.user?.id}`).subscribe(() => {
+        this.ngOnDestroy();
+        this.elRef.nativeElement.remove();
+      }));
+    }))
   }
 
   onFinishClick() {
@@ -100,7 +149,12 @@ export class OrderTileComponent implements OnDestroy{
   }
 
   openFinishDialog(): void {
-    const dialogRef = this.dialog.open(FinishOrderDialogComponent);
+    const dialogRef = this.dialog.open(FinishOrderDialogComponent, {
+      data: {
+        title: "Finish order",
+        content: "Finish this order now?",
+      }
+    });
 
     this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (!result) {
